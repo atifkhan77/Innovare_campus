@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:innovare_campus/Views/selction.dart';
+import 'package:innovare_campus/Views/login1_screen.dart';
 // Import your login screen
 
 class SplashScreen extends StatefulWidget {
