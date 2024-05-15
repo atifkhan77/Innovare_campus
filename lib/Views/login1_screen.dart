@@ -38,7 +38,7 @@ class _LoginScreenState extends State<LoginScreen> {
             child: const Text(
               "Login",
               style: TextStyle(
-                  color: Colors.white, fontSize: 36, fontFamily: 'Quicksand'),
+                  color: Colors.white, fontSize: 36),
             ),
           ),
           Padding(
