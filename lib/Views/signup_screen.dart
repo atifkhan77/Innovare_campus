@@ -7,8 +7,20 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupScreenState extends State<SignupScreen> {
+  bool _obscureText = true;
+  TextEditingController _passwordController = TextEditingController();
+  TextEditingController _confirmPasswordController = TextEditingController();
+
+  void _togglePasswordVisibility() {
+    setState(() {
+      _obscureText = !_obscureText;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       body: Stack(
         fit: StackFit.expand,
@@ -22,63 +34,121 @@ class _SignupScreenState extends State<SignupScreen> {
             ),
           ),
           Positioned(
-            left: 100,
-            top: 50, // Adjust the top position to move the image to the top
-            child: Image.asset(
-              'assets/Register.png',
-              width: 150, // Adjust the width as needed
-              height: 150, // Adjust the height as needed
+            left: screenWidth * .35,
+            top: screenHeight * .20,
+            child: const Text(
+              "Register",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 36,
+              ),
             ),
           ),
-          Positioned(
-            left: 20,
-            right: 20,
-            top: 230, // Adjust the top position to position the white box below the image
+          Padding(
+            padding: EdgeInsets.only(top: screenHeight * .30),
             child: Container(
-              color: Colors.white,
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
+                ),
+                color: Colors.white,
+              ),
               padding: EdgeInsets.all(20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  TextField(
-                    decoration: InputDecoration(
-                      labelText: 'Name',
-                      border: OutlineInputBorder(),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    const SizedBox(
+                      height: 20,
                     ),
-                  ),
-                  SizedBox(height: 10),
-                  TextField(
-                    decoration: InputDecoration(
-                      labelText: 'Email',
-                      border: OutlineInputBorder(),
+                    UiHelper.customText("Name"),
+                    const TextField(
+                      decoration: InputDecoration(
+                        hintText: 'Enter your Name',
+                        hintStyle: TextStyle(color: Colors.black26),
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 10),
-                  TextField(
-                    decoration: InputDecoration(
-                      labelText: 'Registration Number',
-                      border: OutlineInputBorder(),
+                    const SizedBox(
+                      height: 20,
                     ),
-                  ),
-                  SizedBox(height: 10),
-                  TextField(
-                    obscureText: true,
-                    decoration: InputDecoration(
-                      labelText: 'Password',
-                      border: OutlineInputBorder(),
+                    UiHelper.customText("Email"),
+                    const TextField(
+                      decoration: InputDecoration(
+                        hintText: 'Enter your Email',
+                        hintStyle: TextStyle(color: Colors.black26),
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 10),
-                  TextField(
-                    obscureText: true,
-                    decoration: InputDecoration(
-                      labelText: 'Confirm Password',
-                      border: OutlineInputBorder(),
+                    const SizedBox(
+                      height: 20,
                     ),
-                  ),
-                   SizedBox(height: 20),
-                   CustomButton(text: "Sign Up", onPressed: (){})
-                ],
+                    UiHelper.customText("Registration"),
+                    const TextField(
+                      decoration: InputDecoration(
+                        hintText: 'Enter your Reg No. e.g SP21-BSE-000',
+                        hintStyle: TextStyle(color: Colors.black26),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    UiHelper.customText("Password"),
+                    TextField(
+                      controller: _passwordController,
+                      obscureText: _obscureText,
+                      decoration: InputDecoration(
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _obscureText
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                          ),
+                          onPressed: _togglePasswordVisibility,
+                        ),
+                        hintText: 'Enter your Password',
+                        hintStyle: TextStyle(color: Colors.black26),
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    UiHelper.customText("Confirm Password"),
+                    TextField(
+                      controller: _confirmPasswordController,
+                      obscureText: _obscureText,
+                      decoration: InputDecoration(
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _obscureText
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                          ),
+                          onPressed: _togglePasswordVisibility,
+                        ),
+                        hintText: 'Confirm your Password',
+                        hintStyle: TextStyle(color: Colors.black26),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    CustomButton(
+                      text: "Sign Up",
+                      onPressed: () {
+                        if (_passwordController.text ==
+                            _confirmPasswordController.text) {
+                          // Passwords match, proceed with signup
+                          // Implement your signup logic here
+                          // For example, you can navigate to the next screen
+                        } else {
+                          // Passwords do not match, show an error message
+                          // You can display a snackbar or any other UI element to inform the user
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Passwords do not match.'),
+                            ),
+                          );
+                        }
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
