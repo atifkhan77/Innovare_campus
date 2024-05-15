@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:innovare_campus/components/uiHelper.dart';
 
-class SignupScreen extends StatelessWidget {
+class SignupScreen extends StatefulWidget {
+  @override
+  State<SignupScreen> createState() => _SignupScreenState();
+}
+
+class _SignupScreenState extends State<SignupScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,17 +77,7 @@ class SignupScreen extends StatelessWidget {
                     ),
                   ),
                    SizedBox(height: 20),
-                  ElevatedButton(
-                     style: ElevatedButton.styleFrom(
-                          padding: EdgeInsets.symmetric(vertical: 12), // Adjust padding
-                          backgroundColor: Color.fromARGB(255, 119, 37, 243), // Change button color to purple
-                        ),
-                    onPressed: () {
-                      // Implement login functionality
-                    },
-                    child: Text('Register',
-                    style: TextStyle(color: Colors.white),
-                  ),),
+                   CustomButton(text: "Sign Up", onPressed: (){})
                 ],
               ),
             ),
