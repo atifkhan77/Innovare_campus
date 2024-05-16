@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:innovare_campus/Views/forgotPassword.dart';
 import 'package:innovare_campus/Views/signup_screen.dart';
 import 'package:innovare_campus/components/uiHelper.dart';
 
@@ -93,7 +94,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         Spacer(),
                         TextButton(
                           onPressed: () {
-                            // Implement forgot password functionality
+                            Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ForgotPassword()));
                           },
                           child: Text('Forgot password?'),
                         ),
