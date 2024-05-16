@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'login1_screen.dart'; // Import your login1 screen
-import 'signup_screen.dart'; // Import your signup screen
+import 'package:innovare_campus/Views/login1_screen.dart';
+import 'package:innovare_campus/Views/signup_screen.dart';
+// Import your signup screen
 
 class LoginScreen extends StatelessWidget {
   @override
@@ -12,7 +13,8 @@ class LoginScreen extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage("assets/Splash.png"), // Use the same image as the splash screen
+                image: AssetImage(
+                    "assets/Splash.png"), // Use the same image as the splash screen
                 fit: BoxFit.cover,
               ),
             ),
@@ -39,16 +41,21 @@ class LoginScreen extends StatelessWidget {
                           // Navigate to login1 screen
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => Login1Screen()),
+                            MaterialPageRoute(
+                                builder: (context) => Login1Screen()),
                           );
                         },
                         style: ElevatedButton.styleFrom(
-                          padding: EdgeInsets.symmetric(vertical: 12), // Adjust padding
-                          backgroundColor: Color.fromARGB(255, 119, 37, 243), // Change button color to purple
+                          padding: EdgeInsets.symmetric(
+                              vertical: 12), // Adjust padding
+                          backgroundColor: Color.fromARGB(255, 119, 37,
+                              243), // Change button color to purple
                         ),
                         child: Text(
                           'Login',
-                          style: TextStyle(color: Colors.white), // Change text color to white
+                          style: TextStyle(
+                              color:
+                                  Colors.white), // Change text color to white
                         ),
                       ),
                     ),
@@ -60,16 +67,21 @@ class LoginScreen extends StatelessWidget {
                           // Navigate to signup screen
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => SignupScreen()),
+                            MaterialPageRoute(
+                                builder: (context) => SignupScreen()),
                           );
                         },
                         style: ElevatedButton.styleFrom(
-                          padding: EdgeInsets.symmetric(vertical: 12), // Adjust padding
-                          backgroundColor: Color.fromARGB(255, 119, 37, 243), // Change button color to purple
+                          padding: EdgeInsets.symmetric(
+                              vertical: 12), // Adjust padding
+                          backgroundColor: Color.fromARGB(255, 119, 37,
+                              243), // Change button color to purple
                         ),
                         child: Text(
                           'Sign Up',
-                          style: TextStyle(color: Colors.white), // Change text color to white
+                          style: TextStyle(
+                              color:
+                                  Colors.white), // Change text color to white
                         ),
                       ),
                     ),

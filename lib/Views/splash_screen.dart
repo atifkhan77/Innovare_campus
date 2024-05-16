@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'selction.dart'; // Import your login screen
+import 'package:innovare_campus/Views/selction.dart';
+// Import your login screen
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -14,7 +15,8 @@ class _SplashScreenState extends State<SplashScreen> {
     // Set a Timer for 5 seconds
     Timer(Duration(seconds: 5), () {
       // Navigate to the login screen
-      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => LoginScreen()));
+      Navigator.of(context)
+          .pushReplacement(MaterialPageRoute(builder: (_) => LoginScreen()));
     });
   }
 
@@ -45,25 +47,25 @@ class _SplashScreenState extends State<SplashScreen> {
             ),
           ),
           Positioned(
-            top: 50, 
+            top: 50,
             left: 0,
             right: 0,
             child: Center(
               child: Image.asset(
                 'assets/text.png',
-                width: 200, 
+                width: 200,
                 height: 600,
               ),
             ),
           ),
           Positioned(
-            top: 50, 
+            top: 50,
             left: 0,
             right: 0,
             child: Center(
               child: Image.asset(
                 'assets/text2.png',
-                width: 200, 
+                width: 200,
                 height: 670,
               ),
             ),
