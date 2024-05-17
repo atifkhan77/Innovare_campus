@@ -1,5 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:innovare_campus/Views/login1_screen.dart';
 import 'package:innovare_campus/components/uiHelper.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class SignupScreen extends StatefulWidget {
   @override
@@ -8,13 +12,69 @@ class SignupScreen extends StatefulWidget {
 
 class _SignupScreenState extends State<SignupScreen> {
   bool _obscureText = true;
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _nameController = TextEditingController();
+  TextEditingController _regNoController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _confirmPasswordController = TextEditingController();
+
+  FirebaseAuth _auth = FirebaseAuth.instance;
 
   void _togglePasswordVisibility() {
     setState(() {
       _obscureText = !_obscureText;
     });
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _nameController.dispose();
+    _regNoController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    super.dispose();
+  }
+
+  void _signUp() async {
+    if (_passwordController.text != _confirmPasswordController.text) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Passwords do not match.'),
+        ),
+      );
+      return;
+    }
+
+    try {
+      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
+
+      // Navigate to the login screen after successful signup
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => LoginScreen()),
+      );
+    } on FirebaseAuthException catch (e) {
+      String message;
+      switch (e.code) {
+        case 'weak-password':
+          message = 'The password provided is too weak.';
+          break;
+        case 'email-already-in-use':
+          message = 'The account already exists for that email.';
+          break;
+        default:
+          message = 'An error occurred. Please try again.';
+      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(message),
+        ),
+      );
+    }
   }
 
   @override
@@ -63,7 +123,8 @@ class _SignupScreenState extends State<SignupScreen> {
                       height: 20,
                     ),
                     UiHelper.customText("Name"),
-                    const TextField(
+                    TextField(
+                      controller: _nameController,
                       decoration: InputDecoration(
                         hintText: 'Enter your Name',
                         hintStyle: TextStyle(color: Colors.black26),
@@ -73,7 +134,8 @@ class _SignupScreenState extends State<SignupScreen> {
                       height: 20,
                     ),
                     UiHelper.customText("Email"),
-                    const TextField(
+                    TextField(
+                      controller: _emailController,
                       decoration: InputDecoration(
                         hintText: 'Enter your Email',
                         hintStyle: TextStyle(color: Colors.black26),
@@ -83,7 +145,8 @@ class _SignupScreenState extends State<SignupScreen> {
                       height: 20,
                     ),
                     UiHelper.customText("Registration"),
-                    const TextField(
+                    TextField(
+                      controller: _regNoController,
                       decoration: InputDecoration(
                         hintText: 'Enter your Reg No. e.g SP21-BSE-000',
                         hintStyle: TextStyle(color: Colors.black26),
@@ -130,22 +193,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     const SizedBox(height: 20),
                     CustomButton(
                       text: "Sign Up",
-                      onPressed: () {
-                        if (_passwordController.text ==
-                            _confirmPasswordController.text) {
-                          // Passwords match, proceed with signup
-                          // Implement your signup logic here
-                          // For example, you can navigate to the next screen
-                        } else {
-                          // Passwords do not match, show an error message
-                          // You can display a snackbar or any other UI element to inform the user
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('Passwords do not match.'),
-                            ),
-                          );
-                        }
-                      },
+                      onPressed: _signUp,
                     ),
                   ],
                 ),

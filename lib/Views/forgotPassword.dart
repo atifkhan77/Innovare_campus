@@ -1,8 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:innovare_campus/Views/login1_screen.dart';
 import 'package:innovare_campus/components/uiHelper.dart';
 
 class ForgotPassword extends StatelessWidget {
-  const ForgotPassword({super.key});
+  ForgotPassword({Key? key}) : super(key: key);
+
+  final TextEditingController _emailController = TextEditingController();
+  final auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +30,7 @@ class ForgotPassword extends StatelessWidget {
             top: screenHeight * .20,
             child: const Text(
               "Forgot password",
-              style: TextStyle(
-                  color: Colors.white, fontSize: 36),
+              style: TextStyle(color: Colors.white, fontSize: 36),
             ),
           ),
           Padding(
@@ -44,37 +48,82 @@ class ForgotPassword extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    // const SizedBox(
-                    //   height: 10,
-                    // ),
-                    Text('Please enter your email to reset the password',style: TextStyle(color: Colors.black26,fontSize: 15,fontWeight: FontWeight.w700),),
-                    SizedBox(height: 10,),
-                    UiHelper.customText("Your email"),
-                    const TextField(
-                      decoration: InputDecoration(
-                        hintText: 'Enter your Email',
-                        hintStyle: TextStyle(color:Colors.black26),
+                    Text(
+                      'Please enter your email to reset the password',
+                      style: TextStyle(
+                        color: Colors.black26,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w700,
                       ),
                     ),
-                    const SizedBox(
-                      height: 20,
+                    SizedBox(height: 10),
+                    UiHelper.customText("Your email"),
+                    TextField(
+                      controller: _emailController,
+                      decoration: InputDecoration(
+                        hintText: 'Enter your Email',
+                        hintStyle: TextStyle(color: Colors.black26),
+                      ),
                     ),
-                    const Text('We will send a password reset link to this email address',style: TextStyle(color: Colors.black26,fontSize: 12),),
-                    
-                    const SizedBox(height: 10),
-                    
-                    const SizedBox(height: 20),
-                    CustomButton(text: "Reset Password", onPressed: (){}),
+                    SizedBox(height: 20),
+                    Text(
+                      'We will send a password reset link to this email address',
+                      style: TextStyle(color: Colors.black26, fontSize: 12),
+                    ),
+                    SizedBox(height: 10),
+                    SizedBox(height: 20),
+                    CustomButton(
+                      text: "Reset Password",
+                      onPressed: () {
+                        auth.sendPasswordResetEmail(email: _emailController.text.toString())
+                            .then((_) {
+                          // Password reset email sent successfully
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Password reset email sent.'),
+                            ),
+                          );
+                          Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => LoginScreen()),
+      );
+                        }).catchError((error) {
+                          // Handle error if sending email fails
+                          print(error.toString());
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Failed to send password reset email.'),
+                            ),
+                          );
+                        });
+                      },
+                    ),
                     Padding(
-                      padding: const EdgeInsets.only(top: 20,left: 20),
-                      child: Row(children: [
-                        const Text('Haven’t got the email yet?',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black26
-                        ),),
-                        TextButton(onPressed: (){}, child:const Text('Resend email',style: TextStyle(color: Colors.blue,decoration: TextDecoration.underline),)),
-
-                      ],),
-
-                    )
+                      padding: const EdgeInsets.only(top: 20, left: 20),
+                      child: Row(
+                        children: [
+                          Text(
+                            'Haven’t got the email yet?',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black26,
+                            ),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              // Handle resend email action
+                            },
+                            child: Text(
+                              'Resend email',
+                              style: TextStyle(
+                                color: Colors.blue,
+                                decoration: TextDecoration.underline,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
