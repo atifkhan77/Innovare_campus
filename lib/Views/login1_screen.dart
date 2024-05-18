@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:innovare_campus/Views/forgotPassword.dart';
+import 'package:innovare_campus/Views/home.dart';
 import 'package:innovare_campus/Views/signup_screen.dart';
 import 'package:innovare_campus/components/uiHelper.dart';
 import 'package:innovare_campus/controller/firebase_services.dart';
@@ -25,12 +27,25 @@ class _LoginScreenState extends State<LoginScreen> {
     });
   }
 
-  void _login() {
-    if (_formKey.currentState!.validate()) {
-      _authService.login(
-        context: context,
+  void _login() async {
+    try {
+      UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: _emailController.text,
         password: _passwordController.text,
+      );
+
+      User? user = userCredential.user;
+      if (user != null) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => HomeScreen(userId: user.uid)),
+        );
+      }
+    } catch (e) {
+      // Handle login error
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to login: $e')),
       );
     }
   }

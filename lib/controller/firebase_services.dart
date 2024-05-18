@@ -1,22 +1,24 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:innovare_campus/Views/home.dart';
-import 'package:innovare_campus/Views/login1_screen.dart';
 
 class FirebaseAuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Future<void> signUp({
     required BuildContext context,
     required String email,
     required String password,
     required String confirmPassword,
+    required String name,
+    required String regNo,
   }) async {
     if (password != confirmPassword) {
+      // Handle password mismatch
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Passwords do not match.'),
-        ),
+        SnackBar(content: Text('Passwords do not match')),
       );
       return;
     }
@@ -24,31 +26,30 @@ class FirebaseAuthService {
     try {
       UserCredential userCredential =
           await _auth.createUserWithEmailAndPassword(
-        email: email.trim(),
-        password: password.trim(),
+        email: email,
+        password: password,
       );
 
-      // Navigate to the login screen after successful signup
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => LoginScreen()),
-      );
-    } on FirebaseAuthException catch (e) {
-      String message;
-      switch (e.code) {
-        case 'weak-password':
-          message = 'The password provided is too weak.';
-          break;
-        case 'email-already-in-use':
-          message = 'The account already exists for that email.';
-          break;
-        default:
-          message = 'An error occurred. Please try again.';
+      User? user = userCredential.user;
+
+      if (user != null) {
+        // Store additional user information in Firestore
+        await _firestore.collection('users').doc(user.uid).set({
+          'name': name,
+          'email': email,
+          'regNo': regNo,
+        });
+
+        // Navigate to HomeScreen after successful signup
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => HomeScreen(userId: user.uid)),
+        );
       }
+    } catch (e) {
+      // Handle signup error
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(message),
-        ),
+        SnackBar(content: Text('Failed to sign up: $e')),
       );
     }
   }
@@ -59,14 +60,19 @@ class FirebaseAuthService {
     required String password,
   }) async {
     try {
-      await _auth.signInWithEmailAndPassword(
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
         email: email.trim(),
         password: password.trim(),
       );
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => HomeScreen()),
-      );
+
+      User? user = userCredential.user;
+
+      if (user != null) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => HomeScreen(userId: user.uid)),
+        );
+      }
     } on FirebaseAuthException catch (e) {
       String message;
       switch (e.code) {

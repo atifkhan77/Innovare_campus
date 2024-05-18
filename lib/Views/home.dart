@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:innovare_campus/components/uiHelper.dart';
+import 'package:innovare_campus/Views/profileScreen.dart';
+import 'package:innovare_campus/components/uiHelper.dart'; // Make sure this is correct
 
 class HomeScreen extends StatefulWidget {
+  final String userId;
+
+  HomeScreen({required this.userId});
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -35,13 +40,18 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<void> _loadUserName() async {
     try {
-      final doc = await FirebaseFirestore.instance
-          .collection('users')
-          .doc('user_id')
-          .get();
-      setState(() {
-        _userName = doc['name'];
-      });
+      final docRef =
+          FirebaseFirestore.instance.collection('users').doc(widget.userId);
+      final doc = await docRef.get();
+      if (doc.exists) {
+        setState(() {
+          _userName = doc['name'] ?? 'User';
+        });
+      } else {
+        setState(() {
+          _userName = 'User';
+        });
+      }
     } catch (e) {
       // Handle errors
       print('Failed to load user name: $e');
@@ -59,16 +69,16 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             GestureDetector(
               onTap: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(builder: (context) => ProfileScreen()),
-                // );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ProfileScreen()),
+                );
               },
               child: CircleAvatar(
                 backgroundImage: _profileImageUrl != null
                     ? NetworkImage(_profileImageUrl!)
                     : const AssetImage('assets/placeholder.png')
-                        as ImageProvider, // Use a placeholder image
+                        as ImageProvider,
               ),
             ),
             const SizedBox(width: 8),
@@ -89,8 +99,8 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           children: [
             SizedBox(
-              height: screenHeight * 0.05,
-            ), // Add some spacing between AppBar and image
+                height: screenHeight *
+                    0.05), // Add some spacing between AppBar and image
             Center(
               child: Image.asset(
                 'assets/homeScreen/homeScreen.png', // Replace with your image asset
@@ -99,8 +109,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             const SizedBox(
-              height: 16,
-            ), // Add some spacing between the image and the grid
+                height: 16), // Add some spacing between the image and the grid
             Expanded(
               child: GridView.count(
                 crossAxisCount: 3, // Three cards per row
@@ -159,7 +168,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: NavBar(),
+      bottomNavigationBar: const NavBar(),
     );
   }
 }
