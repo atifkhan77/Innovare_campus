@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:innovare_campus/components/uiHelper.dart';
+import 'package:innovare_campus/controller/signup.dart';
 
 class SignupScreen extends StatefulWidget {
   @override
@@ -7,15 +8,47 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupScreenState extends State<SignupScreen> {
-  bool _obscureText = true;
+  bool _obscureTextPassword = true;
+  bool _obscureTextConfirmPassword = true;
+
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _regNoController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
 
+  final FirebaseAuthService _authService = FirebaseAuthService();
+
   void _togglePasswordVisibility() {
     setState(() {
-      _obscureText = !_obscureText;
+      _obscureTextPassword = !_obscureTextPassword;
     });
+  }
+
+  void _toggleConfirmPasswordVisibility() {
+    setState(() {
+      _obscureTextConfirmPassword = !_obscureTextConfirmPassword;
+    });
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _nameController.dispose();
+    _regNoController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    super.dispose();
+  }
+
+  void _signup() {
+    _authService.signUp(
+      context: context,
+      email: _emailController.text,
+      password: _passwordController.text,
+      confirmPassword: _confirmPasswordController.text,
+    );
   }
 
   @override
@@ -56,74 +89,69 @@ class _SignupScreenState extends State<SignupScreen> {
                 ),
                 color: Colors.white,
               ),
-              padding: EdgeInsets.all(20),
+              padding: const EdgeInsets.all(20),
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    const SizedBox(
-                      height: 20,
-                    ),
+                    const SizedBox(height: 20),
                     UiHelper.customText("Name"),
-                    const TextField(
-                      decoration: InputDecoration(
+                    TextField(
+                      controller: _nameController,
+                      decoration: const InputDecoration(
                         hintText: 'Enter your Name',
                         hintStyle: TextStyle(color: Colors.black26),
                       ),
                     ),
-                    const SizedBox(
-                      height: 20,
-                    ),
+                    const SizedBox(height: 20),
                     UiHelper.customText("Email"),
-                    const TextField(
-                      decoration: InputDecoration(
+                    TextField(
+                      controller: _emailController,
+                      decoration: const InputDecoration(
                         hintText: 'Enter your Email',
                         hintStyle: TextStyle(color: Colors.black26),
                       ),
                     ),
-                    const SizedBox(
-                      height: 20,
-                    ),
+                    const SizedBox(height: 20),
                     UiHelper.customText("Registration"),
-                    const TextField(
-                      decoration: InputDecoration(
+                    TextField(
+                      controller: _regNoController,
+                      decoration: const InputDecoration(
                         hintText: 'Enter your Reg No. e.g SP21-BSE-000',
                         hintStyle: TextStyle(color: Colors.black26),
                       ),
                     ),
-                    const SizedBox(
-                      height: 20,
-                    ),
+                    const SizedBox(height: 20),
                     UiHelper.customText("Password"),
                     TextField(
                       controller: _passwordController,
-                      obscureText: _obscureText,
+                      obscureText: _obscureTextPassword,
                       decoration: InputDecoration(
                         suffixIcon: IconButton(
                           icon: Icon(
-                            _obscureText
+                            _obscureTextPassword
                                 ? Icons.visibility
                                 : Icons.visibility_off,
                           ),
                           onPressed: _togglePasswordVisibility,
                         ),
                         hintText: 'Enter your Password',
-                        hintStyle: TextStyle(color: Colors.black26),
+                        hintStyle: const TextStyle(color: Colors.black26),
                       ),
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     UiHelper.customText("Confirm Password"),
                     TextField(
                       controller: _confirmPasswordController,
-                      obscureText: _obscureText,
+                      obscureText: _obscureTextConfirmPassword,
                       decoration: InputDecoration(
                         suffixIcon: IconButton(
                           icon: Icon(
-                            _obscureText
+                            _obscureTextConfirmPassword
                                 ? Icons.visibility
                                 : Icons.visibility_off,
                           ),
-                          onPressed: _togglePasswordVisibility,
+                          onPressed: _toggleConfirmPasswordVisibility,
                         ),
                         hintText: 'Confirm your Password',
                         hintStyle: const TextStyle(color: Colors.black26),
@@ -132,22 +160,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     const SizedBox(height: 20),
                     CustomButton(
                       text: "Sign Up",
-                      onPressed: () {
-                        if (_passwordController.text ==
-                            _confirmPasswordController.text) {
-                          // Passwords match, proceed with signup
-                          // Implement your signup logic here
-                          // For example, you can navigate to the next screen
-                        } else {
-                          // Passwords do not match, show an error message
-                          // You can display a snackbar or any other UI element to inform the user
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Passwords do not match.'),
-                            ),
-                          );
-                        }
-                      },
+                      onPressed: _signup,
                     ),
                   ],
                 ),
