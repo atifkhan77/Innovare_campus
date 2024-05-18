@@ -71,6 +71,16 @@ flutter:
     - assets/text.png
     - assets/text2.png
     - assets/Register.png
+    - assets/placeholder.png
+    - assets/homeScreen/Man.png
+    - assets/homeScreen/homeScreen.png
+    - assets/homeScreen/society.jpeg
+    - assets/homeScreen/announc.jpeg
+    - assets/homeScreen/cafe.jpeg
+    - assets/homeScreen/print.jpeg
+    - assets/homeScreen/lostfound.jpeg
+
+  
     
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -65,3 +65,96 @@ class CustomButton extends StatelessWidget {
     );
   }
 }
+
+class NavBar extends StatelessWidget {
+  const NavBar({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BottomAppBar(
+      color: Color.fromRGBO(49, 42, 119, 1),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          IconButton(
+            iconSize: 40,
+            icon: const Icon(
+              color: Colors.white70,
+              Icons.home_sharp,
+            ),
+            onPressed: () {
+              // Add functionality for search icon here
+            },
+          ),
+          IconButton(
+            color: Colors.white70,
+            iconSize: 35,
+            icon: const Icon(Icons.chat),
+            onPressed: () {
+              // Add functionality for notification icon here
+            },
+          ),
+          IconButton(
+            color: Colors.white70,
+            iconSize: 35,
+            icon: const Icon(Icons.assistant_navigation),
+            onPressed: () {
+              // Add functionality for settings icon here
+            },
+          ),
+          IconButton(
+            color: Colors.white70,
+            iconSize: 35,
+            icon: const Icon(Icons.notifications_rounded),
+            onPressed: () {
+              // Add functionality for settings icon here
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class CardComponent extends StatelessWidget {
+  final String title;
+  final String assetPath;
+  final VoidCallback onTap;
+
+  const CardComponent({
+    required this.title,
+    required this.assetPath,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      child: Card(
+        color: Color.fromRGBO(131, 18, 253, 0.17),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              assetPath,
+              width: 50,
+              height: 50,
+            ),
+            Container(
+              // Use Container to wrap the Divider
+              height: 2, // Set the initial height of the line
+              width: 60, // Make the line expand to full width
+              color: Colors.white70, // Set the color of the line
+            ),
+            const SizedBox(height: 8),
+            Text(
+              title,
+              style: TextStyle(color: Colors.white70),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

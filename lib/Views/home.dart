@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:innovare_campus/components/uiHelper.dart';
 
-class homescreen extends StatefulWidget {
+class HomeScreen extends StatefulWidget {
   @override
-  _homescreenState createState() => _homescreenState();
+  _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _homescreenState extends State<homescreen> {
+class _HomeScreenState extends State<HomeScreen> {
   String? _profileImageUrl;
+  String? _userName;
 
   @override
   void initState() {
     super.initState();
     _loadProfileImage();
+    _loadUserName();
   }
 
   Future<void> _loadProfileImage() async {
@@ -29,91 +33,133 @@ class _homescreenState extends State<homescreen> {
     }
   }
 
+  Future<void> _loadUserName() async {
+    try {
+      final doc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc('user_id')
+          .get();
+      setState(() {
+        _userName = doc['name'];
+      });
+    } catch (e) {
+      // Handle errors
+      print('Failed to load user name: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Welcome back, Tanzeel'),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 16.0),
-            child: CircleAvatar(
-              backgroundImage: _profileImageUrl != null
-                  ? NetworkImage(_profileImageUrl!)
-                  : const AssetImage('assets/placeholder.png')
-                      as ImageProvider, // Use a placeholder image
+        backgroundColor: Color.fromRGBO(49, 42, 119, 1),
+        title: Row(
+          children: [
+            GestureDetector(
+              onTap: () {
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(builder: (context) => ProfileScreen()),
+                // );
+              },
+              child: CircleAvatar(
+                backgroundImage: _profileImageUrl != null
+                    ? NetworkImage(_profileImageUrl!)
+                    : const AssetImage('assets/placeholder.png')
+                        as ImageProvider, // Use a placeholder image
+              ),
             ),
-          ),
-        ],
+            const SizedBox(width: 8),
+            Text(
+              _userName != null ? 'Welcome back, $_userName' : 'Welcome back',
+              style: TextStyle(color: Colors.white70),
+            ),
+          ],
+        ),
       ),
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("assets/splash.png"),
+            image: AssetImage("assets/Splash.png"),
             fit: BoxFit.cover,
           ),
         ),
-        child: GridView.count(
-          crossAxisCount: 3, // Three cards per row
-          children: const [
-            Card(
-              child: Center(
-                child: Text('Chats'),
-              ),
-            ),
-            Card(
-              child: Center(
-                child: Text('Cafe'),
-              ),
-            ),
-            Card(
-              child: Center(
-                child: Text('Print'),
-              ),
-            ),
-            Card(
-              child: Center(
-                child: Text('News'),
-              ),
-            ),
-            Card(
-              child: Center(
-                child: Text('Lost&Found'),
-              ),
-            ),
-            Card(
-              child: Center(
-                child: Text('Society'),
-              ),
-            ),
-          ],
-        ),
-      ),
-      bottomNavigationBar: BottomAppBar(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+        child: Column(
           children: [
-            IconButton(
-              icon: const Icon(Icons.search),
-              onPressed: () {
-                // Add functionality for search icon here
-              },
+            SizedBox(
+              height: screenHeight * 0.05,
+            ), // Add some spacing between AppBar and image
+            Center(
+              child: Image.asset(
+                'assets/homeScreen/homeScreen.png', // Replace with your image asset
+                width: screenWidth * 0.99,
+                height: screenHeight * 0.30,
+              ),
             ),
-            IconButton(
-              icon: const Icon(Icons.notifications),
-              onPressed: () {
-                // Add functionality for notification icon here
-              },
-            ),
-            IconButton(
-              icon: const Icon(Icons.settings),
-              onPressed: () {
-                // Add functionality for settings icon here
-              },
+            const SizedBox(
+              height: 16,
+            ), // Add some spacing between the image and the grid
+            Expanded(
+              child: GridView.count(
+                crossAxisCount: 3, // Three cards per row
+                children: [
+                  CardComponent(
+                    title: 'Study Buddy',
+                    assetPath: 'assets/homeScreen/Man.png',
+                    onTap: () {
+                      // Handle onTap logic
+                      // For example: Navigator.push(context, MaterialPageRoute(builder: (context) => ChatsScreen()));
+                    },
+                  ),
+                  CardComponent(
+                    title: 'Cafe',
+                    assetPath: 'assets/homeScreen/cafe.jpeg',
+                    onTap: () {
+                      // Handle onTap logic
+                      // For example: Navigator.push(context, MaterialPageRoute(builder: (context) => CafeScreen()));
+                    },
+                  ),
+                  CardComponent(
+                    title: 'Print',
+                    assetPath: 'assets/homeScreen/print.jpeg',
+                    onTap: () {
+                      // Handle onTap logic
+                      // For example: Navigator.push(context, MaterialPageRoute(builder: (context) => PrintScreen()));
+                    },
+                  ),
+                  CardComponent(
+                    title: 'Lost & Found',
+                    assetPath: 'assets/homeScreen/lostfound.jpeg',
+                    onTap: () {
+                      // Handle onTap logic
+                      // For example: Navigator.push(context, MaterialPageRoute(builder: (context) => NewsScreen()));
+                    },
+                  ),
+                  CardComponent(
+                    title: 'Society',
+                    assetPath: 'assets/homeScreen/society.jpeg',
+                    onTap: () {
+                      // Handle onTap logic
+                      // For example: Navigator.push(context, MaterialPageRoute(builder: (context) => LostFoundScreen()));
+                    },
+                  ),
+                  CardComponent(
+                    title: 'Announcements',
+                    assetPath: 'assets/homeScreen/announc.jpeg',
+                    onTap: () {
+                      // Handle onTap logic
+                      // For example: Navigator.push(context, MaterialPageRoute(builder: (context) => SocietyScreen()));
+                    },
+                  ),
+                ],
+              ),
             ),
           ],
         ),
       ),
+      bottomNavigationBar: NavBar(),
     );
   }
 }
