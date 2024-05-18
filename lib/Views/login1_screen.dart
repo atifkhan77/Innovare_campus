@@ -1,9 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:innovare_campus/Views/forgotPassword.dart';
 import 'package:innovare_campus/Views/signup_screen.dart';
-import 'package:innovare_campus/Views/home.dart';
 import 'package:innovare_campus/components/uiHelper.dart';
+import 'package:innovare_campus/controller/firebase_services.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -13,10 +12,12 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   bool _obscureText = true;
   bool _staySignedIn = false;
-  final _auth = FirebaseAuth.instance;
+
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  final FirebaseAuthService _authService = FirebaseAuthService();
 
   void _togglePasswordVisibility() {
     setState(() {
@@ -24,22 +25,13 @@ class _LoginScreenState extends State<LoginScreen> {
     });
   }
 
-  void _login() async {
+  void _login() {
     if (_formKey.currentState!.validate()) {
-      try {
-        await _auth.signInWithEmailAndPassword(
-          email: _emailController.text.trim(),
-          password: _passwordController.text.trim(),
-        );
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => Home()),
-        );
-      } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Login failed. Please try again.')),
-        );
-      }
+      _authService.login(
+        context: context,
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
     }
   }
 

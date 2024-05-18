@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:innovare_campus/components/uiHelper.dart';
-import 'package:innovare_campus/controller/signup.dart';
+import 'package:innovare_campus/controller/firebase_services.dart';
 
 class SignupScreen extends StatefulWidget {
   @override
