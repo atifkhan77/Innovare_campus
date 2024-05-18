@@ -8,8 +8,9 @@ class SignupScreen extends StatefulWidget {
 
 class _SignupScreenState extends State<SignupScreen> {
   bool _obscureText = true;
-  TextEditingController _passwordController = TextEditingController();
-  TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
 
   void _togglePasswordVisibility() {
     setState(() {
@@ -26,9 +27,10 @@ class _SignupScreenState extends State<SignupScreen> {
         fit: StackFit.expand,
         children: <Widget>[
           Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage("assets/Splash.png"), // Use the same image as the splash screen
+                image: AssetImage(
+                    "assets/Splash.png"), // Use the same image as the splash screen
                 fit: BoxFit.cover,
               ),
             ),
@@ -124,7 +126,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           onPressed: _togglePasswordVisibility,
                         ),
                         hintText: 'Confirm your Password',
-                        hintStyle: TextStyle(color: Colors.black26),
+                        hintStyle: const TextStyle(color: Colors.black26),
                       ),
                     ),
                     const SizedBox(height: 20),
@@ -140,7 +142,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           // Passwords do not match, show an error message
                           // You can display a snackbar or any other UI element to inform the user
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
+                            const SnackBar(
                               content: Text('Passwords do not match.'),
                             ),
                           );
