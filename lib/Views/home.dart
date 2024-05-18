@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:innovare_campus/Views/chats.dart';
+import 'package:innovare_campus/Views/profile.dart';
 import 'package:innovare_campus/components/uiHelper.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -59,10 +61,10 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             GestureDetector(
               onTap: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(builder: (context) => ProfileScreen()),
-                // );
+                 Navigator.push(
+                   context,
+                   MaterialPageRoute(builder: (context) => ProfileScreen()),
+                 );
               },
               child: CircleAvatar(
                 backgroundImage: _profileImageUrl != null
