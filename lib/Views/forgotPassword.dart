@@ -43,12 +43,12 @@ class ForgotPassword extends StatelessWidget {
                 ),
                 color: Colors.white,
               ),
-              padding: EdgeInsets.all(20),
+              padding: const EdgeInsets.all(20),
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Text(
+                    const Text(
                       'Please enter your email to reset the password',
                       style: TextStyle(
                         color: Colors.black26,
@@ -56,43 +56,47 @@ class ForgotPassword extends StatelessWidget {
                         fontWeight: FontWeight.w700,
                       ),
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     UiHelper.customText("Your email"),
                     TextField(
                       controller: _emailController,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         hintText: 'Enter your Email',
                         hintStyle: TextStyle(color: Colors.black26),
                       ),
                     ),
-                    SizedBox(height: 20),
-                    Text(
+                    const SizedBox(height: 20),
+                    const Text(
                       'We will send a password reset link to this email address',
                       style: TextStyle(color: Colors.black26, fontSize: 12),
                     ),
-                    SizedBox(height: 10),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 10),
+                    const SizedBox(height: 20),
                     CustomButton(
                       text: "Reset Password",
                       onPressed: () {
-                        auth.sendPasswordResetEmail(email: _emailController.text.toString())
+                        auth
+                            .sendPasswordResetEmail(
+                                email: _emailController.text.toString())
                             .then((_) {
                           // Password reset email sent successfully
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
+                            const SnackBar(
                               content: Text('Password reset email sent.'),
                             ),
                           );
                           Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => LoginScreen()),
-      );
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LoginScreen()),
+                          );
                         }).catchError((error) {
                           // Handle error if sending email fails
                           print(error.toString());
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('Failed to send password reset email.'),
+                            const SnackBar(
+                              content:
+                                  Text('Failed to send password reset email.'),
                             ),
                           );
                         });
@@ -102,7 +106,7 @@ class ForgotPassword extends StatelessWidget {
                       padding: const EdgeInsets.only(top: 20, left: 20),
                       child: Row(
                         children: [
-                          Text(
+                          const Text(
                             'Haven’t got the email yet?',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
@@ -113,7 +117,7 @@ class ForgotPassword extends StatelessWidget {
                             onPressed: () {
                               // Handle resend email action
                             },
-                            child: Text(
+                            child: const Text(
                               'Resend email',
                               style: TextStyle(
                                 color: Colors.blue,

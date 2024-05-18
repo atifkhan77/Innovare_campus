@@ -114,7 +114,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         decoration: InputDecoration(
                           suffixIcon: IconButton(
                             icon: Icon(
-                              _obscureText ? Icons.visibility : Icons.visibility_off,
+                              _obscureText
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
                             ),
                             onPressed: _togglePasswordVisibility,
                           ),
@@ -144,7 +146,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           TextButton(
                             onPressed: () {
                               Navigator.of(context).push(
-                                MaterialPageRoute(builder: (context) => ForgotPassword()),
+                                MaterialPageRoute(
+                                    builder: (context) => ForgotPassword()),
                               );
                             },
                             child: const Text('Forgot password?'),
@@ -161,7 +164,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: TextButton(
                           onPressed: () {
                             Navigator.of(context).push(
-                              MaterialPageRoute(builder: (context) => SignupScreen()),
+                              MaterialPageRoute(
+                                  builder: (context) => SignupScreen()),
                             );
                           },
                           child: const Text("Not Registered?"),
