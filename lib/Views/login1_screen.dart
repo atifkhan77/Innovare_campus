@@ -91,6 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 color: Colors.white,
               ),
+              // ignore: prefer_const_constructors
               padding: EdgeInsets.all(20),
               child: SingleChildScrollView(
                 child: Form(

@@ -7,7 +7,7 @@ import 'package:innovare_campus/components/uiHelper.dart'; // Make sure this is 
 class HomeScreen extends StatefulWidget {
   final String userId;
 
-  HomeScreen({required this.userId});
+  HomeScreen({super.key, required this.userId});
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -64,7 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
     double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromRGBO(49, 42, 119, 1),
+        backgroundColor: const Color.fromRGBO(49, 42, 119, 1),
         title: Row(
           children: [
             GestureDetector(
@@ -84,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(width: 8),
             Text(
               _userName != null ? 'Welcome back, $_userName' : 'Welcome back',
-              style: TextStyle(color: Colors.white70),
+              style: const TextStyle(color: Colors.white70),
             ),
           ],
         ),

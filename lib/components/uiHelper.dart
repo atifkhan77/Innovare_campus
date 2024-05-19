@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:innovare_campus/Views/chatScreen.dart';
+import 'package:innovare_campus/Views/home.dart';
 
 class UiHelper {
   static CustomTextField(TextEditingController controller, String text,
@@ -27,13 +29,13 @@ class UiHelper {
   ) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        padding: EdgeInsets.symmetric(vertical: 12),
-        backgroundColor: Color.fromARGB(255, 119, 37, 243),
+        padding: const EdgeInsets.symmetric(vertical: 12),
+        backgroundColor: const Color.fromARGB(255, 119, 37, 243),
       ),
       onPressed: () {
         // Implement login functionality
       },
-      child: Text(
+      child: const Text(
         'Login',
         style: TextStyle(color: Colors.white),
       ),
@@ -54,13 +56,13 @@ class CustomButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        padding: EdgeInsets.symmetric(vertical: 12),
-        backgroundColor: Color.fromARGB(255, 119, 37, 243),
+        padding: const EdgeInsets.symmetric(vertical: 12),
+        backgroundColor: const Color.fromARGB(255, 119, 37, 243),
       ),
       onPressed: onPressed,
       child: Text(
         text,
-        style: TextStyle(color: Colors.white),
+        style: const TextStyle(color: Colors.white),
       ),
     );
   }
@@ -72,7 +74,7 @@ class NavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BottomAppBar(
-      color: Color.fromRGBO(49, 42, 119, 1),
+      color: const Color.fromRGBO(49, 42, 119, 1),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
@@ -83,7 +85,10 @@ class NavBar extends StatelessWidget {
               Icons.home_sharp,
             ),
             onPressed: () {
-              // Add functionality for search icon here
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => HomeScreen(
+                        userId: '',
+                      )));
             },
           ),
           IconButton(
@@ -91,6 +96,8 @@ class NavBar extends StatelessWidget {
             iconSize: 35,
             icon: const Icon(Icons.chat),
             onPressed: () {
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const ChatScreen()));
               // Add functionality for notification icon here
             },
           ),
@@ -132,7 +139,7 @@ class CardComponent extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Card(
-        color: Color.fromRGBO(131, 18, 253, 0.17),
+        color: const Color.fromRGBO(131, 18, 253, 0.17),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -150,7 +157,7 @@ class CardComponent extends StatelessWidget {
             const SizedBox(height: 8),
             Text(
               title,
-              style: TextStyle(color: Colors.white70),
+              style: const TextStyle(color: Colors.white70),
             ),
           ],
         ),

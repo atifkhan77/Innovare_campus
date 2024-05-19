@@ -16,9 +16,8 @@ class FirebaseAuthService {
     required String regNo,
   }) async {
     if (password != confirmPassword) {
-      // Handle password mismatch
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Passwords do not match')),
+        const SnackBar(content: Text('Passwords do not match')),
       );
       return;
     }
@@ -33,21 +32,19 @@ class FirebaseAuthService {
       User? user = userCredential.user;
 
       if (user != null) {
-        // Store additional user information in Firestore
-        await _firestore.collection('users').doc(user.uid).set({
+        await _firestore.collection('users').doc(userCredential.user!.uid).set({
+          'uid': userCredential.user!.uid,
           'name': name,
           'email': email,
           'regNo': regNo,
         });
 
-        // Navigate to HomeScreen after successful signup
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => HomeScreen(userId: user.uid)),
         );
       }
     } catch (e) {
-      // Handle signup error
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Failed to sign up: $e')),
       );
@@ -90,7 +87,7 @@ class FirebaseAuthService {
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Login failed. Please try again.')),
+        const SnackBar(content: Text('Login failed. Please try again.')),
       );
     }
   }
