@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:innovare_campus/Views/forgotPassword.dart';
+import 'package:innovare_campus/Views/userManagment/forgotPassword.dart';
 import 'package:innovare_campus/Views/home.dart';
-import 'package:innovare_campus/Views/signup_screen.dart';
+import 'package:innovare_campus/Views/userManagment/signup_screen.dart';
 import 'package:innovare_campus/components/uiHelper.dart';
 import 'package:innovare_campus/controller/firebase_services.dart';
 

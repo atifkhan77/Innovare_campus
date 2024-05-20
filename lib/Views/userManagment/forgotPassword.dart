@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:innovare_campus/Views/login1_screen.dart';
+import 'package:innovare_campus/Views/userManagment/login1_screen.dart';
 import 'package:innovare_campus/components/uiHelper.dart';
 
 class ForgotPassword extends StatelessWidget {
