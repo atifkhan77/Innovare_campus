@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:innovare_campus/Views/profileScreen.dart';
+import 'package:innovare_campus/Views/userManagment/profileScreen.dart';
 import 'package:innovare_campus/components/uiHelper.dart'; // Make sure this is correct
 
 class HomeScreen extends StatefulWidget {

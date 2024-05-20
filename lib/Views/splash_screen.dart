@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:innovare_campus/Views/login1_screen.dart';
+import 'package:innovare_campus/Views/studyBuddy/recieveTutoring.dart';
+import 'package:innovare_campus/Views/userManagment/login1_screen.dart';
 // Import your login screen
 
 class SplashScreen extends StatefulWidget {
@@ -16,7 +17,7 @@ class _SplashScreenState extends State<SplashScreen> {
     Timer(Duration(seconds: 3), () {
       // Navigate to the login screen
       Navigator.of(context)
-          .pushReplacement(MaterialPageRoute(builder: (_) => LoginScreen()));
+          .pushReplacement(MaterialPageRoute(builder: (_) => RecieveTutor()));
     });
   }
 

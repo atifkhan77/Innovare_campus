@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:innovare_campus/Views/chatScreen.dart';
+import 'package:innovare_campus/Views/chat/chatScreen.dart';
 import 'package:innovare_campus/Views/home.dart';
 
 class UiHelper {
@@ -23,24 +23,6 @@ class UiHelper {
       ),
     );
   }
-
-  static customButton(
-    String text,
-  ) {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        padding: const EdgeInsets.symmetric(vertical: 12),
-        backgroundColor: const Color.fromARGB(255, 119, 37, 243),
-      ),
-      onPressed: () {
-        // Implement login functionality
-      },
-      child: const Text(
-        'Login',
-        style: TextStyle(color: Colors.white),
-      ),
-    );
-  }
 }
 
 class CustomButton extends StatelessWidget {
@@ -56,8 +38,11 @@ class CustomButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        padding: const EdgeInsets.symmetric(vertical: 12),
-        backgroundColor: const Color.fromARGB(255, 119, 37, 243),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        padding: const EdgeInsets.symmetric(vertical: 8),
+        backgroundColor: const Color.fromRGBO(49, 42, 119, 1),
       ),
       onPressed: onPressed,
       child: Text(
