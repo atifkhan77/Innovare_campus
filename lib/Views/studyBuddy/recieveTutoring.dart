@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:innovare_campus/Views/studyBuddy/tuttor_profile.dart';
 import 'package:innovare_campus/Views/userManagment/profileScreen.dart';
 import 'package:innovare_campus/components/search.dart';
 import 'package:innovare_campus/components/uiHelper.dart';
@@ -46,7 +47,7 @@ class _RecieveTutorState extends State<RecieveTutor> {
             children: [
               Container(
                 height: screenHeight * .85,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage("assets/Splash.png"),
                     fit: BoxFit.cover,
@@ -91,11 +92,11 @@ class _RecieveTutorState extends State<RecieveTutor> {
                             const Row(
                               children: [
                                 Padding(
-                                  padding: EdgeInsets.only(top: 20, left: 10),
+                                  padding: EdgeInsets.only(top: 20, left: 25),
                                   child: Text(
                                     'Start\nLearning',
                                     style: TextStyle(
-                                        color: Colors.white70,
+                                        color: Colors.white,
                                         fontSize: 30,
                                         fontWeight: FontWeight.bold),
                                   ),
@@ -125,7 +126,14 @@ class _RecieveTutorState extends State<RecieveTutor> {
                           SizedBox(
                             width: screenWidth * 0.37,
                             child: CustomButton(
-                                text: 'Recieve Tutor', onPressed: () {}),
+                                text: 'Recieve Tutor',
+                                onPressed: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) => TutorProfile(),
+                                    ),
+                                  );
+                                }),
                           ),
                           const SizedBox(width: 10),
                           SizedBox(
