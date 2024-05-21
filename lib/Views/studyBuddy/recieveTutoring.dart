@@ -139,7 +139,7 @@ class _RecieveTutorState extends State<RecieveTutor> {
                           SizedBox(
                             width: screenWidth * 0.37,
                             child: CustomButton(
-                                text: 'Recieve Tutor', onPressed: () {}),
+                                text: 'Offer Tutor', onPressed: () {}),
                           ),
                         ],
                       ),

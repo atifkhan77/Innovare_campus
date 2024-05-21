@@ -97,6 +97,7 @@ class _ChatPageState extends State<ChatPage> {
     // Check for null values and provide default values if necessary
     var message = data['message'] ?? '';
     var senderId = data['senderId'] ?? '';
+    // ignore: unused_local_variable
     var senderEmail = data['senderEmail'] ?? '';
 
     var alignment = (senderId == _firebaseAuth.currentUser!.uid)
