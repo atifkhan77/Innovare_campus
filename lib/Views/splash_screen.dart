@@ -17,7 +17,7 @@ class _SplashScreenState extends State<SplashScreen> {
     Timer(Duration(seconds: 3), () {
       // Navigate to the login screen
       Navigator.of(context)
-          .pushReplacement(MaterialPageRoute(builder: (_) => RecieveTutor()));
+          .pushReplacement(MaterialPageRoute(builder: (_) => LoginScreen()));
     });
   }
 
