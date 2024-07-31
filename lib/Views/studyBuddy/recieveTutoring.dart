@@ -1,17 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:innovare_campus/Views/studyBuddy/tuttor_profile.dart';
+import 'package:innovare_campus/Views/studyBuddy/offer_tutor_screen.dart';
 import 'package:innovare_campus/Views/userManagment/profileScreen.dart';
 import 'package:innovare_campus/components/search.dart';
 import 'package:innovare_campus/components/uiHelper.dart';
+import 'package:innovare_campus/provider/tutor_provider.dart';
+import 'package:provider/provider.dart';
+
 
 class RecieveTutor extends StatefulWidget {
-  const RecieveTutor({Key? key});
+  const RecieveTutor({Key? key}) : super(key: key);
 
   @override
   State<RecieveTutor> createState() => _RecieveTutorState();
 }
 
 class _RecieveTutorState extends State<RecieveTutor> {
+  @override
+  void initState() {
+    super.initState();
+    Provider.of<TutorProvider>(context, listen: false).fetchTutors();
+  }
+
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -130,7 +139,7 @@ class _RecieveTutorState extends State<RecieveTutor> {
                                 onPressed: () {
                                   Navigator.of(context).push(
                                     MaterialPageRoute(
-                                      builder: (context) => TutorProfile(),
+                                      builder: (context) => TutorListScreen(),
                                     ),
                                   );
                                 }),
@@ -139,7 +148,15 @@ class _RecieveTutorState extends State<RecieveTutor> {
                           SizedBox(
                             width: screenWidth * 0.37,
                             child: CustomButton(
-                                text: 'Offer Tutor', onPressed: () {}),
+                                text: 'Offer Tutor',
+                                onPressed: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          OfferTutorScreen(), // Update here
+                                    ),
+                                  );
+                                }),
                           ),
                         ],
                       ),
@@ -152,6 +169,32 @@ class _RecieveTutorState extends State<RecieveTutor> {
         ),
       ),
       bottomNavigationBar: const NavBar(),
+    );
+  }
+}
+
+class TutorListScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final tutors = Provider.of<TutorProvider>(context).tutors;
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Available Tutors'),
+      ),
+      body: ListView.builder(
+        itemCount: tutors.length,
+        itemBuilder: (context, index) {
+          final tutor = tutors[index];
+          return Card(
+            child: ListTile(
+              title: Text(tutor.name),
+              subtitle: Text('${tutor.subjectExpertise} - ${tutor.availability}'),
+              trailing: Text(tutor.contactNumber),
+            ),
+          );
+        },
+      ),
     );
   }
 }

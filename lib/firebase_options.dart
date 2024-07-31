@@ -85,4 +85,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'innovarecamp.appspot.com',
     measurementId: 'G-ZHBMQF19EF',
   );
+
 }

@@ -45,8 +45,21 @@ class Chatservice extends ChangeNotifier {
         .collection('chat_rooms')
         .doc(chatRoomId)
         .collection('messages') // Ensure collection name is consistent
-        .orderBy('timestamp',
-            descending: false) // Ensure field name is consistent
+        .orderBy('timestamp', descending: false) // Ensure field name is consistent
         .snapshots();
+  }
+
+  // Delete message
+  Future<void> deleteMessage(String userEmail, String otherUserEmail, String messageId) async {
+    List<String> emails = [userEmail, otherUserEmail];
+    emails.sort();
+    String chatRoomId = emails.join("_");
+
+    await _firestore
+        .collection('chat_rooms')
+        .doc(chatRoomId)
+        .collection('messages')
+        .doc(messageId)
+        .delete();
   }
 }

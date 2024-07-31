@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:innovare_campus/Views/studyBuddy/recieveTutoring.dart';
 import 'package:innovare_campus/Views/userManagment/profileScreen.dart';
 import 'package:innovare_campus/components/uiHelper.dart'; // Make sure this is correct
 
@@ -118,8 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     title: 'Study Buddy',
                     assetPath: 'assets/homeScreen/Man.png',
                     onTap: () {
-                      // Handle onTap logic
-                      // For example: Navigator.push(context, MaterialPageRoute(builder: (context) => ChatsScreen()));
+                       Navigator.push(context, MaterialPageRoute(builder: (context) => RecieveTutor()));
                     },
                   ),
                   CardComponent(

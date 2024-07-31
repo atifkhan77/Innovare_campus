@@ -33,6 +33,14 @@ class _ChatPageState extends State<ChatPage> {
     }
   }
 
+  void deleteMessage(String messageId) async {
+    await _chatservice.deleteMessage(
+      _firebaseAuth.currentUser!.email!,
+      widget.recieverUserEmail,
+      messageId,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,8 +54,7 @@ class _ChatPageState extends State<ChatPage> {
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage(
-                "assets/Splash.png"), // Set your background image here
+            image: AssetImage("assets/Splash.png"), // Set your background image here
             fit: BoxFit.cover,
           ),
         ),
@@ -94,30 +101,60 @@ class _ChatPageState extends State<ChatPage> {
   Widget _buildMessageItem(DocumentSnapshot document) {
     Map<String, dynamic> data = document.data() as Map<String, dynamic>;
 
-    // Check for null values and provide default values if necessary
     var message = data['message'] ?? '';
     var senderId = data['senderId'] ?? '';
-    // ignore: unused_local_variable
-    var senderEmail = data['senderEmail'] ?? '';
+    var messageId = document.id;
 
     var alignment = (senderId == _firebaseAuth.currentUser!.uid)
         ? Alignment.centerRight
         : Alignment.centerLeft;
 
-    return Container(
-      alignment: alignment,
-      child: Padding(
-        padding: const EdgeInsets.all(15.0),
-        child: Column(
-          crossAxisAlignment: (senderId == _firebaseAuth.currentUser!.uid)
-              ? CrossAxisAlignment.end
-              : CrossAxisAlignment.start,
-          children: [
-            // Text(senderEmail),
-            ChatBubble(message: message),
-          ],
+    return GestureDetector(
+      onLongPress: () {
+        _showDeleteDialog(messageId);
+      },
+      child: Container(
+        alignment: alignment,
+        child: Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: Column(
+            crossAxisAlignment: (senderId == _firebaseAuth.currentUser!.uid)
+                ? CrossAxisAlignment.end
+                : CrossAxisAlignment.start,
+            children: [
+              ChatBubble(message: message),
+            ],
+          ),
         ),
       ),
+    );
+  }
+
+  // Show delete confirmation dialog
+  void _showDeleteDialog(String messageId) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Delete Message'),
+          content: const Text('Are you sure you want to delete this message?'),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text('Delete'),
+              onPressed: () {
+                deleteMessage(messageId);
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 
