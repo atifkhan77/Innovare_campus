@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:innovare_campus/Views/studyBuddy/offer_tutor_screen.dart';
+import 'package:innovare_campus/Views/studyBuddy/tuttorDetailScreen.dart';
 import 'package:innovare_campus/Views/userManagment/profileScreen.dart';
 import 'package:innovare_campus/components/search.dart';
 import 'package:innovare_campus/components/uiHelper.dart';
@@ -177,23 +178,56 @@ class TutorListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tutors = Provider.of<TutorProvider>(context).tutors;
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Available Tutors'),
+        backgroundColor: const Color.fromRGBO(49, 42, 119, 1),
+        title: const Text('Available Tutors'),
       ),
-      body: ListView.builder(
-        itemCount: tutors.length,
-        itemBuilder: (context, index) {
-          final tutor = tutors[index];
-          return Card(
-            child: ListTile(
-              title: Text(tutor.name),
-              subtitle: Text('${tutor.subjectExpertise} - ${tutor.availability}'),
-              trailing: Text(tutor.contactNumber),
+      body: Stack(
+        children: [
+          // Background image
+          Container(
+            height: screenHeight,
+            width: screenWidth,
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("assets/Splash.png"), // Update the image path if necessary
+                fit: BoxFit.cover,
+              ),
             ),
-          );
-        },
+          ),
+          // Tutors list
+          ListView.builder(
+            itemCount: tutors.length,
+            itemBuilder: (context, index) {
+              final tutor = tutors[index];
+              return Card(
+                color: Colors.white.withOpacity(0.8), // Semi-transparent card
+                child: ListTile(
+                  title: Text(tutor.name),
+                  subtitle: Text('${tutor.subjectExpertise} - ${tutor.availability}'),
+                  trailing: Text(tutor.contactNumber),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => TutorDetailScreen(
+                          name: tutor.name,
+                          subjectExpertise: tutor.subjectExpertise,
+                          contactNumber: tutor.contactNumber,
+                          availability: tutor.availability,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              );
+            },
+          ),
+        ],
       ),
     );
   }

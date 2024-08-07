@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:innovare_campus/Views/studyBuddy/RequestsScreen.dart';
 import 'package:innovare_campus/Views/userManagment/profileScreen.dart';
 import 'package:innovare_campus/components/uiHelper.dart';
 import 'package:innovare_campus/model/tutor.dart';
 import 'package:innovare_campus/provider/tutor_provider.dart';
 import 'package:provider/provider.dart';
-
 
 class OfferTutorScreen extends StatelessWidget {
   const OfferTutorScreen({Key? key}) : super(key: key);
@@ -41,7 +41,15 @@ class OfferTutorScreen extends StatelessWidget {
               'Welcome back, Tanzeel',
               style: TextStyle(color: Colors.white70),
             ),
-            const Icon(Icons.school), // placeholder icon
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => RequestsScreen()),
+                );
+              },
+              child: const Icon(Icons.school, color: Colors.white), // Navigate to RequestsScreen
+            ),
           ],
         ),
       ),
@@ -60,27 +68,28 @@ class OfferTutorScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: 20),
-                  Center(
+                  const SizedBox(height: 20),
+                  const Center(
                     child: Text(
                       'StudyBuddy',
                       style: TextStyle(
-                          color: Colors.white70,
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold),
+                        color: Colors.white70,
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   TextField(
                     controller: subjectController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Subject Expertise',
                       hintText: 'Enter your subject expertise',
                       border: OutlineInputBorder(),
                     ),
                   ),
-                  SizedBox(height: 16),
-                  Text(
+                  const SizedBox(height: 16),
+                  const Text(
                     'Availability',
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
@@ -88,21 +97,21 @@ class OfferTutorScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       ChoiceChip(
-                        label: Text('Morning'),
+                        label: const Text('Morning'),
                         selected: availability == 'Morning',
                         onSelected: (selected) {
                           availability = 'Morning';
                         },
                       ),
                       ChoiceChip(
-                        label: Text('Afternoon'),
+                        label: const Text('Afternoon'),
                         selected: availability == 'Afternoon',
                         onSelected: (selected) {
                           availability = 'Afternoon';
                         },
                       ),
                       ChoiceChip(
-                        label: Text('Evening'),
+                        label: const Text('Evening'),
                         selected: availability == 'Evening',
                         onSelected: (selected) {
                           availability = 'Evening';
@@ -110,25 +119,25 @@ class OfferTutorScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   TextField(
                     controller: nameController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Tutor Name',
                       hintText: 'Enter your name',
                       border: OutlineInputBorder(),
                     ),
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   TextField(
                     controller: contactController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Contact Number',
                       hintText: 'Enter your number',
                       border: OutlineInputBorder(),
                     ),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Center(
                     child: ElevatedButton(
                       onPressed: () {
@@ -138,17 +147,19 @@ class OfferTutorScreen extends StatelessWidget {
                           availability: availability,
                           contactNumber: contactController.text,
                         );
-                        Provider.of<TutorProvider>(context, listen: false).addTutor(tutor);
+                        final tutorProvider = Provider.of<TutorProvider>(context, listen: false);
+                        tutorProvider.addTutor(tutor);
+                        tutorProvider.setTutor(tutor.name, tutor.contactNumber); // Set tutor name in provider
                         // Clear fields after submission
                         nameController.clear();
                         subjectController.clear();
                         contactController.clear();
                         // Show a confirmation message
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Tutor submitted successfully')),
+                          const SnackBar(content: Text('Tutor submitted successfully')),
                         );
                       },
-                      child: Text('Submit Tutor'),
+                      child: const Text('Submit Tutor'),
                     ),
                   ),
                 ],
