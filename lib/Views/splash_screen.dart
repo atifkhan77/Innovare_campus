@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:innovare_campus/Views/studyBuddy/recieveTutoring.dart';
 import 'package:innovare_campus/Views/userManagment/login1_screen.dart';
 // Import your login screen
 

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:innovare_campus/components/uiHelper.dart';
 
 class CreateGroupScreen extends StatefulWidget {
   const CreateGroupScreen({Key? key}) : super(key: key);
@@ -32,13 +33,17 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Create Group'),
+        title: const Text(
+          'Create Group',
+          style: TextStyle(color: Colors.white),
+        ),
         backgroundColor: const Color.fromRGBO(49, 42, 119, 1),
       ),
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("assets/Splash.png"), // Set your background image here
+            image: AssetImage(
+                "assets/Splash.png"), // Set your background image here
             fit: BoxFit.cover,
           ),
         ),
@@ -85,11 +90,13 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
                   },
                 ),
               ),
-              
-              ElevatedButton(
+              CustomButton(
                 onPressed: _createGroup,
-                child: const Text('Create Group'),
+                text: 'Create Group',
               ),
+              const SizedBox(
+                height: 20,
+              )
             ],
           ),
         ),

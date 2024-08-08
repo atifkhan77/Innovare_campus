@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:innovare_campus/components/chatBubble.dart';
 
 class GroupChatScreen extends StatefulWidget {
   final String groupId;
@@ -18,7 +19,11 @@ class _GroupChatScreenState extends State<GroupChatScreen> {
 
   void _sendMessage() async {
     if (_messageController.text.isNotEmpty) {
-      await _firestore.collection('groups').doc(widget.groupId).collection('messages').add({
+      await _firestore
+          .collection('groups')
+          .doc(widget.groupId)
+          .collection('messages')
+          .add({
         'text': _messageController.text,
         'sender': _auth.currentUser!.email,
         'timestamp': Timestamp.now(),
@@ -31,13 +36,17 @@ class _GroupChatScreenState extends State<GroupChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Group Chat'),
+        title: const Text(
+          'Group Chat',
+          style: TextStyle(color: Colors.white),
+        ),
         backgroundColor: const Color.fromRGBO(49, 42, 119, 1),
       ),
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("assets/Splash.png"), // Set your background image here
+            image: AssetImage(
+                "assets/Splash.png"), // Set your background image here
             fit: BoxFit.cover,
           ),
         ),
@@ -66,7 +75,7 @@ class _GroupChatScreenState extends State<GroupChatScreen> {
 
                       return ListTile(
                         title: Text(messageSender),
-                        subtitle: Text(messageText),
+                        subtitle: ChatBubble(message: messageText),
                       );
                     },
                   );

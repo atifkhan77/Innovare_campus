@@ -21,7 +21,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   final TextEditingController _userNameController = TextEditingController();
   final TextEditingController _userEmailController = TextEditingController();
-  final TextEditingController _contactNumberController = TextEditingController();
+  final TextEditingController _contactNumberController =
+      TextEditingController();
   final TextEditingController _addressController = TextEditingController();
 
   File? _imageFile;
@@ -40,7 +41,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
       String userId = _auth.currentUser!.uid;
 
       // Load user data from Firestore
-      final doc = await FirebaseFirestore.instance.collection('users').doc(userId).get();
+      final doc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .get();
       if (doc.exists) {
         setState(() {
           _userName = doc['name'];
@@ -55,7 +59,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
         // Load profile image from Firebase Storage
         try {
-          final ref = FirebaseStorage.instance.ref().child('users/$userId/profile_picture.png');
+          final ref = FirebaseStorage.instance
+              .ref()
+              .child('users/$userId/profile_picture.png');
           final url = await ref.getDownloadURL();
           setState(() {
             _profileImageUrl = url;
@@ -81,7 +87,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
       // If a new image is selected, upload it to Firebase Storage
       if (_imageFile != null) {
         try {
-          final ref = FirebaseStorage.instance.ref().child('users/$userId/profile_picture.png');
+          final ref = FirebaseStorage.instance
+              .ref()
+              .child('users/$userId/profile_picture.png');
           await ref.putFile(_imageFile!);
           profileImageUrl = await ref.getDownloadURL();
           setState(() {
@@ -126,13 +134,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
-   Future<void> _logout() async {
+  Future<void> _logout() async {
     try {
       await _auth.signOut();
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => LoginScreen()), // Navigate to login screen
-      );}catch (e) {
+        MaterialPageRoute(
+            builder: (context) => LoginScreen()), // Navigate to login screen
+      );
+    } catch (e) {
       print('Failed to log out: $e');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -146,7 +156,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromRGBO(49, 42, 119, 1),
+        backgroundColor: const Color.fromRGBO(49, 42, 119, 1),
         title: const Text(
           'Profile',
           style: TextStyle(color: Colors.white70),
@@ -175,7 +185,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ? FileImage(_imageFile!)
                         : (_profileImageUrl != null
                             ? NetworkImage(_profileImageUrl!)
-                            : const AssetImage('assets/placeholder.png') as ImageProvider),
+                            : const AssetImage('assets/placeholder.png')
+                                as ImageProvider),
                   ),
                 ),
                 Center(

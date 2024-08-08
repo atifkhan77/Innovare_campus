@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:innovare_campus/Views/chat/GroupChatScreen.dart';
 
-
 class GroupListScreen extends StatelessWidget {
   const GroupListScreen({Key? key}) : super(key: key);
 
@@ -14,13 +13,17 @@ class GroupListScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Groups'),
+        title: const Text(
+          'Groups',
+          style: TextStyle(color: Colors.white),
+        ),
         backgroundColor: const Color.fromRGBO(49, 42, 119, 1),
       ),
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("assets/Splash.png"), // Set your background image here
+            image: AssetImage(
+                "assets/Splash.png"), // Set your background image here
             fit: BoxFit.cover,
           ),
         ),
@@ -44,7 +47,10 @@ class GroupListScreen extends StatelessWidget {
                 final groupId = group.id;
 
                 return ListTile(
-                  title: Text(groupName),
+                  title: Text(
+                    groupName,
+                    style: const TextStyle(color: Colors.white),
+                  ),
                   trailing: IconButton(
                     icon: const Icon(Icons.delete),
                     onPressed: () {

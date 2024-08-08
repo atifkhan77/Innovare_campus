@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:innovare_campus/Views/LostandFound/uploadItemScreen.dart';
 import 'package:innovare_campus/components/uiHelper.dart';
-import 'package:innovare_campus/model/lostfind.dart';
 import 'package:provider/provider.dart';
 import 'package:innovare_campus/provider/lostfound_provider.dart';
 
@@ -15,10 +13,11 @@ class LostFoundScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(49, 42, 119, 1),
-        title: Row(
+        title: const Row(
           children: [
             CircleAvatar(
-              backgroundImage: AssetImage('assets/profile_picture.png'), // Placeholder for profile picture
+              backgroundImage: AssetImage(
+                  'assets/profile_picture.png'), // Placeholder for profile picture
             ),
             const SizedBox(width: 8),
             Text(
@@ -39,7 +38,7 @@ class LostFoundScreen extends StatelessWidget {
         child: Column(
           children: [
             SizedBox(height: screenHeight * 0.05),
-            Text(
+            const Text(
               'Lost & Found',
               style: TextStyle(
                 fontSize: 24,
@@ -56,13 +55,15 @@ class LostFoundScreen extends StatelessWidget {
                 );
               },
               child: Container(
-                padding: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
-                margin: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+                margin:
+                    const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
                 decoration: BoxDecoration(
                   color: Colors.white.withOpacity(0.2),
                   borderRadius: BorderRadius.circular(16),
                 ),
-                child: Column(
+                child: const Column(
                   children: [
                     Icon(
                       Icons.cloud_upload,
@@ -86,7 +87,8 @@ class LostFoundScreen extends StatelessWidget {
                 builder: (context, provider, child) {
                   final items = provider.items;
                   return GridView.builder(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 3,
                       mainAxisSpacing: 8,
                       crossAxisSpacing: 8,

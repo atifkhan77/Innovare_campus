@@ -31,10 +31,14 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.group),
+            icon: const Icon(
+              Icons.group,
+              color: Colors.white,
+            ),
             onPressed: () {
               Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => const GroupListScreen()),
+                MaterialPageRoute(
+                    builder: (context) => const GroupListScreen()),
               );
             },
           ),
@@ -43,7 +47,8 @@ class _ChatScreenState extends State<ChatScreen> {
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("assets/Splash.png"), // Set your background image here
+            image: AssetImage(
+                "assets/Splash.png"), // Set your background image here
             fit: BoxFit.cover,
           ),
         ),
@@ -55,7 +60,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 controller: _searchController,
                 decoration: InputDecoration(
                   hintText: 'Search',
-                  prefixIcon: Icon(Icons.search),
+                  prefixIcon: const Icon(Icons.search),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
@@ -68,12 +73,14 @@ class _ChatScreenState extends State<ChatScreen> {
               text: "Create Group",
               onPressed: () {
                 Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const CreateGroupScreen()),
+                  MaterialPageRoute(
+                      builder: (context) => const CreateGroupScreen()),
                 );
               },
-             
             ),
-             SizedBox(height: 20,)
+            const SizedBox(
+              height: 20,
+            )
           ],
         ),
       ),
@@ -105,19 +112,19 @@ class _ChatScreenState extends State<ChatScreen> {
           itemBuilder: (context, index) {
             final data = users[index].data()! as Map<String, dynamic>;
             return ListTile(
-              leading: CircleAvatar(
-                child: Icon(Icons.person, color: Colors.white),
+              leading: const CircleAvatar(
                 backgroundColor: Colors.grey,
+                child: Icon(Icons.person, color: Colors.white),
               ),
               title: Text(
                 data['email'],
                 style: const TextStyle(color: Colors.white70),
               ),
-              subtitle: Text(
+              subtitle: const Text(
                 'Hey, how are you?',
                 style: TextStyle(color: Colors.grey),
               ),
-              trailing: Column(
+              trailing: const Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text('2h ago', style: TextStyle(color: Colors.grey)),
