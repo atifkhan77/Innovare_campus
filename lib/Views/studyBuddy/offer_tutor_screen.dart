@@ -48,7 +48,8 @@ class OfferTutorScreen extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => RequestsScreen()),
                 );
               },
-              child: const Icon(Icons.school, color: Colors.white), // Navigate to RequestsScreen
+              child: const Icon(Icons.school,
+                  color: Colors.white), // Navigate to RequestsScreen
             ),
           ],
         ),
@@ -83,6 +84,8 @@ class OfferTutorScreen extends StatelessWidget {
                   TextField(
                     controller: subjectController,
                     decoration: const InputDecoration(
+                      hintStyle: TextStyle(color: Colors.white),
+                      labelStyle: TextStyle(color: Colors.white),
                       labelText: 'Subject Expertise',
                       hintText: 'Enter your subject expertise',
                       border: OutlineInputBorder(),
@@ -123,6 +126,8 @@ class OfferTutorScreen extends StatelessWidget {
                   TextField(
                     controller: nameController,
                     decoration: const InputDecoration(
+                      hintStyle: TextStyle(color: Colors.white),
+                      labelStyle: TextStyle(color: Colors.white),
                       labelText: 'Tutor Name',
                       hintText: 'Enter your name',
                       border: OutlineInputBorder(),
@@ -132,14 +137,20 @@ class OfferTutorScreen extends StatelessWidget {
                   TextField(
                     controller: contactController,
                     decoration: const InputDecoration(
+                      hintStyle: TextStyle(color: Colors.white),
+                      labelStyle: TextStyle(color: Colors.white),
                       labelText: 'Contact Number',
                       hintText: 'Enter your number',
                       border: OutlineInputBorder(),
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 30),
                   Center(
                     child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Color.fromRGBO(0, 0, 70, 1),
+                          minimumSize:
+                              Size(screenWidth * 0.6, screenHeight * 0.06)),
                       onPressed: () {
                         final tutor = Tutor(
                           name: nameController.text,
@@ -147,19 +158,25 @@ class OfferTutorScreen extends StatelessWidget {
                           availability: availability,
                           contactNumber: contactController.text,
                         );
-                        final tutorProvider = Provider.of<TutorProvider>(context, listen: false);
+                        final tutorProvider =
+                            Provider.of<TutorProvider>(context, listen: false);
                         tutorProvider.addTutor(tutor);
-                        tutorProvider.setTutor(tutor.name, tutor.contactNumber); // Set tutor name in provider
+                        tutorProvider.setTutor(tutor.name,
+                            tutor.contactNumber); // Set tutor name in provider
                         // Clear fields after submission
                         nameController.clear();
                         subjectController.clear();
                         contactController.clear();
                         // Show a confirmation message
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Tutor submitted successfully')),
+                          const SnackBar(
+                              content: Text('Tutor submitted successfully')),
                         );
                       },
-                      child: const Text('Submit Tutor'),
+                      child: const Text(
+                        'Submit Tutor',
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
                   ),
                 ],

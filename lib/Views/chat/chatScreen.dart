@@ -22,6 +22,8 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(49, 42, 119, 1),
@@ -60,7 +62,9 @@ class _ChatScreenState extends State<ChatScreen> {
                 controller: _searchController,
                 decoration: InputDecoration(
                   hintText: 'Search',
+                  hintStyle: TextStyle(color: Colors.white),
                   prefixIcon: const Icon(Icons.search),
+                  iconColor: Colors.white,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
@@ -69,8 +73,11 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
             Expanded(child: _buildUserList()),
             const SizedBox(height: 20),
-            CustomButton(
-              text: "Create Group",
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: Color.fromRGBO(0, 0, 70, 1),
+                  minimumSize: Size(screenWidth * 0.65, screenHeight * 0.06)),
+              child: const Text("Create Group"),
               onPressed: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(

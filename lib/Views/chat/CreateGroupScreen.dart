@@ -31,6 +31,8 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -55,6 +57,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
                 controller: _groupNameController,
                 decoration: const InputDecoration(
                   labelText: 'Group Name',
+                  labelStyle: TextStyle(color: Colors.white),
                   border: OutlineInputBorder(),
                 ),
               ),
@@ -90,9 +93,12 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
                   },
                 ),
               ),
-              CustomButton(
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Color.fromRGBO(0, 0, 70, 1),
+                    minimumSize: Size(screenWidth * 0.65, screenHeight * 0.06)),
                 onPressed: _createGroup,
-                text: 'Create Group',
+                child: Text('Create Group'),
               ),
               const SizedBox(
                 height: 20,
