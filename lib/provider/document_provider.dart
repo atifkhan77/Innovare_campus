@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:uuid/uuid.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 import 'package:innovare_campus/model/document.dart';
+import 'package:uuid/uuid.dart';
 
 class DocumentProvider extends ChangeNotifier {
   List<Document> _documents = [];
@@ -13,13 +15,16 @@ class DocumentProvider extends ChangeNotifier {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
 
-  Future<void> fetchDocuments() async {
-    QuerySnapshot querySnapshot = await _firestore.collection('prints').get();
+  Future<void> fetchDocuments(String userId) async {
+    QuerySnapshot querySnapshot = await _firestore.collection('prints')
+      .where('userId', isEqualTo: userId) // Fetch only the user's documents
+      .get();
+    
     _documents = querySnapshot.docs.map((doc) => Document.fromFirestore(doc)).toList();
     notifyListeners();
   }
 
-  Future<void> uploadDocument(PlatformFile file) async {
+  Future<void> uploadDocument(PlatformFile file, String userId) async {
     try {
       String fileId = Uuid().v4();
       String fileName = file.name;
@@ -36,11 +41,12 @@ class DocumentProvider extends ChangeNotifier {
         'id': fileId,
         'name': fileName,
         'url': downloadURL,
+        'userId': userId, // Save the userId along with the document
         'uploadedAt': Timestamp.now(),
       });
 
       // Add document to local list and notify listeners
-      _documents.add(Document(id: fileId, name: fileName, url: downloadURL));
+      _documents.add(Document(id: fileId, name: fileName, url: downloadURL, userId: userId));
       notifyListeners();
     } catch (e) {
       print(e);

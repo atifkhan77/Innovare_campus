@@ -32,6 +32,33 @@
   <title>innovare_campus</title>
   <link rel="manifest" href="manifest.json">
 
+
+
+  <script type=”module”>
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "firebase/app";
+    import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyA_6TcLmrmadcB1Fkkll33jLvPw7D2TRC4",
+  authDomain: "innovarecamp.firebaseapp.com",
+  projectId: "innovarecamp",
+  storageBucket: "innovarecamp.appspot.com",
+  messagingSenderId: "497450333684",
+  appId: "1:497450333684:web:0b5f3ed584022d0c7bb5a1",
+  measurementId: "G-L1QRM89T6K"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+    </script>
+    
+
   <script>
     // The value below is injected by flutter build, do not touch.
     const serviceWorkerVersion = null;
