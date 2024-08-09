@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:innovare_campus/Views/LostandFound/lostfoundScreen.dart';
+import 'package:innovare_campus/Views/news/newsScreen.dart';
 import 'package:innovare_campus/Views/print/printScreen.dart';
 import 'package:innovare_campus/Views/studyBuddy/recieveTutoring.dart';
 import 'package:innovare_campus/Views/userManagment/profileScreen.dart';
@@ -158,8 +159,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     title: 'Announcements',
                     assetPath: 'assets/homeScreen/announc.jpeg',
                     onTap: () {
-                      // Handle onTap logic
-                      // For example: Navigator.push(context, MaterialPageRoute(builder: (context) => SocietyScreen()));
+                     Navigator.push(context, MaterialPageRoute(builder: (context) => NewsScreen()));
                     },
                   ),
                 ],
