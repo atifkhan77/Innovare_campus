@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 import 'package:innovare_campus/Views/chat/CreateGroupScreen.dart';
 import 'package:innovare_campus/Views/chat/GroupListScreen.dart';
+import 'package:innovare_campus/Views/chat/chatBotScreen.dart';
 import 'package:innovare_campus/Views/chat/chatPage.dart';
 import 'package:innovare_campus/components/uiHelper.dart';
 //import 'create_group_screen.dart'; // import the create group screen
@@ -72,18 +73,33 @@ class _ChatScreenState extends State<ChatScreen> {
               ),
             ),
             Expanded(child: _buildUserList()),
-            const SizedBox(height: 20),
+            const SizedBox(height: 15),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                   backgroundColor: Color.fromRGBO(0, 0, 70, 1),
                   minimumSize: Size(screenWidth * 0.65, screenHeight * 0.06)),
-              child: const Text("Create Group"),
+              child: const Text("Comsats Bot"),
               onPressed: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                      builder: (context) => const CreateGroupScreen()),
+                      builder: (context) => const ChatbotScreen()),
                 );
               },
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Color.fromRGBO(0, 0, 70, 1),
+                    minimumSize: Size(screenWidth * 0.65, screenHeight * 0.06)),
+                child: const Text("Create Group"),
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                        builder: (context) => const CreateGroupScreen()),
+                  );
+                },
+              ),
             ),
             const SizedBox(
               height: 20,
