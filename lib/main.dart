@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:innovare_campus/Views/print/printScreen.dart';
+import 'package:innovare_campus/provider/cart_provider.dart';
 import 'package:innovare_campus/provider/tutor_provider.dart';
 import 'package:innovare_campus/provider/lostfound_provider.dart';
 import 'package:innovare_campus/provider/document_provider.dart';
@@ -24,7 +25,8 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (context) => TutorProvider()),
         ChangeNotifierProvider(create: (context) => LostFoundProvider()),
-        ChangeNotifierProvider(create: (context) => DocumentProvider()), // Added DocumentProvider
+        ChangeNotifierProvider(create: (context) => DocumentProvider()),
+         ChangeNotifierProvider(create: (context) => CartProvider()), 
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
