@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:innovare_campus/Views/LostandFound/lostfoundScreen.dart';
+import 'package:innovare_campus/Views/Societies/clubs/societyScreen.dart';
 import 'package:innovare_campus/Views/cafeteria/cafeScreen.dart';
 import 'package:innovare_campus/Views/news/newsScreen.dart';
 import 'package:innovare_campus/Views/print/printScreen.dart';
@@ -151,8 +152,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     title: 'Society',
                     assetPath: 'assets/homeScreen/society.jpeg',
                     onTap: () {
-                      // Handle onTap logic
-                      // For example: Navigator.push(context, MaterialPageRoute(builder: (context) => LostFoundScreen()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => SocietiesScreen()));
                     },
                   ),
                   CardComponent(

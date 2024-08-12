@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:innovare_campus/Views/LostandFound/itemDetailScreen.dart';
 import 'package:innovare_campus/Views/LostandFound/uploadItemScreen.dart';
 import 'package:innovare_campus/components/uiHelper.dart';
 import 'package:provider/provider.dart';
 import 'package:innovare_campus/provider/lostfound_provider.dart';
+
 
 class LostFoundScreen extends StatelessWidget {
   @override
@@ -19,10 +21,10 @@ class LostFoundScreen extends StatelessWidget {
               backgroundImage: AssetImage(
                   'assets/profile_picture.png'), // Placeholder for profile picture
             ),
-            const SizedBox(width: 8),
+            SizedBox(width: 8),
             Text(
               'Welcome back, User', // Replace with dynamic user name
-              style: const TextStyle(color: Colors.white70),
+              style: TextStyle(color: Colors.white70),
             ),
           ],
         ),
@@ -96,13 +98,26 @@ class LostFoundScreen extends StatelessWidget {
                     itemCount: items.length,
                     itemBuilder: (context, index) {
                       final item = items[index];
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(8),
-                          child: Image.network(
-                            item.imageUrl,
-                            fit: BoxFit.cover,
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  ItemDetailScreen(item: item),
+                            ),
+                          );
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: Image.network(
+                              item.imageUrl.isEmpty
+                                  ? 'https://via.placeholder.com/150' // Placeholder URL
+                                  : item.imageUrl,
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
                       );

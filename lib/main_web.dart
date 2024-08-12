@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:innovare_campus/provider/newsProvider.dart';
+import 'package:innovare_campus/provider/society_provider.dart';
 import 'package:innovare_campus/provider/userProvider.dart';
 import 'package:provider/provider.dart';
 import 'package:innovare_campus/Views/web/cafeadmin_dashbaord/manage_menuScreen.dart';
@@ -56,7 +57,8 @@ class MyWebApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => DocumentProvider()),
         ChangeNotifierProvider(create: (context) => MenuProvider()),
         ChangeNotifierProvider(create: (context) => UserProvider()),
-         ChangeNotifierProvider(create: (context) => NewsProvider()), 
+         ChangeNotifierProvider(create: (context) => NewsProvider()),
+         ChangeNotifierProvider(create: (context) => SocietyProvider()), 
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

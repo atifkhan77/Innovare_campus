@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:innovare_campus/Views/web/admin_dashboard/newsManagementScreen.dart';
-import 'package:innovare_campus/Views/web/admin_dashboard/usermanagementScreen.dart';
+import 'package:innovare_campus/Views/web/admin_dashboard/SocietiesManage/societyManagement.dart';
+import 'package:innovare_campus/Views/web/admin_dashboard/newsAnoouncement/newsManagementScreen.dart';
+import 'package:innovare_campus/Views/web/admin_dashboard/useraManage/usermanagementScreen.dart';
 import 'package:innovare_campus/provider/newsProvider.dart';
 import 'package:provider/provider.dart';
 
@@ -69,20 +70,25 @@ class AdminDashboardScreen extends StatelessWidget {
                           );
                         },
                       ),
-                      _buildCard(
-                        icon: Icons.local_cafe,
-                        label: 'Cafe',
-                        onTap: () {
+                      //_buildCard(
+                       // icon: Icons.local_cafe,
+                        //label: 'Cafe',
+                        //onTap: () {
                           // Navigate to Cafe screen
-                        },
-                      ),
+                       // },
+                     // ),
                       _buildCard(
-                        icon: Icons.group,
-                        label: 'Societies',
-                        onTap: () {
-                          // Navigate to Societies screen
-                        },
-                      ),
+  icon: Icons.group,
+  label: 'Societies',
+  onTap: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SocietyManagementScreen(),
+      ),
+    );
+  },
+),
                       _buildCard(
                         icon: Icons.article,
                         label: 'News',

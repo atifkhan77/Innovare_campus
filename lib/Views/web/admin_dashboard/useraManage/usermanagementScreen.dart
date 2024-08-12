@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:innovare_campus/Views/web/admin_dashboard/addUserScreen.dart';
-import 'package:innovare_campus/Views/web/admin_dashboard/editUserScreen.dart';
+import 'package:innovare_campus/Views/web/admin_dashboard/useraManage/addUserScreen.dart';
+import 'package:innovare_campus/Views/web/admin_dashboard/useraManage/editUserScreen.dart';
 import 'package:innovare_campus/provider/userProvider.dart';
 import 'package:provider/provider.dart';
 
