@@ -60,56 +60,109 @@ class _PrintScreenState extends State<PrintScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Print Documents'),
+        backgroundColor: const Color.fromRGBO(49, 42, 119, 1),
+        title: const Text(
+          'Print Documents',
+          style: TextStyle(color: Colors.white),
+        ),
       ),
-      body: Consumer<DocumentProvider>(
-        builder: (context, documentProvider, child) {
-          return Column(
-            children: [
-              const Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Text(
-                  'Welcome back, Printer',
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                ),
-              ),
-              ElevatedButton(
-                onPressed: _pickFile,
-                child: const Text('Upload your files'),
-              ),
-              if (_selectedFile != null)
-                Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text('Selected file: ${_selectedFile!.name}'),
+      body: Stack(
+        children: [
+          // Background Image
+          Positioned.fill(
+            child: Image.asset(
+              'assets/Splash.png', // Replace with your image path
+              fit: BoxFit.cover,
+            ),
+          ),
+          // Content
+          Consumer<DocumentProvider>(
+            builder: (context, documentProvider, child) {
+              return Column(
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Text(
+                      'Welcome back, Printer',
+                      style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
                     ),
-                    ElevatedButton(
-                      onPressed: () => _submitFile(context),
-                      child: const Text('Submit'),
+                  ),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color.fromRGBO(0, 0, 70, 1)),
+                    onPressed: _pickFile,
+                    child: const Text(
+                      'Upload your files',
+                      style: TextStyle(color: Colors.white),
                     ),
-                  ],
-                ),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: documentProvider.documents.length,
-                  itemBuilder: (context, index) {
-                    Document document = documentProvider.documents[index];
-                    return ListTile(
-                      title: Text(document.name),
-                      trailing: IconButton(
-                        icon: const Icon(Icons.delete, color: Colors.red),
-                        onPressed: () {
-                          documentProvider.deleteDocument(document.id);
-                        },
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ],
-          );
-        },
+                  ),
+                  if (_selectedFile != null)
+                    Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text('Selected file: ${_selectedFile!.name}'),
+                        ),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color.fromRGBO(0, 0, 70, 1),
+                          ),
+                          onPressed: () => _submitFile(context),
+                          child: const Text('Submit',
+                              style: TextStyle(color: Colors.white)),
+                        ),
+                      ],
+                    ),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: documentProvider.documents.length,
+                      itemBuilder: (context, index) {
+                        Document document = documentProvider.documents[index];
+                        return Container(
+                          margin: const EdgeInsets.symmetric(
+                              vertical: 5,
+                              horizontal:
+                                  10), // Adds margin around each ListTile
+                          decoration: BoxDecoration(
+                            color: Colors.grey.withOpacity(
+                                0.3), // Semi-transparent background color
+                            borderRadius:
+                                BorderRadius.circular(10), // Rounded corners
+                          ),
+                          child: ListTile(
+                            leading: const Icon(
+                              Icons.picture_as_pdf,
+                              color: Colors.white,
+                            ),
+                            contentPadding: const EdgeInsets.all(10),
+                            title: Text(
+                              document.name,
+                              style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16), // Adjusts text color and size
+                            ),
+                            trailing: IconButton(
+                              icon: const Icon(Icons.delete, color: Colors.red),
+                              onPressed: () {
+                                documentProvider.deleteDocument(document.id);
+                              },
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
+        ],
       ),
     );
   }
