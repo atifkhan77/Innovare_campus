@@ -5,7 +5,6 @@ import 'package:innovare_campus/provider/cart_provider.dart';
 
 import 'package:provider/provider.dart';
 
-
 class CafeScreen extends StatefulWidget {
   @override
   _CafeScreenState createState() => _CafeScreenState();
@@ -19,8 +18,13 @@ class _CafeScreenState extends State<CafeScreen> {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: const Color.fromRGBO(49, 42, 119, 1),
-          title: const Text('Cafeteria'),
-          bottom: TabBar(
+          title: const Text(
+            'Cafeteria',
+            style: TextStyle(color: Colors.white),
+          ),
+          bottom: const TabBar(
+            indicatorColor: Colors.white,
+            unselectedLabelColor: Colors.white,
             tabs: [
               Tab(text: 'Fast Food'),
               Tab(text: 'Desi'),
@@ -28,30 +32,38 @@ class _CafeScreenState extends State<CafeScreen> {
             ],
           ),
         ),
-        body: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                decoration: InputDecoration(
-                  hintText: 'Search food',
-                  prefixIcon: Icon(Icons.search),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
+        body: Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/Splash.png"),
+              fit: BoxFit.cover,
+            ),
+          ),
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextField(
+                  decoration: InputDecoration(
+                    hintText: 'Search food',
+                    prefixIcon: Icon(Icons.search),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
                   ),
                 ),
               ),
-            ),
-            Expanded(
-              child: TabBarView(
-                children: [
-                  _buildMenuGrid('Fast Food'),
-                  _buildMenuGrid('Desi'),
-                  _buildMenuGrid('Drinks'),
-                ],
+              Expanded(
+                child: TabBarView(
+                  children: [
+                    _buildMenuGrid('Fast Food'),
+                    _buildMenuGrid('Desi'),
+                    _buildMenuGrid('Drinks'),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.shopping_cart),
@@ -92,13 +104,12 @@ class _CafeScreenState extends State<CafeScreen> {
             var imageUrl = item['imageUrl'];
 
             return Card(
+              color: Colors.transparent,
               child: Column(
                 children: [
                   Expanded(
                     child: Image.network(
-                      imageUrl.isEmpty
-                          ? 'assets/placeholder.png'
-                          : imageUrl,
+                      imageUrl.isEmpty ? 'assets/placeholder.png' : imageUrl,
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -107,14 +118,21 @@ class _CafeScreenState extends State<CafeScreen> {
                     child: Text(
                       name,
                       style: TextStyle(
+                        color: Colors.white,
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
                       ),
                     ),
                   ),
-                  Text('\$$price'),
+                  Text(
+                    '\$$price',
+                    style: TextStyle(color: Colors.white),
+                  ),
                   IconButton(
-                    icon: Icon(Icons.add_shopping_cart),
+                    icon: Icon(
+                      Icons.add_shopping_cart,
+                      color: Colors.white,
+                    ),
                     onPressed: () {
                       Provider.of<CartProvider>(context, listen: false).addItem(
                         item.id,
