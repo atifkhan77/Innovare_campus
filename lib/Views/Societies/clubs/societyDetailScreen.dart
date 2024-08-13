@@ -41,8 +41,10 @@ class SocietyDetailsScreen extends StatelessWidget {
       }
       textSpans.add(TextSpan(
         text: match.group(0),
-        style: TextStyle(color: Colors.blue, decoration: TextDecoration.underline),
-        recognizer: TapGestureRecognizer()..onTap = () => _launchURL(match.group(0)!),
+        style: const TextStyle(
+            color: Colors.blue, decoration: TextDecoration.underline),
+        recognizer: TapGestureRecognizer()
+          ..onTap = () => _launchURL(match.group(0)!),
       ));
       lastIndex = match.end;
     }
@@ -66,15 +68,18 @@ class SocietyDetailsScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Description:', style: TextStyle(fontWeight: FontWeight.bold)),
+            const Text('Description:',
+                style: TextStyle(fontWeight: FontWeight.bold)),
             Text(society.description),
-            SizedBox(height: 8.0),
-            Text('Recruitment Drive:', style: TextStyle(fontWeight: FontWeight.bold)),
+            const SizedBox(height: 8.0),
+            const Text('Recruitment Drive:',
+                style: TextStyle(fontWeight: FontWeight.bold)),
             RichText(
               text: _createTextSpan(society.recruitmentDrive),
             ),
-            SizedBox(height: 8.0),
-            Text('Upcoming Event:', style: TextStyle(fontWeight: FontWeight.bold)),
+            const SizedBox(height: 8.0),
+            const Text('Upcoming Event:',
+                style: TextStyle(fontWeight: FontWeight.bold)),
             RichText(
               text: _createTextSpan(society.upcomingEvent),
             ),

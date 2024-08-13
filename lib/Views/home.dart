@@ -124,42 +124,61 @@ class _HomeScreenState extends State<HomeScreen> {
                     title: 'Study Buddy',
                     assetPath: 'assets/homeScreen/Man.png',
                     onTap: () {
-                       Navigator.push(context, MaterialPageRoute(builder: (context) => RecieveTutor()));
+                      // ignore: prefer_const_constructors
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => RecieveTutor()));
                     },
                   ),
                   CardComponent(
                     title: 'Cafe',
                     assetPath: 'assets/homeScreen/cafe.jpeg',
                     onTap: () {
-                       Navigator.push(context, MaterialPageRoute(builder: (context) => CafeScreen()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => CafeScreen()));
                     },
                   ),
                   CardComponent(
                     title: 'Print',
                     assetPath: 'assets/homeScreen/print.jpeg',
                     onTap: () {
-                       Navigator.push(context, MaterialPageRoute(builder: (context) => PrintScreen()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => PrintScreen()));
                     },
                   ),
                   CardComponent(
                     title: 'Lost & Found',
                     assetPath: 'assets/homeScreen/lostfound.jpeg',
                     onTap: () {
-                       Navigator.push(context, MaterialPageRoute(builder: (context) => LostFoundScreen()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => LostFoundScreen()));
                     },
                   ),
                   CardComponent(
                     title: 'Society',
                     assetPath: 'assets/homeScreen/society.jpeg',
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => SocietiesScreen()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SocietiesScreen()));
                     },
                   ),
                   CardComponent(
                     title: 'Announcements',
                     assetPath: 'assets/homeScreen/announc.jpeg',
                     onTap: () {
-                     Navigator.push(context, MaterialPageRoute(builder: (context) => NewsScreen()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => NewsScreen()));
                     },
                   ),
                 ],

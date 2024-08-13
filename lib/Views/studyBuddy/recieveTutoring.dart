@@ -7,7 +7,6 @@ import 'package:innovare_campus/components/uiHelper.dart';
 import 'package:innovare_campus/provider/tutor_provider.dart';
 import 'package:provider/provider.dart';
 
-
 class RecieveTutor extends StatefulWidget {
   const RecieveTutor({Key? key}) : super(key: key);
 
@@ -154,6 +153,7 @@ class _RecieveTutorState extends State<RecieveTutor> {
                                   Navigator.of(context).push(
                                     MaterialPageRoute(
                                       builder: (context) =>
+                                          // ignore: prefer_const_constructors
                                           OfferTutorScreen(), // Update here
                                     ),
                                   );
@@ -194,7 +194,8 @@ class TutorListScreen extends StatelessWidget {
             width: screenWidth,
             decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage("assets/Splash.png"), // Update the image path if necessary
+                image: AssetImage(
+                    "assets/Splash.png"), // Update the image path if necessary
                 fit: BoxFit.cover,
               ),
             ),
@@ -208,7 +209,8 @@ class TutorListScreen extends StatelessWidget {
                 color: Colors.white.withOpacity(0.8), // Semi-transparent card
                 child: ListTile(
                   title: Text(tutor.name),
-                  subtitle: Text('${tutor.subjectExpertise} - ${tutor.availability}'),
+                  subtitle:
+                      Text('${tutor.subjectExpertise} - ${tutor.availability}'),
                   trailing: Text(tutor.contactNumber),
                   onTap: () {
                     Navigator.push(

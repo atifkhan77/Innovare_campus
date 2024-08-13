@@ -63,7 +63,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 controller: _searchController,
                 decoration: InputDecoration(
                   hintText: 'Search',
-                  hintStyle: TextStyle(color: Colors.white),
+                  hintStyle: const TextStyle(color: Colors.white),
                   prefixIcon: const Icon(Icons.search),
                   iconColor: Colors.white,
                   border: OutlineInputBorder(
@@ -76,7 +76,7 @@ class _ChatScreenState extends State<ChatScreen> {
             const SizedBox(height: 15),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                  backgroundColor: Color.fromRGBO(0, 0, 70, 1),
+                  backgroundColor: const Color.fromRGBO(0, 0, 70, 1),
                   minimumSize: Size(screenWidth * 0.65, screenHeight * 0.06)),
               child: const Text("Comsats Bot"),
               onPressed: () {
@@ -90,7 +90,7 @@ class _ChatScreenState extends State<ChatScreen> {
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                    backgroundColor: Color.fromRGBO(0, 0, 70, 1),
+                    backgroundColor: const Color.fromRGBO(0, 0, 70, 1),
                     minimumSize: Size(screenWidth * 0.65, screenHeight * 0.06)),
                 child: const Text("Create Group"),
                 onPressed: () {

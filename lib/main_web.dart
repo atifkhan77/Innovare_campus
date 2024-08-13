@@ -57,14 +57,15 @@ class MyWebApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => DocumentProvider()),
         ChangeNotifierProvider(create: (context) => MenuProvider()),
         ChangeNotifierProvider(create: (context) => UserProvider()),
-         ChangeNotifierProvider(create: (context) => NewsProvider()),
-         ChangeNotifierProvider(create: (context) => SocietyProvider()), 
+        ChangeNotifierProvider(create: (context) => NewsProvider()),
+        ChangeNotifierProvider(create: (context) => SocietyProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         home: AdminScreen(),
         routes: {
-          '/manage-menu': (context) => ManageMenuScreen(), // Add route for ManageMenuScreen
+          '/manage-menu': (context) =>
+              ManageMenuScreen(), // Add route for ManageMenuScreen
         },
       ),
     );

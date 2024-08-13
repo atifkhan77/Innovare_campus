@@ -12,7 +12,9 @@ class _NewsScreenState extends State<NewsScreen> {
   Future<List<Map<String, dynamic>>> _fetchNews() async {
     try {
       final querySnapshot = await _firestore.collection('news').get();
-      return querySnapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
+      return querySnapshot.docs
+          .map((doc) => doc.data() as Map<String, dynamic>)
+          .toList();
     } catch (e) {
       print('Failed to load news: $e');
       return [];
@@ -23,18 +25,18 @@ class _NewsScreenState extends State<NewsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Announcements'),
+        title: const Text('Announcements'),
         backgroundColor: const Color.fromRGBO(49, 42, 119, 1),
       ),
       body: FutureBuilder<List<Map<String, dynamic>>>(
         future: _fetchNews(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(child: Text('No announcements available'));
+            return const Center(child: Text('No announcements available'));
           } else {
             final newsItems = snapshot.data!;
             return ListView.builder(

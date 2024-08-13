@@ -8,27 +8,28 @@ class SocietiesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Societies'),
+        title: const Text('Societies'),
         backgroundColor: const Color.fromRGBO(49, 42, 119, 1),
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance.collection('societies').snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
           if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return Center(child: Text('No societies found.'));
+            return const Center(child: Text('No societies found.'));
           }
           return GridView.builder(
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2, // Two cards per row
               crossAxisSpacing: 10,
               mainAxisSpacing: 10,
             ),
             itemCount: snapshot.data!.docs.length,
             itemBuilder: (context, index) {
-              Society society = Society.fromDocument(snapshot.data!.docs[index]);
+              Society society =
+                  Society.fromDocument(snapshot.data!.docs[index]);
               return Card(
                 child: ListTile(
                   title: Text(society.name),
@@ -37,7 +38,8 @@ class SocietiesScreen extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => SocietyDetailsScreen(society: society),
+                        builder: (context) =>
+                            SocietyDetailsScreen(society: society),
                       ),
                     );
                   },

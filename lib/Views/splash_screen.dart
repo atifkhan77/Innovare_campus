@@ -13,6 +13,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     // Set a Timer for 5 seconds
+    // ignore: prefer_const_constructors
     Timer(Duration(seconds: 3), () {
       // Navigate to the login screen
       Navigator.of(context)

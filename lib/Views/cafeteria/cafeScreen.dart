@@ -46,7 +46,7 @@ class _CafeScreenState extends State<CafeScreen> {
                 child: TextField(
                   decoration: InputDecoration(
                     hintText: 'Search food',
-                    prefixIcon: Icon(Icons.search),
+                    prefixIcon: const Icon(Icons.search),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20),
                     ),
@@ -66,7 +66,7 @@ class _CafeScreenState extends State<CafeScreen> {
           ),
         ),
         floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.shopping_cart),
+          child: const Icon(Icons.shopping_cart),
           onPressed: () {
             Navigator.push(
               context,
@@ -86,13 +86,13 @@ class _CafeScreenState extends State<CafeScreen> {
           .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         }
 
         final menuItems = snapshot.data!.docs;
 
         return GridView.builder(
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
             childAspectRatio: 0.75,
           ),
@@ -117,7 +117,7 @@ class _CafeScreenState extends State<CafeScreen> {
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
                       name,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
@@ -126,10 +126,10 @@ class _CafeScreenState extends State<CafeScreen> {
                   ),
                   Text(
                     '\$$price',
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                   ),
                   IconButton(
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.add_shopping_cart,
                       color: Colors.white,
                     ),
@@ -143,7 +143,7 @@ class _CafeScreenState extends State<CafeScreen> {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text('$name added to cart'),
-                          duration: Duration(seconds: 2),
+                          duration: const Duration(seconds: 2),
                         ),
                       );
                     },

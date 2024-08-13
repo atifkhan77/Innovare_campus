@@ -9,7 +9,7 @@ class CartScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(49, 42, 119, 1),
-        title: Text(
+        title: const Text(
           'Your Cart',
           style: TextStyle(color: Colors.white),
         ),
@@ -18,7 +18,7 @@ class CartScreen extends StatelessWidget {
         children: [
           // Background image
           Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               image: DecorationImage(
                 image: AssetImage('assets/Splash.png'), // Your background image
                 fit: BoxFit.cover,
@@ -32,7 +32,8 @@ class CartScreen extends StatelessWidget {
               var cartItem = cart.items.values.toList()[index];
               return Card(
                 color: Colors.transparent,
-                margin: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                margin:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                 child: ListTile(
                   leading: Image.network(
                     cartItem.imageUrl.isEmpty
@@ -44,12 +45,12 @@ class CartScreen extends StatelessWidget {
                   ),
                   title: Text(
                     cartItem.name,
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                   ),
                   subtitle: Row(
                     children: [
                       IconButton(
-                        icon: Icon(
+                        icon: const Icon(
                           Icons.remove,
                           color: Colors.white,
                         ),
@@ -59,19 +60,19 @@ class CartScreen extends StatelessWidget {
                             SnackBar(
                               content: Text(
                                 'Decreased quantity of ${cartItem.name}',
-                                style: TextStyle(color: Colors.white),
+                                style: const TextStyle(color: Colors.white),
                               ),
-                              duration: Duration(seconds: 2),
+                              duration: const Duration(seconds: 2),
                             ),
                           );
                         },
                       ),
                       Text(
                         'Quantity: ${cartItem.quantity}',
-                        style: TextStyle(color: Colors.white),
+                        style: const TextStyle(color: Colors.white),
                       ),
                       IconButton(
-                        icon: Icon(
+                        icon: const Icon(
                           Icons.add,
                           color: Colors.white,
                         ),
@@ -82,9 +83,9 @@ class CartScreen extends StatelessWidget {
                             SnackBar(
                               content: Text(
                                 'Increased quantity of ${cartItem.name}',
-                                style: TextStyle(color: Colors.white),
+                                style: const TextStyle(color: Colors.white),
                               ),
-                              duration: Duration(seconds: 2),
+                              duration: const Duration(seconds: 2),
                             ),
                           );
                         },
@@ -96,10 +97,10 @@ class CartScreen extends StatelessWidget {
                     children: [
                       Text(
                         '\$${cartItem.price * cartItem.quantity}',
-                        style: TextStyle(color: Colors.white),
+                        style: const TextStyle(color: Colors.white),
                       ),
                       IconButton(
-                        icon: Icon(
+                        icon: const Icon(
                           Icons.delete,
                           color: Colors.white,
                         ),
@@ -109,9 +110,9 @@ class CartScreen extends StatelessWidget {
                             SnackBar(
                               content: Text(
                                 '${cartItem.name} removed from cart',
-                                style: TextStyle(color: Colors.white),
+                                style: const TextStyle(color: Colors.white),
                               ),
-                              duration: Duration(seconds: 2),
+                              duration: const Duration(seconds: 2),
                             ),
                           );
                         },
@@ -126,13 +127,13 @@ class CartScreen extends StatelessWidget {
       ),
       bottomNavigationBar: Container(
         color: const Color.fromRGBO(49, 42, 119, 1),
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
               'Total: \$${cart.totalAmount}',
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
@@ -142,7 +143,7 @@ class CartScreen extends StatelessWidget {
               onPressed: () {
                 // Handle checkout logic here
               },
-              child: Text(
+              child: const Text(
                 'Checkout',
               ),
             ),

@@ -45,7 +45,8 @@ class OfferTutorScreen extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => RequestsScreen()),
+                  MaterialPageRoute(
+                      builder: (context) => const RequestsScreen()),
                 );
               },
               child: const Icon(Icons.school,
@@ -148,7 +149,7 @@ class OfferTutorScreen extends StatelessWidget {
                   Center(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                          backgroundColor: Color.fromRGBO(0, 0, 70, 1),
+                          backgroundColor: const Color.fromRGBO(0, 0, 70, 1),
                           minimumSize:
                               Size(screenWidth * 0.6, screenHeight * 0.06)),
                       onPressed: () {

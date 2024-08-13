@@ -10,7 +10,7 @@ class ItemDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Item Details'),
+        title: const Text('Item Details'),
         backgroundColor: const Color.fromRGBO(49, 42, 119, 1),
       ),
       body: Padding(
@@ -31,17 +31,17 @@ class ItemDetailScreen extends StatelessWidget {
             const SizedBox(height: 16),
             Text(
               'Description: ${item.description}',
-              style: TextStyle(fontSize: 18),
+              style: const TextStyle(fontSize: 18),
             ),
             const SizedBox(height: 8),
             Text(
               'Location: ${item.location}',
-              style: TextStyle(fontSize: 18),
+              style: const TextStyle(fontSize: 18),
             ),
             const SizedBox(height: 8),
             Text(
               'Timestamp: ${item.timestamp.toDate()}',
-              style: TextStyle(fontSize: 18),
+              style: const TextStyle(fontSize: 18),
             ),
           ],
         ),

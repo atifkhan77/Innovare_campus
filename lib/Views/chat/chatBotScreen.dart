@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:innovare_campus/controller/dialogflow_service.dart';
 
-
 class ChatbotScreen extends StatefulWidget {
   const ChatbotScreen({Key? key}) : super(key: key);
 
@@ -46,7 +45,9 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
                   title: Text(
                     message['content']!,
                     style: TextStyle(
-                      color: message['role'] == 'user' ? Colors.blue : Colors.green,
+                      color: message['role'] == 'user'
+                          ? Colors.blue
+                          : Colors.green,
                     ),
                   ),
                 );
