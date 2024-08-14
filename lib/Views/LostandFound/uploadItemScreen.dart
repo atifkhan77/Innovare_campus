@@ -1,12 +1,12 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:innovare_campus/components/uiHelper.dart';
 import 'dart:io';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:innovare_campus/components/uiHelper.dart';
-import 'package:innovare_campus/model/lostfind.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
+import 'package:innovare_campus/model/lostfind.dart';
 import 'package:innovare_campus/provider/lostfound_provider.dart';
 
 class UploadItemScreen extends StatefulWidget {
@@ -33,7 +33,6 @@ class _UploadItemScreenState extends State<UploadItemScreen> {
           });
         }
       } else {
-        // Handle the case when the user denies the permission
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content:
               Text('Photo library permission is required to pick an image.'),
@@ -58,7 +57,7 @@ class _UploadItemScreenState extends State<UploadItemScreen> {
         }
 
         final newItem = LostFoundItem(
-          id: '', // Firestore will generate the ID
+          id: '',
           description: _description,
           location: _location,
           imageUrl: imageUrl,
@@ -84,117 +83,131 @@ class _UploadItemScreenState extends State<UploadItemScreen> {
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(49, 42, 119, 1),
-        title: const Text('Lost & Found'),
+        title: const Text(
+          'Lost & Found',
+          style: TextStyle(color: Colors.white),
+        ),
       ),
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Color(0xFF4D1DFF), Color(0xFF4D79FF)],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
+      body: Stack(
+        children: [
+          // Background image
+          Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(
+                    'assets/Splash.png'), // Replace with your background image
+                fit: BoxFit.cover,
+              ),
+            ),
           ),
-        ),
-        padding: const EdgeInsets.all(16),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              SizedBox(height: screenHeight * 0.05),
-              const Text(
-                'Enter Information',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-              SizedBox(height: screenHeight * 0.02),
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Description of item',
-                  labelStyle: TextStyle(color: Colors.white),
-                  border: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
-                  ),
-                  enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
-                  ),
-                ),
-                style: const TextStyle(color: Colors.white),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a description';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  _description = value!;
-                },
-              ),
-              SizedBox(height: screenHeight * 0.02),
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Location of item',
-                  labelStyle: TextStyle(color: Colors.white),
-                  border: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
-                  ),
-                  enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
-                  ),
-                ),
-                style: const TextStyle(color: Colors.white),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a location';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  _location = value!;
-                },
-              ),
-              SizedBox(height: screenHeight * 0.02),
-              GestureDetector(
-                onTap: _pickImage,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.white),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(Icons.photo_camera, color: Colors.white),
-                      const SizedBox(width: 8),
-                      Text(
-                        _imageFile == null ? 'Add Photo' : 'Photo Selected',
-                        style: const TextStyle(color: Colors.white),
+          // Content
+          SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    SizedBox(height: screenHeight * 0.05),
+                    const Text(
+                      'Enter Information',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
                       ),
-                    ],
-                  ),
+                    ),
+                    SizedBox(height: screenHeight * 0.02),
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        labelText: 'Description of item',
+                        labelStyle: TextStyle(color: Colors.white),
+                        border: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                        ),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                        ),
+                      ),
+                      style: const TextStyle(color: Colors.white),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter a description';
+                        }
+                        return null;
+                      },
+                      onSaved: (value) {
+                        _description = value!;
+                      },
+                    ),
+                    SizedBox(height: screenHeight * 0.02),
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        labelText: 'Location of item',
+                        labelStyle: TextStyle(color: Colors.white),
+                        border: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                        ),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                        ),
+                      ),
+                      style: const TextStyle(color: Colors.white),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter a location';
+                        }
+                        return null;
+                      },
+                      onSaved: (value) {
+                        _location = value!;
+                      },
+                    ),
+                    SizedBox(height: screenHeight * 0.02),
+                    GestureDetector(
+                      onTap: _pickImage,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.white),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(Icons.photo_camera, color: Colors.white),
+                            const SizedBox(width: 8),
+                            Text(
+                              _imageFile == null
+                                  ? 'Add Photo'
+                                  : 'Photo Selected',
+                              style: const TextStyle(color: Colors.white),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: screenHeight * 0.02),
+                    ElevatedButton(
+                      onPressed: _uploadItem,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color.fromRGBO(49, 42, 119, 1),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 32, vertical: 16),
+                      ),
+                      child: const Text('Submit Item'),
+                    ),
+                  ],
                 ),
               ),
-              SizedBox(height: screenHeight * 0.02),
-              ElevatedButton(
-                onPressed: _uploadItem,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromRGBO(49, 42, 119, 1),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                ),
-                child: const Text('Submit Item'),
-              ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
       bottomNavigationBar: const NavBar(),
     );

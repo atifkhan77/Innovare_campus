@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:innovare_campus/components/uiHelper.dart';
 
 class CreateGroupScreen extends StatefulWidget {
   const CreateGroupScreen({Key? key}) : super(key: key);
@@ -95,10 +94,10 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
               ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                    backgroundColor: Color.fromRGBO(0, 0, 70, 1),
+                    backgroundColor: const Color.fromRGBO(0, 0, 70, 1),
                     minimumSize: Size(screenWidth * 0.65, screenHeight * 0.06)),
                 onPressed: _createGroup,
-                child: Text('Create Group'),
+                child: const Text('Create Group'),
               ),
               const SizedBox(
                 height: 20,
