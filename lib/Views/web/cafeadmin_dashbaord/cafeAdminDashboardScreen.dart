@@ -87,7 +87,7 @@ class CafeAdminDashboardScreen extends StatelessWidget {
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => ManageOrdersScreen()),
+                            MaterialPageRoute(builder: (context) => ManageOrderScreen()),
                           );
                         },
                       ),
