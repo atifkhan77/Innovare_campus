@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:innovare_campus/provider/cart_provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+
+
+import 'package:innovare_campus/provider/cafeOrder_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:innovare_campus/provider/cart_provider.dart';
+import 'package:innovare_campus/model/cafeOrder.dart';
 
 class CartScreen extends StatelessWidget {
   @override
@@ -32,8 +38,7 @@ class CartScreen extends StatelessWidget {
               var cartItem = cart.items.values.toList()[index];
               return Card(
                 color: Colors.transparent,
-                margin:
-                    const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                 child: ListTile(
                   leading: Image.network(
                     cartItem.imageUrl.isEmpty
@@ -77,8 +82,12 @@ class CartScreen extends StatelessWidget {
                           color: Colors.white,
                         ),
                         onPressed: () {
-                          cart.addItem(cartItem.id, cartItem.name,
-                              cartItem.price, cartItem.imageUrl);
+                          cart.addItem(
+                            cartItem.id,
+                            cartItem.name,
+                            cartItem.price,
+                            cartItem.imageUrl,
+                          );
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text(
@@ -141,15 +150,95 @@ class CartScreen extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () {
-                // Handle checkout logic here
+                _showPaymentOptions(context, cart);
               },
-              child: const Text(
-                'Checkout',
-              ),
+              child: const Text('Checkout'),
             ),
           ],
         ),
       ),
     );
   }
+
+  void _showPaymentOptions(BuildContext context, CartProvider cart) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Payment Options'),
+        content: const Text('Choose your payment method.'),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(); // Close the dialog
+              _handleCashPayment(context, cart);
+            },
+            child: const Text('Pay with Cash'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(); // Close the dialog
+              // Handle online payment here
+            },
+            child: const Text('Pay Online'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _handleCashPayment(BuildContext context, CartProvider cart) async {
+  final user = FirebaseAuth.instance.currentUser;
+
+  if (user == null) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('User not logged in.'),
+      ),
+    );
+    return;
+  }
+
+  final orderNumber = DateTime.now().millisecondsSinceEpoch.toString();
+  final totalPayment = cart.totalAmount;
+
+  final order = OrderConfirmation(
+   
+    id: '', // ID will be assigned by Firestore
+    email: user.displayName ?? user.email ?? 'Unknown User',
+    
+    orderNumber: orderNumber,
+    
+    totalPayment: totalPayment,
+    items: cart.items.values.map((item) => {
+      'id': item.id,
+      'name': item.name,
+      'price': item.price,
+      'quantity': item.quantity,
+      'imageUrl': item.imageUrl,
+    }).toList(),
+    paymentMethod: 'Cash',
+  );
+
+  try {
+    // Save order to Firestore
+    await Provider.of<OrderProvider>(context, listen: false).placeOrder(order);
+
+    // Clear the cart
+    cart.clearCart();
+
+    // Show a confirmation message
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Order placed successfully!'),
+        duration: Duration(seconds: 2),
+      ),
+    );
+  } catch (error) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Failed to place order: $error'),
+      ),
+    );
+  }
+}
 }
