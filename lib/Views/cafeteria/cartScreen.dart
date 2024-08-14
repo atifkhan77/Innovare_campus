@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:innovare_campus/Views/cafeteria/orderTrackingScreen.dart';
 
 
 
@@ -135,28 +136,42 @@ class CartScreen extends StatelessWidget {
         ],
       ),
       bottomNavigationBar: Container(
-        color: const Color.fromRGBO(49, 42, 119, 1),
-        padding: const EdgeInsets.all(16),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              'Total: \$${cart.totalAmount}',
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                _showPaymentOptions(context, cart);
-              },
-              child: const Text('Checkout'),
-            ),
-          ],
+  color: const Color.fromRGBO(49, 42, 119, 1),
+  padding: const EdgeInsets.all(16),
+  child: Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: [
+      Text(
+        'Total: \$${cart.totalAmount}',
+        style: const TextStyle(
+          color: Colors.white,
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
         ),
       ),
+      Row(
+        children: [
+          ElevatedButton(
+            onPressed: () {
+              _showPaymentOptions(context, cart);
+            },
+            child: const Text('Checkout'),
+          ),
+          SizedBox(width: 10),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => OrderTrackingScreen()),
+              );
+            },
+            child: const Text('Order Tracking'),
+          ),
+        ],
+      ),
+    ],
+  ),
+),
     );
   }
 
