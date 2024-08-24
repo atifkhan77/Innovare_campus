@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:innovare_campus/Views/chat/chatScreen.dart';
 import 'package:innovare_campus/Views/home.dart';
+import 'package:innovare_campus/Views/notifications/notificationsScreen.dart';
 
 class UiHelper {
   static CustomTextField(TextEditingController controller, String text,
@@ -99,7 +100,8 @@ class NavBar extends StatelessWidget {
             iconSize: 35,
             icon: const Icon(Icons.notifications_rounded),
             onPressed: () {
-              // Add functionality for settings icon here
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const NotificationsScreen()));
             },
           ),
         ],
