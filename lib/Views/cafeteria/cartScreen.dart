@@ -217,12 +217,9 @@ class CartScreen extends StatelessWidget {
   final totalPayment = cart.totalAmount;
 
   final order = OrderConfirmation(
-   
     id: '', // ID will be assigned by Firestore
     email: user.displayName ?? user.email ?? 'Unknown User',
-    
     orderNumber: orderNumber,
-    
     totalPayment: totalPayment,
     items: cart.items.values.map((item) => {
       'id': item.id,
@@ -232,6 +229,7 @@ class CartScreen extends StatelessWidget {
       'imageUrl': item.imageUrl,
     }).toList(),
     paymentMethod: 'Cash',
+    timestamp: DateTime.now(), // Set the timestamp to the current date and time
   );
 
   try {

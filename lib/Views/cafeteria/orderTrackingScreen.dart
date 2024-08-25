@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class OrderTrackingScreen extends StatefulWidget {
+  final String? initialOrderNumber; // Add initialOrderNumber parameter
+
+  OrderTrackingScreen({Key? key, this.initialOrderNumber}) : super(key: key);
+
   @override
   _OrderTrackingScreenState createState() => _OrderTrackingScreenState();
 }
@@ -10,6 +14,16 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
   final TextEditingController _inputController = TextEditingController();
   Map<String, dynamic>? orderData;
   bool isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    // Set the initial value of the inputController if initialOrderNumber is provided
+    if (widget.initialOrderNumber != null) {
+      _inputController.text = widget.initialOrderNumber!;
+      _searchOrder();
+    }
+  }
 
   Future<void> _searchOrder() async {
     String input = _inputController.text.trim();
