@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:innovare_campus/Views/cafeteria/cartScreen.dart';
 import 'package:innovare_campus/provider/cart_provider.dart';
-
 import 'package:provider/provider.dart';
 
 class CafeScreen extends StatefulWidget {
@@ -100,7 +99,8 @@ class _CafeScreenState extends State<CafeScreen> {
           itemBuilder: (context, index) {
             var item = menuItems[index];
             var name = item['name'];
-            var price = item['price'];
+            // Convert price to double if it's an int
+            var price = item['price'] is int ? (item['price'] as int).toDouble() : item['price'];
             var imageUrl = item['imageUrl'];
 
             return Card(

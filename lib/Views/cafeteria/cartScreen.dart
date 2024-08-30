@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:innovare_campus/Views/cafeteria/orderTrackingScreen.dart';
-
-
-
 import 'package:innovare_campus/provider/cafeOrder_provider.dart';
+import 'package:innovare_campus/stripe/stripe.dart';
 import 'package:provider/provider.dart';
 import 'package:innovare_campus/provider/cart_provider.dart';
 import 'package:innovare_campus/model/cafeOrder.dart';
@@ -136,42 +134,42 @@ class CartScreen extends StatelessWidget {
         ],
       ),
       bottomNavigationBar: Container(
-  color: const Color.fromRGBO(49, 42, 119, 1),
-  padding: const EdgeInsets.all(16),
-  child: Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: [
-      Text(
-        'Total: \$${cart.totalAmount}',
-        style: const TextStyle(
-          color: Colors.white,
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
+        color: const Color.fromRGBO(49, 42, 119, 1),
+        padding: const EdgeInsets.all(16),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'Total: \$${cart.totalAmount}',
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Row(
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    _showPaymentOptions(context, cart);
+                  },
+                  child: const Text('Checkout'),
+                ),
+                SizedBox(width: 10),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => OrderTrackingScreen()),
+                    );
+                  },
+                  child: const Text('Order Tracking'),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
-      Row(
-        children: [
-          ElevatedButton(
-            onPressed: () {
-              _showPaymentOptions(context, cart);
-            },
-            child: const Text('Checkout'),
-          ),
-          SizedBox(width: 10),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => OrderTrackingScreen()),
-              );
-            },
-            child: const Text('Order Tracking'),
-          ),
-        ],
-      ),
-    ],
-  ),
-),
     );
   }
 
@@ -190,9 +188,9 @@ class CartScreen extends StatelessWidget {
             child: const Text('Pay with Cash'),
           ),
           TextButton(
-            onPressed: () {
+            onPressed: () async {
               Navigator.of(context).pop(); // Close the dialog
-              // Handle online payment here
+              await _handleOnlinePayment(context, cart);
             },
             child: const Text('Pay Online'),
           ),
@@ -201,57 +199,115 @@ class CartScreen extends StatelessWidget {
     );
   }
 
+  Future<void> _handleOnlinePayment(BuildContext context, CartProvider cart) async {
+    final user = FirebaseAuth.instance.currentUser;
+
+    if (user == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('User not logged in.'),
+        ),
+      );
+      return;
+    }
+
+    final orderNumber = DateTime.now().millisecondsSinceEpoch.toString();
+    final totalPayment = cart.totalAmount;
+
+    // Create an order object (if needed) to save in Firestore
+    final order = OrderConfirmation(
+      id: '', // ID will be assigned by Firestore
+      email: user.email ?? 'Unknown User', // Use user.email
+      orderNumber: orderNumber,
+      totalPayment: totalPayment,
+      items: cart.items.values.map((item) => {
+        'id': item.id,
+        'name': item.name,
+        'price': item.price,
+        'quantity': item.quantity,
+        'imageUrl': item.imageUrl,
+      }).toList(),
+      paymentMethod: 'Online',
+      timestamp: DateTime.now(), // Set the timestamp to the current date and time
+    );
+
+    try {
+      // Save order to Firestore (if needed)
+      await Provider.of<OrderProvider>(context, listen: false).placeOrder(order);
+
+      // Call the Stripe payment method
+      await StripeService.instance.makePayment('Comsats Cafeteria', (totalPayment * 100).toInt(), user.email ?? 'Unknown User');
+
+      // Clear the cart
+      cart.clearCart();
+
+      // Show a confirmation message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Order placed successfully!'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to place order: $error'),
+        ),
+      );
+    }
+  }
+
   void _handleCashPayment(BuildContext context, CartProvider cart) async {
-  final user = FirebaseAuth.instance.currentUser;
+    final user = FirebaseAuth.instance.currentUser;
 
-  if (user == null) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('User not logged in.'),
-      ),
+    if (user == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('User not logged in.'),
+        ),
+      );
+      return;
+    }
+
+    final orderNumber = DateTime.now().millisecondsSinceEpoch.toString();
+    final totalPayment = cart.totalAmount;
+
+    final order = OrderConfirmation(
+      id: '', // ID will be assigned by Firestore
+      email: user.email ?? 'Unknown User', // Use user.email
+      orderNumber: orderNumber,
+      totalPayment: totalPayment,
+      items: cart.items.values.map((item) => {
+        'id': item.id,
+        'name': item.name,
+        'price': item.price,
+        'quantity': item.quantity,
+        'imageUrl': item.imageUrl,
+      }).toList(),
+      paymentMethod: 'Cash',
+      timestamp: DateTime.now(), // Set the timestamp to the current date and time
     );
-    return;
+
+    try {
+      // Save order to Firestore
+      await Provider.of<OrderProvider>(context, listen: false).placeOrder(order);
+
+      // Clear the cart
+      cart.clearCart();
+
+      // Show a confirmation message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Order placed successfully!'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to place order: $error'),
+        ),
+      );
+    }
   }
-
-  final orderNumber = DateTime.now().millisecondsSinceEpoch.toString();
-  final totalPayment = cart.totalAmount;
-
-  final order = OrderConfirmation(
-    id: '', // ID will be assigned by Firestore
-    email: user.displayName ?? user.email ?? 'Unknown User',
-    orderNumber: orderNumber,
-    totalPayment: totalPayment,
-    items: cart.items.values.map((item) => {
-      'id': item.id,
-      'name': item.name,
-      'price': item.price,
-      'quantity': item.quantity,
-      'imageUrl': item.imageUrl,
-    }).toList(),
-    paymentMethod: 'Cash',
-    timestamp: DateTime.now(), // Set the timestamp to the current date and time
-  );
-
-  try {
-    // Save order to Firestore
-    await Provider.of<OrderProvider>(context, listen: false).placeOrder(order);
-
-    // Clear the cart
-    cart.clearCart();
-
-    // Show a confirmation message
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Order placed successfully!'),
-        duration: Duration(seconds: 2),
-      ),
-    );
-  } catch (error) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Failed to place order: $error'),
-      ),
-    );
-  }
-}
 }
