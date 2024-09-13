@@ -41,9 +41,9 @@ Future<void> registerAdmins() async {
       password: 'cafepassword',
     );
 
-    print('Admins registered successfully');
+    debugPrint('Admins registered successfully');
   } catch (e) {
-    print('Error registering admins: $e');
+    debugPrint('Error registering admins: $e');
   }
 }
 
