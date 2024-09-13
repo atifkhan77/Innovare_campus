@@ -72,7 +72,7 @@ class _AdminScreenState extends State<AdminScreen>
           );
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Invalid admin credentials')),
+            const SnackBar(content: Text('Invalid admin credentials')),
           );
         }
       } catch (e) {
@@ -127,7 +127,7 @@ class _AdminScreenState extends State<AdminScreen>
                   ),
                   color: Colors.white,
                 ),
-                padding: EdgeInsets.all(20),
+                padding: const EdgeInsets.all(20),
                 child: SingleChildScrollView(
                   child: Form(
                     key: _formKey,
@@ -186,9 +186,9 @@ class _AdminScreenState extends State<AdminScreen>
                                   const Color.fromRGBO(49, 42, 119, 1),
                             ),
                             onPressed: _loginAdmin,
-                            child: Text(
+                            child: const Text(
                               "Login",
-                              style: const TextStyle(color: Colors.white),
+                              style: TextStyle(color: Colors.white),
                             ),
                           ),
                         ),
