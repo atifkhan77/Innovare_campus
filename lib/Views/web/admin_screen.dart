@@ -9,13 +9,39 @@ class AdminScreen extends StatefulWidget {
   _AdminScreenState createState() => _AdminScreenState();
 }
 
-class _AdminScreenState extends State<AdminScreen> {
+class _AdminScreenState extends State<AdminScreen>
+    with SingleTickerProviderStateMixin {
   bool _obscureText = true;
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  late AnimationController _controller;
+  late Animation<Offset> _slideAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller =
+        AnimationController(vsync: this, duration: const Duration(seconds: 3));
+
+    _slideAnimation = Tween<Offset>(
+      begin: const Offset(0, 1), // Start from bottom of the screen
+      end: Offset.zero, // End at its final position
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
+
+    _controller.forward();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    _usernameController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   void _togglePasswordVisibility() {
     setState(() {
@@ -76,88 +102,98 @@ class _AdminScreenState extends State<AdminScreen> {
           ),
           Positioned(
             left: screenWidth * .35,
-            top: screenHeight * .20,
-            child: const Text(
-              "Admin Login",
-              style: TextStyle(color: Colors.white, fontSize: 36),
+            top: screenHeight * .10, // Adjusted to accommodate the image
+            child: Column(
+              children: [
+                Image.asset('assets/logo.png'),
+                const SizedBox(height: 20), // Spacing between image and text
+                const Text(
+                  "Admin Login",
+                  style: TextStyle(color: Colors.white, fontSize: 36),
+                ),
+              ],
             ),
           ),
-          Padding(
-            padding: EdgeInsets.only(top: screenHeight * .30),
-            child: Container(
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  topRight: Radius.circular(20),
+          SlideTransition(
+            position: _slideAnimation,
+            child: Padding(
+              padding: EdgeInsets.only(
+                  top: screenHeight * .40), // Adjusted to accommodate the image
+              child: Container(
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20),
+                  ),
+                  color: Colors.white,
                 ),
-                color: Colors.white,
-              ),
-              padding: EdgeInsets.all(20),
-              child: SingleChildScrollView(
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      const SizedBox(height: 20),
-                      UiHelper.customText("Username"),
-                      TextFormField(
-                        controller: _usernameController,
-                        decoration: const InputDecoration(
-                          hintText: 'Enter your Username',
-                          hintStyle: TextStyle(color: Colors.black26),
+                padding: EdgeInsets.all(20),
+                child: SingleChildScrollView(
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        const SizedBox(height: 20),
+                        UiHelper.customText("Username"),
+                        TextFormField(
+                          controller: _usernameController,
+                          decoration: const InputDecoration(
+                            hintText: 'Enter your Username',
+                            hintStyle: TextStyle(color: Colors.black26),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your Username';
+                            }
+                            return null;
+                          },
                         ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your Username';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 20),
-                      UiHelper.customText("Password"),
-                      TextFormField(
-                        controller: _passwordController,
-                        obscureText: _obscureText,
-                        decoration: InputDecoration(
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              _obscureText
-                                  ? Icons.visibility
-                                  : Icons.visibility_off,
+                        const SizedBox(height: 20),
+                        UiHelper.customText("Password"),
+                        TextFormField(
+                          controller: _passwordController,
+                          obscureText: _obscureText,
+                          decoration: InputDecoration(
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                _obscureText
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                              ),
+                              onPressed: _togglePasswordVisibility,
                             ),
-                            onPressed: _togglePasswordVisibility,
+                            hintText: 'Enter your Password',
+                            hintStyle: const TextStyle(color: Colors.black26),
                           ),
-                          hintText: 'Enter your Password',
-                          hintStyle: const TextStyle(color: Colors.black26),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your password';
+                            }
+                            return null;
+                          },
                         ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your password';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 20),
-                      SizedBox(
-                        width: screenWidth * 0.5,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
+                        const SizedBox(height: 20),
+                        SizedBox(
+                          width: screenWidth * 0.5,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              padding: const EdgeInsets.symmetric(vertical: 8),
+                              backgroundColor:
+                                  const Color.fromRGBO(49, 42, 119, 1),
                             ),
-                            padding: const EdgeInsets.symmetric(vertical: 8),
-                            backgroundColor:
-                                const Color.fromRGBO(49, 42, 119, 1),
-                          ),
-                          onPressed: _loginAdmin,
-                          child: Text(
-                            "Login",
-                            style: const TextStyle(color: Colors.white),
+                            onPressed: _loginAdmin,
+                            child: Text(
+                              "Login",
+                              style: const TextStyle(color: Colors.white),
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
