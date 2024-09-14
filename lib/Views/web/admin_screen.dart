@@ -84,6 +84,12 @@ class _AdminScreenState extends State<AdminScreen>
   }
 
   @override
+  void reassemble() {
+    super.reassemble();
+    // Reinitialize anything that might be affected by hot reload.
+  }
+
+  @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
