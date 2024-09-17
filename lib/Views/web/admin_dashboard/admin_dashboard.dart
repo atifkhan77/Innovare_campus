@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:innovare_campus/Views/web/admin_dashboard/SocietiesManage/societyManagement.dart';
-import 'package:innovare_campus/Views/web/admin_dashboard/newsAnoouncement/newsManagementScreen.dart';
-import 'package:innovare_campus/Views/web/admin_dashboard/uiadmin.dart';
-import 'package:innovare_campus/Views/web/admin_dashboard/useraManage/usermanagementScreen.dart';
-import 'package:innovare_campus/provider/newsProvider.dart';
-import 'package:provider/provider.dart'; // Import the RotatedBackground widget
+import 'package:cloud_firestore/cloud_firestore.dart'; // Firestore import
+import 'package:fl_chart/fl_chart.dart'; // For the Pie Chart
 
 class AdminDashboardScreen extends StatefulWidget {
   @override
@@ -16,6 +12,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
   late Animation<Offset> _slideAnimation;
+  Map<String, int> regNoCounts = {};
 
   @override
   void initState() {
@@ -37,6 +34,9 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
       parent: _animationController,
       curve: Curves.easeOut,
     ));
+
+    // Fetch user data
+    fetchUsersData();
   }
 
   @override
@@ -45,119 +45,177 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
     super.dispose();
   }
 
+  Future<void> fetchUsersData() async {
+    try {
+      // Fetch all documents from the users collection
+      QuerySnapshot snapshot =
+          await FirebaseFirestore.instance.collection('users').get();
+
+      Map<String, int> tempCounts = {};
+
+      // Loop through each document and extract regNo
+      for (var doc in snapshot.docs) {
+        String regNo = doc['regNo'];
+        String prefix = regNo.substring(0, 4).toLowerCase(); // First four characters
+
+        // Count occurrences of each prefix
+        if (tempCounts.containsKey(prefix)) {
+          tempCounts[prefix] = tempCounts[prefix]! + 1;
+        } else {
+          tempCounts[prefix] = 1;
+        }
+      }
+
+      // Update the state with the counted prefixes
+      setState(() {
+        regNoCounts = tempCounts;
+      });
+    } catch (e) {
+      print('Error fetching user data: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => NewsProvider(),
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Admin Dashboard'),
-          automaticallyImplyLeading: false,
-        ),
-        body: Stack(
-          fit: StackFit.expand,
-          children: [
-            RotatedBackground(imagePath: 'assets/splash.png'),
-            SlideTransition(
-              position: _slideAnimation,
-              child: FadeTransition(
-                opacity: _fadeAnimation,
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      // Header Section
-                      const Padding(
-                        padding: EdgeInsets.all(32.0),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            CircleAvatar(
-                              radius: 50,
-                              backgroundImage:
-                                  AssetImage('assets/admin_profile.png'),
-                            ),
-                            SizedBox(width: 24),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Admin',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 32,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Admin Dashboard'),
+        automaticallyImplyLeading: false,
+      ),
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          SlideTransition(
+            position: _slideAnimation,
+            child: FadeTransition(
+              opacity: _fadeAnimation,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    // Header Section
+                    const Padding(
+                      padding: EdgeInsets.all(32.0),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          CircleAvatar(
+                            radius: 50,
+                            backgroundImage:
+                                AssetImage('assets/admin_profile.png'),
+                          ),
+                          SizedBox(width: 24),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Admin',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 32,
+                                  fontWeight: FontWeight.bold,
                                 ),
-                                SizedBox(height: 8),
-                                Text(
-                                  'Welcome Back',
-                                  style: TextStyle(
-                                    color: Colors.white70,
-                                    fontSize: 18,
-                                  ),
+                              ),
+                              SizedBox(height: 8),
+                              Text(
+                                'Welcome Back',
+                                style: TextStyle(
+                                  color: Colors.white70,
+                                  fontSize: 18,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    // Card Section and Pie Chart side by side
+                    Padding(
+                      padding: const EdgeInsets.all(32.0),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Cards Section
+                          Expanded(
+                            flex: 2,
+                            child: Wrap(
+                              spacing: 16.0,
+                              runSpacing: 16.0,
+                              alignment: WrapAlignment.center,
+                              children: [
+                                _buildAnimatedCard(
+                                  icon: Icons.person,
+                                  label: 'Add Users/View Users',
+                                  onTap: () {
+                                    // Navigate to user management screen
+                                  },
+                                ),
+                                _buildAnimatedCard(
+                                  icon: Icons.group,
+                                  label: 'Societies',
+                                  onTap: () {
+                                    // Navigate to society management screen
+                                  },
+                                ),
+                                _buildAnimatedCard(
+                                  icon: Icons.article,
+                                  label: 'News',
+                                  onTap: () {
+                                    // Navigate to news management screen
+                                  },
                                 ),
                               ],
                             ),
-                          ],
-                        ),
+                          ),
+                          // Pie Chart Section
+                          Expanded(
+                            flex: 1,
+                            child: SizedBox(
+                              height: 300,
+                              child: regNoCounts.isEmpty
+                                  ? Center(child: CircularProgressIndicator())
+                                  : PieChart(
+                                      PieChartData(
+                                        sections: showingSections(),
+                                        centerSpaceRadius: 40,
+                                        borderData: FlBorderData(show: false),
+                                        sectionsSpace: 2,
+                                      ),
+                                    ),
+                            ),
+                          ),
+                        ],
                       ),
-                      // Card Section with Wrap
-                      Padding(
-                        padding: const EdgeInsets.all(32.0),
-                        child: Wrap(
-                          spacing: 16.0, // space between cards horizontally
-                          runSpacing: 16.0, // space between cards vertically
-                          alignment: WrapAlignment.center,
-                          children: [
-                            _buildAnimatedCard(
-                              icon: Icons.person,
-                              label: 'Add Users/View Users',
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          UserManagementScreen()),
-                                );
-                              },
-                            ),
-                            _buildAnimatedCard(
-                              icon: Icons.group,
-                              label: 'Societies',
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        SocietyManagementScreen(),
-                                  ),
-                                );
-                              },
-                            ),
-                            _buildAnimatedCard(
-                              icon: Icons.article,
-                              label: 'News',
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          NewsManagementScreen()),
-                                );
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
+  }
+
+  List<PieChartSectionData> showingSections() {
+    if (regNoCounts.isEmpty) return [];
+
+    final totalUsers = regNoCounts.values.reduce((a, b) => a + b);
+
+    return regNoCounts.entries.map((entry) {
+      final percentage = (entry.value / totalUsers) * 100;
+      return PieChartSectionData(
+        color: Colors.primaries[regNoCounts.keys.toList().indexOf(entry.key) %
+            Colors.primaries.length],
+        value: percentage,
+        title: '${entry.key}: ${entry.value}',
+        radius: 50,
+        titleStyle: TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
+        ),
+      );
+    }).toList();
   }
 
   Widget _buildAnimatedCard({
