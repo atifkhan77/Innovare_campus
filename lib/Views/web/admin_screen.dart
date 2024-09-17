@@ -107,7 +107,7 @@ class _AdminScreenState extends State<AdminScreen>
             ),
           ),
           Positioned(
-            left: screenWidth * .35,
+            left: screenWidth * .41,
             top: screenHeight * .10, // Adjusted to accommodate the image
             child: Column(
               children: [
