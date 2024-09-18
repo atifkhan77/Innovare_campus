@@ -16,7 +16,8 @@ class CustomPieChart extends StatelessWidget {
       PieChartData(
         sections: _showingSections(),
         centerSpaceRadius: 0, // Remove hollow center
-        borderData: FlBorderData(show: false),
+        borderData:
+            FlBorderData(show: false), // Hide borders for a cleaner look
         sectionsSpace: 2,
       ),
     );
@@ -32,18 +33,19 @@ class CustomPieChart extends StatelessWidget {
       final percentage = (entry.value / totalUsers) * 100;
       final colorIndex = regNoCounts.keys.toList().indexOf(entry.key) %
           sectionColors.length; // Cycle through colors
+
       return PieChartSectionData(
         color: sectionColors[colorIndex], // Assign different colors to sections
         value: percentage,
-        title: '${entry.key}: ${entry.value}',
-        radius: 100,
+        title:
+            '${entry.key}: ${percentage.toStringAsFixed(1)}%', // Show both key and percentage
+        radius: 110, // Increased radius
         titleStyle: const TextStyle(
-          fontSize: 16,
+          fontSize: 14,
           fontWeight: FontWeight.bold,
-          color: Colors.black,
+          color: Colors.white,
         ),
-        titlePositionPercentageOffset:
-            1.4, // Position the title outside the pie
+        titlePositionPercentageOffset: 1.3, // Adjust title position
       );
     }).toList();
   }

@@ -81,12 +81,24 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Admin Dashboard'),
+        backgroundColor: const Color.fromRGBO(49, 42, 119, 1),
+        title: const Text(
+          'Admin Dashboard',
+          style: TextStyle(color: Colors.white),
+        ),
         automaticallyImplyLeading: false,
       ),
       body: Stack(
         fit: StackFit.expand,
         children: [
+          // Background image
+          Positioned.fill(
+            child: Image.asset(
+              'assets/Splash.png', // Replace with your image path
+              fit: BoxFit.cover,
+            ),
+          ),
+          // Content of the page
           SlideTransition(
             position: _slideAnimation,
             child: FadeTransition(
@@ -96,7 +108,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                   children: [
                     // Header Section
                     const Padding(
-                      padding: EdgeInsets.all(32.0),
+                      padding: EdgeInsets.all(10.0),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
@@ -130,6 +142,49 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                         ],
                       ),
                     ),
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Column(
+                            children: [
+                              Container(
+                                decoration: const BoxDecoration(
+                                  color: Color.fromRGBO(49, 42, 119, 1),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10)),
+                                ),
+                                height: 250,
+                                width: 400,
+                                child: Stack(
+                                  children: [
+                                    regNoCounts.isEmpty
+                                        ? const Center(
+                                            child: CircularProgressIndicator())
+                                        : CustomPieChart(
+                                            regNoCounts: regNoCounts),
+                                    Positioned(
+                                      top: 10,
+                                      left: 10,
+                                      child: const Text(
+                                        'Users',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+
                     // Card Section and Pie Chart side by side
                     Padding(
                       padding: const EdgeInsets.all(32.0),
@@ -151,12 +206,18 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                                     // Navigate to user management screen
                                   },
                                 ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
                                 _buildAnimatedCard(
                                   icon: Icons.group,
                                   label: 'Societies',
                                   onTap: () {
                                     // Navigate to society management screen
                                   },
+                                ),
+                                const SizedBox(
+                                  width: 10,
                                 ),
                                 _buildAnimatedCard(
                                   icon: Icons.article,
@@ -165,36 +226,20 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                                     // Navigate to news management screen
                                   },
                                 ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                _buildAnimatedCard(
+                                  icon: Icons.perm_device_information_sharp,
+                                  label: 'Lost and Found',
+                                  onTap: () {
+                                    // Navigate to news management screen
+                                  },
+                                ),
                               ],
                             ),
                           ),
                           // Pie Chart Section with static text and color selection
-                          Expanded(
-                            flex: 1,
-                            child: Column(
-                              children: [
-                                SizedBox(
-                                  height: 300,
-                                  child: regNoCounts.isEmpty
-                                      ? Center(
-                                          child: CircularProgressIndicator())
-                                      : CustomPieChart(
-                                          // Use custom pie chart widget here
-                                          regNoCounts: regNoCounts,
-                                        ),
-                                ),
-                                const SizedBox(height: 16),
-                                const Text(
-                                  'Users', // Static text below the pie chart
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                const SizedBox(height: 16),
-                              ],
-                            ),
-                          ),
                         ],
                       ),
                     ),
@@ -221,6 +266,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
           child: GestureDetector(
             onTap: onTap,
             child: Card(
+              color: const Color.fromRGBO(49, 42, 119, 1),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
@@ -232,13 +278,14 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(icon, size: 48, color: Colors.blueAccent),
+                    Icon(icon, size: 48, color: Colors.white),
                     const SizedBox(height: 16),
                     Text(
                       label,
                       style: const TextStyle(
+                        color: Colors.white,
                         fontSize: 18,
-                        fontWeight: FontWeight.w600,
+                        fontWeight: FontWeight.w500,
                       ),
                       textAlign: TextAlign.center,
                     ),

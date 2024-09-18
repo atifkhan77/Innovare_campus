@@ -20,7 +20,7 @@ class _SplashScreenState extends State<SplashScreen>
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 3), // Adjust the duration if needed
-    )..repeat(); // Continuously repeat the animation
+    ); // Continuously repeat the animation
 
     _rotationAnimation = Tween<double>(
       begin: 0.0,
