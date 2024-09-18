@@ -98,6 +98,31 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
               fit: BoxFit.cover,
             ),
           ),
+          // Diagonal background image
+          Positioned.fill(
+            child: Transform.rotate(
+              angle: -0.2, // Adjust angle as needed
+              child: Opacity(
+                opacity: 0.2, // Adjust opacity as needed
+                child: Image.asset(
+                  'assets/Splash.png', // Replace with your image path
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+          ),
+          // Centered and faded logo image
+          Align(
+            alignment: Alignment.center,
+            child: Opacity(
+              opacity: 0.4, // Adjust opacity as needed
+              child: Image.asset(
+                'assets/logo.png',
+                width: 800, // Adjust size as needed
+                height: 800, // Adjust size as needed
+              ),
+            ),
+          ),
           // Content of the page
           SlideTransition(
             position: _slideAnimation,
@@ -107,18 +132,18 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                 child: Column(
                   children: [
                     // Header Section
-                    const Padding(
-                      padding: EdgeInsets.all(10.0),
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          CircleAvatar(
-                            radius: 50,
-                            backgroundImage:
-                                AssetImage('assets/admin_profile.png'),
+                          Image.asset(
+                            'assets/logo.png',
+                            width: 70,
+                            height: 70,
                           ),
-                          SizedBox(width: 24),
-                          Column(
+                          const SizedBox(width: 24),
+                          const Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(

@@ -129,7 +129,7 @@ class OfferTutorScreen extends StatelessWidget {
                     decoration: const InputDecoration(
                       hintStyle: TextStyle(color: Colors.white),
                       labelStyle: TextStyle(color: Colors.white),
-                      labelText: 'Tutor Name',
+                      labelText: 'Name',
                       hintText: 'Enter your name',
                       border: OutlineInputBorder(),
                     ),

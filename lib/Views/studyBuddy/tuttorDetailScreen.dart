@@ -109,10 +109,12 @@ class TutorDetailScreen extends StatelessWidget {
                                 Padding(
                                   padding: const EdgeInsets.all(16.0),
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       const CircleAvatar(
-                                        backgroundImage: AssetImage('assets/placeholder.png'),
+                                        backgroundImage: AssetImage(
+                                            'assets/placeholder.png'),
                                         radius: 50,
                                       ),
                                       const SizedBox(height: 16),
@@ -134,29 +136,39 @@ class TutorDetailScreen extends StatelessWidget {
                                       const Divider(color: Colors.white70),
                                       const SizedBox(height: 16),
                                       Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
                                           const Text(
                                             'Contact',
-                                            style: TextStyle(color: Colors.white70, fontSize: 18),
+                                            style: TextStyle(
+                                                color: Colors.white70,
+                                                fontSize: 18),
                                           ),
                                           Text(
                                             contactNumber,
-                                            style: const TextStyle(color: Colors.white70, fontSize: 18),
+                                            style: const TextStyle(
+                                                color: Colors.white70,
+                                                fontSize: 18),
                                           ),
                                         ],
                                       ),
                                       const SizedBox(height: 16),
                                       Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
                                           const Text(
                                             'Availability',
-                                            style: TextStyle(color: Colors.white70, fontSize: 18),
+                                            style: TextStyle(
+                                                color: Colors.white70,
+                                                fontSize: 18),
                                           ),
                                           Text(
                                             availability,
-                                            style: const TextStyle(color: Colors.white70, fontSize: 18),
+                                            style: const TextStyle(
+                                                color: Colors.white70,
+                                                fontSize: 18),
                                           ),
                                         ],
                                       ),
@@ -168,24 +180,34 @@ class TutorDetailScreen extends StatelessWidget {
                                   padding: const EdgeInsets.all(16.0),
                                   child: ElevatedButton(
                                     onPressed: () async {
-                                      final studentName = await _getStudentName();
+                                      final studentName =
+                                          await _getStudentName();
 
                                       final request = Request(
                                         tutorName: name,
                                         studentName: studentName,
-                                        message: 'Requesting for tutoring in $subjectExpertise', id: '',
+                                        message:
+                                            'Requesting for tutoring in $subjectExpertise',
+                                        id: '',
                                       );
 
-                                      await Provider.of<TutorProvider>(context, listen: false).sendRequest(request);
+                                      await Provider.of<TutorProvider>(context,
+                                              listen: false)
+                                          .sendRequest(request);
 
                                       // Show a confirmation message
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                        const SnackBar(content: Text('Request sent successfully')),
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                            content: Text(
+                                                'Request sent successfully')),
                                       );
                                     },
                                     style: ElevatedButton.styleFrom(
-                                      backgroundColor: const Color.fromRGBO(49, 42, 119, 1),
-                                      padding: const EdgeInsets.symmetric(vertical: 16),
+                                      backgroundColor:
+                                          const Color.fromRGBO(49, 42, 119, 1),
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 16),
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(8),
                                       ),

@@ -141,16 +141,16 @@ class _AdminScreenState extends State<AdminScreen>
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         const SizedBox(height: 20),
-                        UiHelper.customText("Username"),
+                        UiHelper.customText("Admin Id"),
                         TextFormField(
                           controller: _usernameController,
                           decoration: const InputDecoration(
-                            hintText: 'Enter your Username',
+                            hintText: 'Enter your Admin Id',
                             hintStyle: TextStyle(color: Colors.black26),
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Please enter your Username';
+                              return 'Please enter your admin Id';
                             }
                             return null;
                           },
