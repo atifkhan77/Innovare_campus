@@ -163,10 +163,10 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                                             child: CircularProgressIndicator())
                                         : CustomPieChart(
                                             regNoCounts: regNoCounts),
-                                    Positioned(
+                                    const Positioned(
                                       top: 10,
                                       left: 10,
-                                      child: const Text(
+                                      child: Text(
                                         'Users',
                                         style: TextStyle(
                                           color: Colors.white,
