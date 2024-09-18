@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart'; // Firestore import
-import 'package:fl_chart/fl_chart.dart'; // For the Pie Chart
+import 'package:innovare_campus/Views/web/admin_dashboard/useraManage/Adminwidgets/piechart.dart';
+// Import your pie chart widget here
 
 class AdminDashboardScreen extends StatefulWidget {
   @override
@@ -56,7 +57,8 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
       // Loop through each document and extract regNo
       for (var doc in snapshot.docs) {
         String regNo = doc['regNo'];
-        String prefix = regNo.substring(0, 4).toLowerCase(); // First four characters
+        String prefix =
+            regNo.substring(0, 4).toLowerCase(); // First four characters
 
         // Count occurrences of each prefix
         if (tempCounts.containsKey(prefix)) {
@@ -166,21 +168,31 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                               ],
                             ),
                           ),
-                          // Pie Chart Section
+                          // Pie Chart Section with static text and color selection
                           Expanded(
                             flex: 1,
-                            child: SizedBox(
-                              height: 300,
-                              child: regNoCounts.isEmpty
-                                  ? Center(child: CircularProgressIndicator())
-                                  : PieChart(
-                                      PieChartData(
-                                        sections: showingSections(),
-                                        centerSpaceRadius: 40,
-                                        borderData: FlBorderData(show: false),
-                                        sectionsSpace: 2,
-                                      ),
-                                    ),
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  height: 300,
+                                  child: regNoCounts.isEmpty
+                                      ? Center(
+                                          child: CircularProgressIndicator())
+                                      : CustomPieChart(
+                                          // Use custom pie chart widget here
+                                          regNoCounts: regNoCounts,
+                                        ),
+                                ),
+                                const SizedBox(height: 16),
+                                const Text(
+                                  'Users', // Static text below the pie chart
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                const SizedBox(height: 16),
+                              ],
                             ),
                           ),
                         ],
@@ -194,28 +206,6 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
         ],
       ),
     );
-  }
-
-  List<PieChartSectionData> showingSections() {
-    if (regNoCounts.isEmpty) return [];
-
-    final totalUsers = regNoCounts.values.reduce((a, b) => a + b);
-
-    return regNoCounts.entries.map((entry) {
-      final percentage = (entry.value / totalUsers) * 100;
-      return PieChartSectionData(
-        color: Colors.primaries[regNoCounts.keys.toList().indexOf(entry.key) %
-            Colors.primaries.length],
-        value: percentage,
-        title: '${entry.key}: ${entry.value}',
-        radius: 50,
-        titleStyle: TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.bold,
-          color: Colors.white,
-        ),
-      );
-    }).toList();
   }
 
   Widget _buildAnimatedCard({
