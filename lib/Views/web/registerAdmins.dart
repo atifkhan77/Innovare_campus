@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 
 Future<void> registerAdmins() async {
   try {
@@ -16,9 +17,9 @@ Future<void> registerAdmins() async {
       password: 'cafepassword',
     );
 
-    print('Admins registered successfully');
+    debugPrint('Admins registered successfully');
   } catch (e) {
-    print('Error registering admins: $e');
+    debugPrint('Error registering admins: $e');
   }
 }
 

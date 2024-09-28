@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fl_chart/fl_chart.dart'; // Chart package
 import 'package:innovare_campus/Views/web/Adminwidgets/drawers.dart';
-import 'package:innovare_campus/Views/web/admin_dashboard/SocietiesManage/societyManagement.dart';
-import 'package:innovare_campus/Views/web/admin_dashboard/newsAnoouncement/newsManagementScreen.dart';
 import 'package:innovare_campus/Views/web/Adminwidgets/piechart.dart';
 
 class AdminDashboardScreen extends StatefulWidget {
@@ -78,10 +76,10 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
   Future<void> fetchUserGrowthData() async {
     // Simulating user growth data for the area chart
     List<FlSpot> tempData = [
-      FlSpot(0, 10), // Month 1, 10 users
-      FlSpot(1, 20), // Month 2, 20 users
-      FlSpot(2, 40), // Month 3, 40 users
-      FlSpot(3, 80), // Month 4, 80 users
+      const FlSpot(0, 10), // Month 1, 10 users
+      const FlSpot(1, 20), // Month 2, 20 users
+      const FlSpot(2, 40), // Month 3, 40 users
+      const FlSpot(3, 80), // Month 4, 80 users
     ];
 
     setState(() {
@@ -169,7 +167,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                           const SizedBox(width: 10),
                           Expanded(
                             child: _buildCard(
-                              title: 'User Growth Over Time',
+                              title: 'Users Growth Over Time',
                               child: userGrowthData.isEmpty
                                   ? const Center(
                                       child: CircularProgressIndicator())
@@ -204,8 +202,8 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
   Widget _buildAreaChart() {
     return LineChart(
       LineChartData(
-        gridData: FlGridData(show: true),
-        titlesData: FlTitlesData(show: true),
+        gridData: const FlGridData(show: true),
+        titlesData: const FlTitlesData(show: true),
         borderData: FlBorderData(show: true),
         minX: 0,
         maxX: 3,
@@ -222,7 +220,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
             ),
             barWidth: 4,
             isStrokeCapRound: true,
-            dotData: FlDotData(show: true),
+            dotData: const FlDotData(show: true),
           ),
         ],
       ),
@@ -233,11 +231,11 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10),
       decoration: BoxDecoration(
-        color: Color.fromRGBO(49, 42, 119, 1),
-        borderRadius: BorderRadius.all(Radius.circular(10)),
+        color: const Color.fromRGBO(49, 42, 119, 1),
+        borderRadius: const BorderRadius.all(Radius.circular(10)),
         boxShadow: [
           BoxShadow(
-            color: Colors.white.withOpacity(0.2),
+            color: Colors.black.withOpacity(0.2),
             spreadRadius: 2,
             blurRadius: 5,
             offset: const Offset(0, 3), // Changes the position of the shadow

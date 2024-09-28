@@ -133,7 +133,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => RecieveTutor()));
+                              builder: (context) => const RecieveTutor()));
                     },
                   ),
                   CardComponent(
@@ -163,7 +163,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => LostFoundScreen()));
+                              builder: (context) => const LostFoundScreen()));
                     },
                   ),
                   CardComponent(

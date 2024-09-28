@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:innovare_campus/Views/web/admin_dashboard/SocietiesManage/societyManagement.dart';
 import 'package:innovare_campus/Views/web/admin_dashboard/admin_dashboard.dart';
 import 'package:innovare_campus/Views/web/admin_dashboard/newsAnoouncement/newsManagementScreen.dart';
+import 'package:innovare_campus/Views/web/admin_dashboard/useraManage/usermanagementScreen.dart';
 
 class CustomDrawer extends StatelessWidget {
   @override
@@ -31,6 +32,11 @@ class CustomDrawer extends StatelessWidget {
             icon: Icons.person,
             label: 'Add Users/View Users',
             onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => UserManagementScreen(),
+                ),
+              );
               // Handle navigation
             },
           ),
@@ -85,9 +91,10 @@ class CustomDrawer extends StatelessWidget {
   }) {
     return ListTile(
       leading: Icon(icon,
-          color: Color.fromRGBO(49, 42, 119, 1)), // Set icon color to white
-      title:
-          Text(label, style: TextStyle(color: Color.fromRGBO(49, 42, 119, 1))),
+          color:
+              const Color.fromRGBO(49, 42, 119, 1)), // Set icon color to white
+      title: Text(label,
+          style: const TextStyle(color: Color.fromRGBO(49, 42, 119, 1))),
       onTap: onTap,
     );
   }
