@@ -1,11 +1,9 @@
-
-
 class MenuItem {
-  late final String id;
-  final String name;
-  final double price;
-  final String imageUrl;
-  final String category;
+  String id;
+  String name;
+  double price;
+  String imageUrl;
+  String category;
 
   MenuItem({
     required this.id,
@@ -15,7 +13,6 @@ class MenuItem {
     required this.category,
   });
 
-  // Convert MenuItem to a Map for Firestore
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -26,10 +23,9 @@ class MenuItem {
     };
   }
 
-  // Create a MenuItem from a Firestore document snapshot
-  factory MenuItem.fromMap(Map<String, dynamic> map, String documentId) {
+  factory MenuItem.fromMap(Map<String, dynamic> map) {
     return MenuItem(
-      id: documentId,
+      id: map['id'] ?? '',
       name: map['name'] ?? '',
       price: map['price']?.toDouble() ?? 0.0,
       imageUrl: map['imageUrl'] ?? '',

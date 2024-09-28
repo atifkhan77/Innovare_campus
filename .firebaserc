@@ -1,0 +1,9 @@
+{
+  "projects": {
+    "gsutil cors set cors.json gs://innovarecamp.appspot.com": "innovarecampus-877c6",
+    "gsutil cors set cors-config.json gs://innovarecamp.appspot.com": "innovarecamp"
+  },
+  "targets": {},
+  "etags": {},
+  "dataconnectEmulatorConfig": {}
+}

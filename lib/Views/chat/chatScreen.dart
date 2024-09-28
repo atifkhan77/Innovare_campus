@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/widgets.dart';
 import 'package:innovare_campus/Views/chat/CreateGroupScreen.dart';
 import 'package:innovare_campus/Views/chat/GroupListScreen.dart';
 import 'package:innovare_campus/Views/chat/chatBotScreen.dart';
 import 'package:innovare_campus/Views/chat/chatPage.dart';
 import 'package:innovare_campus/components/uiHelper.dart';
-//import 'create_group_screen.dart'; // import the create group screen
-//import 'group_list_screen.dart'; // import the group list screen
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({Key? key}) : super(key: key);
@@ -50,8 +47,7 @@ class _ChatScreenState extends State<ChatScreen> {
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage(
-                "assets/Splash.png"), // Set your background image here
+            image: AssetImage("assets/Splash.png"), // Set your background image here
             fit: BoxFit.cover,
           ),
         ),
@@ -107,7 +103,7 @@ class _ChatScreenState extends State<ChatScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: const NavBar(),
+      bottomNavigationBar: const NavBar(), // Assuming you have a NavBar widget
     );
   }
 
@@ -134,10 +130,14 @@ class _ChatScreenState extends State<ChatScreen> {
           itemCount: users.length,
           itemBuilder: (context, index) {
             final data = users[index].data()! as Map<String, dynamic>;
+            final profileImageUrl = data['profile_image_url'] ?? 'assets/placeholder.png'; // Default image if not found
+
             return ListTile(
-              leading: const CircleAvatar(
-                backgroundColor: Colors.grey,
-                child: Icon(Icons.person, color: Colors.white),
+              leading: CircleAvatar(
+                backgroundImage: NetworkImage(profileImageUrl),
+                child: profileImageUrl.isEmpty
+                    ? const Icon(Icons.person, color: Colors.white)
+                    : null,
               ),
               title: Text(
                 data['email'],

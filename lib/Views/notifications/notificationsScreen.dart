@@ -3,17 +3,23 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:innovare_campus/Views/cafeteria/orderTrackingScreen.dart';
 
+class NotificationItem {
+  final String message;
+  final String status;
+
+  NotificationItem({required this.message, required this.status});
+}
 
 class ChatBubble extends StatelessWidget {
   final String message;
-  final VoidCallback? onTap; // Add onTap callback
+  final VoidCallback? onTap;
 
   const ChatBubble({Key? key, required this.message, this.onTap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap, // Call onTap when tapped
+      onTap: onTap,
       child: Container(
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
@@ -47,8 +53,6 @@ class NotificationsScreen extends StatelessWidget {
         return null;
       }
 
-      print('Fetching orders for email: $userEmail');
-
       final querySnapshot = await FirebaseFirestore.instance
           .collection('orders')
           .where('email', isEqualTo: userEmail)
@@ -58,9 +62,7 @@ class NotificationsScreen extends StatelessWidget {
 
       if (querySnapshot.docs.isNotEmpty) {
         final latestOrder = querySnapshot.docs.first;
-        final orderNumber = latestOrder['orderNumber'] as String?;
-        print('Latest order number: $orderNumber');
-        return orderNumber;
+        return latestOrder['orderNumber'] as String?;
       } else {
         print('No orders found for the user');
       }
@@ -69,6 +71,36 @@ class NotificationsScreen extends StatelessWidget {
     }
 
     return null;
+  }
+
+  Future<List<NotificationItem>> _fetchTutoringStatusNotifications() async {
+    final user = FirebaseAuth.instance.currentUser;
+
+    if (user == null) {
+      return [];
+    }
+
+    final userName = user.displayName; // Assuming displayName is used for matching
+    if (userName == null) {
+      return [];
+    }
+
+    try {
+      final querySnapshot = await FirebaseFirestore.instance
+          .collection('requests')
+          .where('studentName', isEqualTo: userName)
+          .get();
+
+      return querySnapshot.docs.map((doc) {
+        return NotificationItem(
+          message: doc['message'] as String,
+          status: doc['status'] as String,
+        );
+      }).toList();
+    } catch (e) {
+      print('Error fetching tutoring notifications: $e');
+      return [];
+    }
   }
 
   @override
@@ -86,19 +118,23 @@ class NotificationsScreen extends StatelessWidget {
               fit: BoxFit.cover,
             ),
           ),
-          FutureBuilder<String?>(
-            future: _fetchLatestOrderNumber(),
+          FutureBuilder<List<dynamic>>(
+            future: Future.wait([
+              _fetchLatestOrderNumber(),
+              _fetchTutoringStatusNotifications(),
+            ]),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(child: CircularProgressIndicator());
               }
 
               if (snapshot.hasError) {
-                print('Snapshot error: ${snapshot.error}');
-                return const Center(child: Text('Error fetching order.'));
+                return const Center(child: Text('Error fetching notifications.'));
               }
 
-              final orderNumber = snapshot.data;
+              final orderNumber = snapshot.data![0] as String?;
+              final tutoringNotifications = snapshot.data![1] as List<NotificationItem>;
+
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -126,7 +162,22 @@ class NotificationsScreen extends StatelessWidget {
                         },
                       ),
                     ),
-                  Expanded(child: Container()), // This ensures the Column fills the remaining space
+                  // Display tutoring notifications
+                  for (var notification in tutoringNotifications)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ChatBubble(message: notification.message),
+                          Text(
+                            notification.status,
+                            style: const TextStyle(fontSize: 14, color: Colors.grey),
+                          ),
+                        ],
+                      ),
+                    ),
+                  Expanded(child: Container()), // Ensures the Column fills the remaining space
                 ],
               );
             },

@@ -1,12 +1,70 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:innovare_campus/Views/LostandFound/itemDetailScreen.dart';
 import 'package:innovare_campus/Views/LostandFound/uploadItemScreen.dart';
 import 'package:innovare_campus/components/uiHelper.dart';
 import 'package:provider/provider.dart';
 import 'package:innovare_campus/provider/lostfound_provider.dart';
 
-class LostFoundScreen extends StatelessWidget {
+class LostFoundScreen extends StatefulWidget {
   const LostFoundScreen({super.key});
+
+  @override
+  _LostFoundScreenState createState() => _LostFoundScreenState();
+}
+
+class _LostFoundScreenState extends State<LostFoundScreen> {
+  String? _profileImageUrl;
+  String? _userId;
+
+  @override
+  void initState() {
+    super.initState();
+    _getCurrentUserId();  // Get the logged-in user's ID
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _refreshLostFoundItems();
+    });
+  }
+
+  // Get the currently logged-in user's userId
+  Future<void> _getCurrentUserId() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      setState(() {
+        _userId = user.uid;  // Set userId for later use
+      });
+      await _loadProfileImage();
+    } else {
+      print("No user is currently logged in");
+    }
+  }
+
+  // Fetch profile image from Firestore
+  Future<void> _loadProfileImage() async {
+    if (_userId == null) return;
+    try {
+      final docRef = FirebaseFirestore.instance.collection('users').doc(_userId);
+      final doc = await docRef.get();
+      if (doc.exists && doc['profile_image_url'] != null) {
+        setState(() {
+          _profileImageUrl = doc['profile_image_url'];
+        });
+      } else {
+        setState(() {
+          _profileImageUrl = null; // Handle no image
+        });
+      }
+    } catch (e) {
+      print('Failed to load profile image: $e');
+    }
+  }
+
+  // Refresh lost and found items
+  Future<void> _refreshLostFoundItems() async {
+    await Provider.of<LostFoundProvider>(context, listen: false).fetchItems();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,15 +73,16 @@ class LostFoundScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(49, 42, 119, 1),
-        title: const Row(
+        title: Row(
           children: [
             CircleAvatar(
-              backgroundImage: AssetImage(
-                  'assets/profile_picture.png'), // Placeholder for profile picture
+              backgroundImage: _profileImageUrl != null
+                  ? NetworkImage(_profileImageUrl!)
+                  : const AssetImage('assets/placeholder.png') as ImageProvider,
             ),
-            SizedBox(width: 8),
-            Text(
-              'Welcome back, User', // Replace with dynamic user name
+            const SizedBox(width: 8),
+            const Text(
+              'Welcome',
               style: TextStyle(color: Colors.white70),
             ),
           ],
@@ -61,10 +120,8 @@ class LostFoundScreen extends StatelessWidget {
                   );
                 },
                 child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
-                  margin:
-                      const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+                  padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+                  margin: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
                   decoration: BoxDecoration(
                     color: Colors.white.withOpacity(0.2),
                     borderRadius: BorderRadius.circular(16),
@@ -93,8 +150,7 @@ class LostFoundScreen extends StatelessWidget {
                   builder: (context, provider, child) {
                     final items = provider.items;
                     return GridView.builder(
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 3,
                         mainAxisSpacing: 8,
                         crossAxisSpacing: 8,
@@ -107,8 +163,7 @@ class LostFoundScreen extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) =>
-                                    ItemDetailScreen(item: item),
+                                builder: (context) => ItemDetailScreen(item: item),
                               ),
                             );
                           },

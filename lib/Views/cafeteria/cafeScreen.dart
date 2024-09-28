@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:innovare_campus/Views/cafeteria/cartScreen.dart';
 import 'package:innovare_campus/provider/cart_provider.dart';
 import 'package:provider/provider.dart';
@@ -99,7 +100,6 @@ class _CafeScreenState extends State<CafeScreen> {
           itemBuilder: (context, index) {
             var item = menuItems[index];
             var name = item['name'];
-            // Convert price to double if it's an int
             var price = item['price'] is int ? (item['price'] as int).toDouble() : item['price'];
             var imageUrl = item['imageUrl'];
 
@@ -108,9 +108,23 @@ class _CafeScreenState extends State<CafeScreen> {
               child: Column(
                 children: [
                   Expanded(
-                    child: Image.network(
-                      imageUrl.isEmpty ? 'assets/placeholder.png' : imageUrl,
-                      fit: BoxFit.cover,
+                    child: FutureBuilder<String>(
+                      future: _getImageUrl(imageUrl),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return const Center(child: CircularProgressIndicator());
+                        } else if (snapshot.hasError || !snapshot.hasData || snapshot.data!.isEmpty) {
+                          return Image.asset('assets/logo.png', fit: BoxFit.cover);
+                        } else {
+                          return Image.network(
+                            snapshot.data!,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Image.asset('assets/logo.png', fit: BoxFit.cover);
+                            },
+                          );
+                        }
+                      },
                     ),
                   ),
                   Padding(
@@ -155,5 +169,17 @@ class _CafeScreenState extends State<CafeScreen> {
         );
       },
     );
+  }
+
+  Future<String> _getImageUrl(String imageUrl) async {
+    try {
+      if (imageUrl.isNotEmpty) {
+        return await FirebaseStorage.instance.ref(imageUrl).getDownloadURL();
+      }
+      return '';
+    } catch (e) {
+      print('Error fetching image URL: $e');
+      return '';
+    }
   }
 }
