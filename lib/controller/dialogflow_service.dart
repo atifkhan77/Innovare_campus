@@ -4,7 +4,8 @@ import 'package:googleapis_auth/auth_io.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
 class DialogflowService {
-  static const _dialogflowURL = "https://dialogflow.googleapis.com/v2/projects/comsatsbot-ktqv/agent/sessions/1234567890:detectIntent";
+  // Update with your project ID and session ID
+  static const _dialogflowURL = "https://dialogflow.googleapis.com/v2/projects/comsats-bot-p9fw/agent/sessions/1234567890:detectIntent";
 
   Future<String> getResponse(String query) async {
     // Load the service account credentials from JSON

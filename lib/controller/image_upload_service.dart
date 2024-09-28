@@ -1,44 +1,42 @@
 import 'package:firebase_storage/firebase_storage.dart';
-<<<<<<< HEAD
 import 'dart:html' as html;
 
-// Function to upload image to Firebase (for web)
 Future<String> uploadImageToFirebaseWeb() async {
-  final storageRef = FirebaseStorage.instance.ref();
-  final uploadInput = html.FileUploadInputElement();
-  uploadInput.accept = 'image/*';
-  uploadInput.click();
-
-  await uploadInput.onChange.first;
-  final file = uploadInput.files?.first;
-  if (file == null) return '';
-
-  final reader = html.FileReader();
-  reader.readAsDataUrl(file);
-  await reader.onLoad.first;
-
-  final uploadTask = storageRef.child('menu/${file.name}').putBlob(file);
-  final snapshot = await uploadTask.whenComplete(() {});
-  final downloadUrl = await snapshot.ref.getDownloadURL();
-  return downloadUrl;
-=======
-import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-
-Future<String> uploadImageToFirebase(XFile image) async {
   try {
-    final fileName = DateTime.now().millisecondsSinceEpoch.toString();
-    final ref =
-        FirebaseStorage.instance.ref().child('menu_images').child(fileName);
+    final storageRef = FirebaseStorage.instance.ref();
+    final uploadInput = html.FileUploadInputElement();
+    uploadInput.accept = 'image/*';
+    uploadInput.click();
 
-    final uploadTask = ref.putFile(File(image.path));
-    final snapshot = await uploadTask.whenComplete(() => {});
+    // Wait for the user to select a file
+    await uploadInput.onChange.first;
+    final file = uploadInput.files?.first;
+    if (file == null) {
+      throw Exception('No file selected');
+    }
+
+    // Read the file as a Data URL to display it
+    final reader = html.FileReader();
+    reader.readAsDataUrl(file);
+    await reader.onLoad.first;
+
+    // Create a reference to the Firebase Storage location and upload the file
+    final uploadTask = storageRef.child('menu/${file.name}').putBlob(file);
+
+    // Monitor upload progress
+    uploadTask.snapshotEvents.listen((event) {
+      final progress = (event.bytesTransferred / event.totalBytes) * 100;
+      print('Upload is ${progress.toStringAsFixed(2)}% complete');
+    });
+
+    // Wait for the upload to complete
+    final snapshot = await uploadTask.whenComplete(() {});
+
+    // Get the download URL
     final downloadUrl = await snapshot.ref.getDownloadURL();
-
     return downloadUrl;
   } catch (e) {
-    debugPrint('Error uploading image: $e');
+    print('Error uploading image: $e');
     return '';
   }
->>>>>>> 8814b96e78e813608943b356d2a6b6e56e8f7b2c
 }
