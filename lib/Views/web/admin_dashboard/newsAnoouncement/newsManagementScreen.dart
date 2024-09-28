@@ -3,7 +3,6 @@ import 'package:innovare_campus/model/news.dart';
 import 'package:innovare_campus/provider/newsProvider.dart';
 import 'package:provider/provider.dart';
 
-
 class NewsManagementScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -11,7 +10,7 @@ class NewsManagementScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('News Management'),
+        title: const Text('News Management'),
       ),
       body: ListView.builder(
         itemCount: newsProvider.newsList.length,
@@ -24,14 +23,14 @@ class NewsManagementScreen extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 IconButton(
-                  icon: Icon(Icons.edit, color: Colors.blue),
+                  icon: const Icon(Icons.edit, color: Colors.blue),
                   onPressed: () {
                     // Update news functionality
                     _showEditNewsDialog(context, newsProvider, news);
                   },
                 ),
                 IconButton(
-                  icon: Icon(Icons.delete, color: Colors.red),
+                  icon: const Icon(Icons.delete, color: Colors.red),
                   onPressed: () {
                     newsProvider.deleteNews(news.id);
                   },
@@ -46,7 +45,7 @@ class NewsManagementScreen extends StatelessWidget {
           // Add news functionality
           _showAddNewsDialog(context, newsProvider);
         },
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
     );
   }
@@ -59,17 +58,17 @@ class NewsManagementScreen extends StatelessWidget {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Add News'),
+          title: const Text('Add News'),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
                 controller: titleController,
-                decoration: InputDecoration(labelText: 'Title'),
+                decoration: const InputDecoration(labelText: 'Title'),
               ),
               TextField(
                 controller: contentController,
-                decoration: InputDecoration(labelText: 'Content'),
+                decoration: const InputDecoration(labelText: 'Content'),
               ),
               // Additional fields like Image URL, Link, QR Code can be added here
             ],
@@ -86,7 +85,7 @@ class NewsManagementScreen extends StatelessWidget {
                 newsProvider.addNews(newNews);
                 Navigator.of(context).pop();
               },
-              child: Text('Add'),
+              child: const Text('Add'),
             ),
           ],
         );
@@ -94,7 +93,8 @@ class NewsManagementScreen extends StatelessWidget {
     );
   }
 
-  void _showEditNewsDialog(BuildContext context, NewsProvider newsProvider, NewsModel news) {
+  void _showEditNewsDialog(
+      BuildContext context, NewsProvider newsProvider, NewsModel news) {
     final titleController = TextEditingController(text: news.title);
     final contentController = TextEditingController(text: news.content);
 
@@ -102,17 +102,17 @@ class NewsManagementScreen extends StatelessWidget {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Edit News'),
+          title: const Text('Edit News'),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
                 controller: titleController,
-                decoration: InputDecoration(labelText: 'Title'),
+                decoration: const InputDecoration(labelText: 'Title'),
               ),
               TextField(
                 controller: contentController,
-                decoration: InputDecoration(labelText: 'Content'),
+                decoration: const InputDecoration(labelText: 'Content'),
               ),
               // Additional fields like Image URL, Link, QR Code can be added here
             ],
@@ -126,7 +126,7 @@ class NewsManagementScreen extends StatelessWidget {
                 newsProvider.updateNews(news);
                 Navigator.of(context).pop();
               },
-              child: Text('Update'),
+              child: const Text('Update'),
             ),
           ],
         );

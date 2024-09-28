@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart'; // Firestore import
+import 'package:innovare_campus/Views/web/admin_dashboard/SocietiesManage/societyManagement.dart';
+import 'package:innovare_campus/Views/web/admin_dashboard/newsAnoouncement/newsManagementScreen.dart';
 import 'package:innovare_campus/Views/web/admin_dashboard/useraManage/Adminwidgets/piechart.dart';
 // Import your pie chart widget here
 
@@ -239,6 +241,10 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                                   label: 'Societies',
                                   onTap: () {
                                     // Navigate to society management screen
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                SocietyManagementScreen()));
                                   },
                                 ),
                                 const SizedBox(
@@ -248,6 +254,10 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                                   icon: Icons.article,
                                   label: 'News',
                                   onTap: () {
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                NewsManagementScreen()));
                                     // Navigate to news management screen
                                   },
                                 ),
