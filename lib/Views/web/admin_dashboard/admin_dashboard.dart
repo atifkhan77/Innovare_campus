@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart'; // Firestore import
-import 'package:innovare_campus/Views/web/admin_dashboard/useraManage/Adminwidgets/piechart.dart';
-// Import your pie chart widget here
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fl_chart/fl_chart.dart'; // Chart package
+import 'package:innovare_campus/Views/web/Adminwidgets/drawers.dart';
+import 'package:innovare_campus/Views/web/admin_dashboard/SocietiesManage/societyManagement.dart';
+import 'package:innovare_campus/Views/web/admin_dashboard/newsAnoouncement/newsManagementScreen.dart';
+import 'package:innovare_campus/Views/web/Adminwidgets/piechart.dart';
 
 class AdminDashboardScreen extends StatefulWidget {
   @override
@@ -14,6 +17,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
   late Animation<double> _fadeAnimation;
   late Animation<Offset> _slideAnimation;
   Map<String, int> regNoCounts = {};
+  List<FlSpot> userGrowthData = [];
 
   @override
   void initState() {
@@ -36,8 +40,8 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
       curve: Curves.easeOut,
     ));
 
-    // Fetch user data
     fetchUsersData();
+    fetchUserGrowthData(); // Fetch area chart data
   }
 
   @override
@@ -48,19 +52,14 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
 
   Future<void> fetchUsersData() async {
     try {
-      // Fetch all documents from the users collection
       QuerySnapshot snapshot =
           await FirebaseFirestore.instance.collection('users').get();
 
       Map<String, int> tempCounts = {};
-
-      // Loop through each document and extract regNo
       for (var doc in snapshot.docs) {
         String regNo = doc['regNo'];
-        String prefix =
-            regNo.substring(0, 4).toLowerCase(); // First four characters
+        String prefix = regNo.substring(0, 4).toLowerCase();
 
-        // Count occurrences of each prefix
         if (tempCounts.containsKey(prefix)) {
           tempCounts[prefix] = tempCounts[prefix]! + 1;
         } else {
@@ -68,13 +67,26 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
         }
       }
 
-      // Update the state with the counted prefixes
       setState(() {
         regNoCounts = tempCounts;
       });
     } catch (e) {
       print('Error fetching user data: $e');
     }
+  }
+
+  Future<void> fetchUserGrowthData() async {
+    // Simulating user growth data for the area chart
+    List<FlSpot> tempData = [
+      FlSpot(0, 10), // Month 1, 10 users
+      FlSpot(1, 20), // Month 2, 20 users
+      FlSpot(2, 40), // Month 3, 40 users
+      FlSpot(3, 80), // Month 4, 80 users
+    ];
+
+    setState(() {
+      userGrowthData = tempData;
+    });
   }
 
   @override
@@ -86,44 +98,18 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
           'Admin Dashboard',
           style: TextStyle(color: Colors.white),
         ),
-        automaticallyImplyLeading: false,
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
+      drawer: CustomDrawer(),
       body: Stack(
         fit: StackFit.expand,
         children: [
-          // Background image
           Positioned.fill(
             child: Image.asset(
-              'assets/Splash.png', // Replace with your image path
+              'assets/Splash.png',
               fit: BoxFit.cover,
             ),
           ),
-          // Diagonal background image
-          Positioned.fill(
-            child: Transform.rotate(
-              angle: -0.2, // Adjust angle as needed
-              child: Opacity(
-                opacity: 0.2, // Adjust opacity as needed
-                child: Image.asset(
-                  'assets/Splash.png', // Replace with your image path
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-          ),
-          // Centered and faded logo image
-          Align(
-            alignment: Alignment.center,
-            child: Opacity(
-              opacity: 0.4, // Adjust opacity as needed
-              child: Image.asset(
-                'assets/logo.png',
-                width: 800, // Adjust size as needed
-                height: 800, // Adjust size as needed
-              ),
-            ),
-          ),
-          // Content of the page
           SlideTransition(
             position: _slideAnimation,
             child: FadeTransition(
@@ -131,7 +117,6 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    // Header Section
                     Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: Row(
@@ -167,104 +152,42 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                         ],
                       ),
                     ),
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: Column(
-                            children: [
-                              Container(
-                                decoration: const BoxDecoration(
-                                  color: Color.fromRGBO(49, 42, 119, 1),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10)),
-                                ),
-                                height: 250,
-                                width: 400,
-                                child: Stack(
-                                  children: [
-                                    regNoCounts.isEmpty
-                                        ? const Center(
-                                            child: CircularProgressIndicator())
-                                        : CustomPieChart(
-                                            regNoCounts: regNoCounts),
-                                    const Positioned(
-                                      top: 10,
-                                      left: 10,
-                                      child: Text(
-                                        'Users',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(height: 10),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-
-                    // Card Section and Pie Chart side by side
                     Padding(
-                      padding: const EdgeInsets.all(32.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          // Cards Section
                           Expanded(
-                            flex: 2,
-                            child: Wrap(
-                              spacing: 16.0,
-                              runSpacing: 16.0,
-                              alignment: WrapAlignment.center,
-                              children: [
-                                _buildAnimatedCard(
-                                  icon: Icons.person,
-                                  label: 'Add Users/View Users',
-                                  onTap: () {
-                                    // Navigate to user management screen
-                                  },
-                                ),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                _buildAnimatedCard(
-                                  icon: Icons.group,
-                                  label: 'Societies',
-                                  onTap: () {
-                                    // Navigate to society management screen
-                                  },
-                                ),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                _buildAnimatedCard(
-                                  icon: Icons.article,
-                                  label: 'News',
-                                  onTap: () {
-                                    // Navigate to news management screen
-                                  },
-                                ),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                _buildAnimatedCard(
-                                  icon: Icons.perm_device_information_sharp,
-                                  label: 'Lost and Found',
-                                  onTap: () {
-                                    // Navigate to news management screen
-                                  },
-                                ),
-                              ],
+                            child: _buildCard(
+                              title: 'Users by Category',
+                              child: regNoCounts.isEmpty
+                                  ? const Center(
+                                      child: CircularProgressIndicator())
+                                  : CustomPieChart(regNoCounts: regNoCounts),
                             ),
                           ),
-                          // Pie Chart Section with static text and color selection
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: _buildCard(
+                              title: 'User Growth Over Time',
+                              child: userGrowthData.isEmpty
+                                  ? const Center(
+                                      child: CircularProgressIndicator())
+                                  : _buildAreaChart(),
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: _buildCard(
+                              title: 'Third Chart',
+                              child: const Center(
+                                child: Text(
+                                  'Placeholder for Third Chart',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -278,49 +201,67 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
     );
   }
 
-  Widget _buildAnimatedCard({
-    required IconData icon,
-    required String label,
-    required VoidCallback? onTap,
-  }) {
-    return AnimatedBuilder(
-      animation: _animationController,
-      builder: (context, child) {
-        return Transform.scale(
-          scale: _animationController.value * 0.2 + 1, // Scale animation
-          child: GestureDetector(
-            onTap: onTap,
-            child: Card(
-              color: const Color.fromRGBO(49, 42, 119, 1),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              elevation: 6,
-              child: Container(
-                width: 160,
-                height: 160,
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(icon, size: 48, color: Colors.white),
-                    const SizedBox(height: 16),
-                    Text(
-                      label,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
+  Widget _buildAreaChart() {
+    return LineChart(
+      LineChartData(
+        gridData: FlGridData(show: true),
+        titlesData: FlTitlesData(show: true),
+        borderData: FlBorderData(show: true),
+        minX: 0,
+        maxX: 3,
+        minY: 0,
+        maxY: 100,
+        lineBarsData: [
+          LineChartBarData(
+            spots: userGrowthData,
+            isCurved: true,
+            color: Colors.blueAccent.withOpacity(0.6),
+            belowBarData: BarAreaData(
+              show: true,
+              color: Colors.blueAccent.withOpacity(0.3),
+            ),
+            barWidth: 4,
+            isStrokeCapRound: true,
+            dotData: FlDotData(show: true),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCard({required String title, required Widget child}) {
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 10),
+      decoration: BoxDecoration(
+        color: Color.fromRGBO(49, 42, 119, 1),
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.white.withOpacity(0.2),
+            spreadRadius: 2,
+            blurRadius: 5,
+            offset: const Offset(0, 3), // Changes the position of the shadow
+          ),
+        ],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              title,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
               ),
             ),
-          ),
-        );
-      },
+            const SizedBox(height: 10),
+            SizedBox(height: 200, child: child),
+          ],
+        ),
+      ),
     );
   }
 }
