@@ -167,7 +167,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                           const SizedBox(width: 10),
                           Expanded(
                             child: _buildCard(
-                              title: 'User Growth Over Time',
+                              title: 'Users Growth Over Time',
                               child: userGrowthData.isEmpty
                                   ? const Center(
                                       child: CircularProgressIndicator())
@@ -235,7 +235,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
         borderRadius: const BorderRadius.all(Radius.circular(10)),
         boxShadow: [
           BoxShadow(
-            color: Colors.white.withOpacity(0.2),
+            color: Colors.black.withOpacity(0.2),
             spreadRadius: 2,
             blurRadius: 5,
             offset: const Offset(0, 3), // Changes the position of the shadow
