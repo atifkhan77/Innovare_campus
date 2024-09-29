@@ -44,70 +44,88 @@ class _ChatScreenState extends State<ChatScreen> {
           ),
         ],
       ),
-      body: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/Splash.png"), // Set your background image here
-            fit: BoxFit.cover,
+      body: Stack(
+        children: [
+          // Background image with opacity
+          Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(
+                    "assets/Splash.png"), // Set your background image
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: Container(
+              color:
+                  Colors.black.withOpacity(0.6), // Dark overlay for readability
+            ),
           ),
-        ),
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                controller: _searchController,
-                decoration: InputDecoration(
-                  hintText: 'Search',
-                  hintStyle: const TextStyle(color: Colors.white),
-                  prefixIcon: const Icon(Icons.search),
-                  iconColor: Colors.white,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
+          // Main content
+          Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextField(
+                  controller: _searchController,
+                  style: const TextStyle(color: Colors.white),
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.white.withOpacity(0.2),
+                    hintText: 'Search',
+                    hintStyle: const TextStyle(color: Colors.white),
+                    prefixIcon: const Icon(Icons.search, color: Colors.white),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30),
+                      borderSide: BorderSide.none,
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(vertical: 10),
                   ),
                 ),
               ),
-            ),
-            Expanded(child: _buildUserList()),
-            const SizedBox(height: 15),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromRGBO(0, 0, 70, 1),
-                  minimumSize: Size(screenWidth * 0.65, screenHeight * 0.06)),
-              child: const Text("Comsats Bot"),
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                      builder: (context) => const ChatbotScreen()),
-                );
-              },
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromRGBO(0, 0, 70, 1),
-                    minimumSize: Size(screenWidth * 0.65, screenHeight * 0.06)),
-                child: const Text("Create Group"),
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                        builder: (context) => const CreateGroupScreen()),
-                  );
-                },
+              Expanded(child: _buildUserList()),
+              const SizedBox(height: 15),
+              // Buttons in a row
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    _buildGradientButton(
+                      "Comsats Bot",
+                      () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                              builder: (context) => const ChatbotScreen()),
+                        );
+                      },
+                      screenWidth * 0.4, // Reduce button width for row
+                      screenHeight,
+                    ),
+                    _buildGradientButton(
+                      "Create Group",
+                      () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                              builder: (context) => const CreateGroupScreen()),
+                        );
+                      },
+                      screenWidth * 0.4, // Reduce button width for row
+                      screenHeight,
+                    ),
+                  ],
+                ),
               ),
-            ),
-            const SizedBox(
-              height: 20,
-            )
-          ],
-        ),
+              const SizedBox(
+                height: 20,
+              )
+            ],
+          ),
+        ],
       ),
       bottomNavigationBar: const NavBar(), // Assuming you have a NavBar widget
     );
   }
 
-  // Build the list of logged-in users
   Widget _buildUserList() {
     return StreamBuilder<QuerySnapshot>(
       stream: FirebaseFirestore.instance.collection('users').snapshots(),
@@ -130,44 +148,86 @@ class _ChatScreenState extends State<ChatScreen> {
           itemCount: users.length,
           itemBuilder: (context, index) {
             final data = users[index].data()! as Map<String, dynamic>;
-            final profileImageUrl = data['profile_image_url'] ?? 'assets/placeholder.png'; // Default image if not found
+            final profileImageUrl = data['profile_image_url'] ??
+                'assets/placeholder.png'; // Default image if not found
 
-            return ListTile(
-              leading: CircleAvatar(
-                backgroundImage: NetworkImage(profileImageUrl),
-                child: profileImageUrl.isEmpty
-                    ? const Icon(Icons.person, color: Colors.white)
-                    : null,
-              ),
-              title: Text(
-                data['email'],
-                style: const TextStyle(color: Colors.white70),
-              ),
-              subtitle: const Text(
-                'Hey, how are you?',
-                style: TextStyle(color: Colors.grey),
-              ),
-              trailing: const Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('2h ago', style: TextStyle(color: Colors.grey)),
-                  Icon(Icons.message, color: Colors.grey),
-                ],
-              ),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ChatPage(
-                      recieverUserEmail: data['email'],
-                    ),
+            return Padding(
+              padding:
+                  const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+              child: Card(
+                elevation: 5,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: ListTile(
+                  leading: CircleAvatar(
+                    backgroundImage: NetworkImage(profileImageUrl),
+                    radius: 30,
+                    child: profileImageUrl.isEmpty
+                        ? const Icon(Icons.person, color: Colors.white)
+                        : null,
                   ),
-                );
-              },
+                  title: Text(
+                    data['email'],
+                    style: const TextStyle(
+                        color: Colors.black87, fontWeight: FontWeight.bold),
+                  ),
+                  subtitle: const Text(
+                    'Hey, how are you?',
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                  trailing: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Text('2h ago', style: TextStyle(color: Colors.grey)),
+                      Icon(Icons.message, color: Colors.grey),
+                    ],
+                  ),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ChatPage(
+                          recieverUserEmail: data['email'],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
             );
           },
         );
       },
+    );
+  }
+
+  Widget _buildGradientButton(String text, VoidCallback onPressed,
+      double buttonWidth, double screenHeight) {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        padding: const EdgeInsets.all(0),
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
+      ),
+      onPressed: onPressed,
+      child: Ink(
+        decoration: BoxDecoration(
+          color: Color.fromRGBO(0, 0, 70, 1),
+          borderRadius: BorderRadius.circular(30.0),
+        ),
+        child: Container(
+          constraints: BoxConstraints(
+            minWidth: buttonWidth,
+            minHeight: screenHeight * 0.06,
+          ),
+          alignment: Alignment.center,
+          child: Text(
+            text,
+            style: const TextStyle(fontSize: 16, color: Colors.white),
+          ),
+        ),
+      ),
     );
   }
 }
