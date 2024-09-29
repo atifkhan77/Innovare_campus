@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fl_chart/fl_chart.dart'; // Chart package
+import 'package:innovare_campus/Views/web/Adminwidgets/drawers.dart';
 import 'package:innovare_campus/Views/web/admin_dashboard/SocietiesManage/societyManagement.dart';
 import 'package:innovare_campus/Views/web/admin_dashboard/newsAnoouncement/newsManagementScreen.dart';
-import 'package:innovare_campus/Views/web/admin_dashboard/useraManage/Adminwidgets/piechart.dart';
+import 'package:innovare_campus/Views/web/Adminwidgets/piechart.dart';
 
 class AdminDashboardScreen extends StatefulWidget {
   @override
@@ -99,7 +100,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
         ),
         iconTheme: const IconThemeData(color: Colors.white),
       ),
-      drawer: _buildDrawer(context),
+      drawer: CustomDrawer(),
       body: Stack(
         fit: StackFit.expand,
         children: [
@@ -261,75 +262,6 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
           ],
         ),
       ),
-    );
-  }
-
-  Drawer _buildDrawer(BuildContext context) {
-    return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: [
-          DrawerHeader(
-            decoration: const BoxDecoration(
-              color: Color.fromRGBO(49, 42, 119, 1),
-            ),
-            child: Column(
-              children: [
-                Image.asset('assets/logo.png', width: 80, height: 80),
-                const SizedBox(height: 16),
-                const Text(
-                  'Admin Dashboard',
-                  style: TextStyle(color: Colors.white, fontSize: 20),
-                ),
-              ],
-            ),
-          ),
-          _buildDrawerItem(
-            icon: Icons.person,
-            label: 'Add Users/View Users',
-            onTap: () {
-              // Handle navigation
-            },
-          ),
-          _buildDrawerItem(
-            icon: Icons.group,
-            label: 'Societies',
-            onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => SocietyManagementScreen(),
-              ));
-            },
-          ),
-          _buildDrawerItem(
-            icon: Icons.article,
-            label: 'News',
-            onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => NewsManagementScreen(),
-              ));
-            },
-          ),
-          _buildDrawerItem(
-            icon: Icons.perm_device_information_sharp,
-            label: 'Lost and Found',
-            onTap: () {
-              // Handle navigation
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
-  ListTile _buildDrawerItem({
-    required IconData icon,
-    required String label,
-    required VoidCallback onTap,
-  }) {
-    return ListTile(
-      leading: Icon(icon, color: Color.fromRGBO(49, 42, 119, 1)),
-      title: Text(label),
-      onTap: onTap,
     );
   }
 }

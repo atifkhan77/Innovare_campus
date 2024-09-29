@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:innovare_campus/Views/web/Adminwidgets/drawers.dart';
 import 'package:innovare_campus/model/news.dart';
 import 'package:innovare_campus/provider/newsProvider.dart';
 import 'package:provider/provider.dart';
@@ -10,17 +11,59 @@ class NewsManagementScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('News Management'),
+        title: const Text(
+          'News Management',
+          style: TextStyle(color: Colors.white),
+        ),
+        iconTheme: const IconThemeData(color: Colors.white),
+        backgroundColor: const Color.fromRGBO(49, 42, 119, 1),
       ),
-      body: ListView.builder(
-        itemCount: newsProvider.newsList.length,
-        itemBuilder: (context, index) {
-          final news = newsProvider.newsList[index];
-          return ListTile(
-            title: Text(news.title),
-            subtitle: Text(news.content),
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
+      drawer: CustomDrawer(),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: ListView.builder(
+          itemCount: newsProvider.newsList.length,
+          itemBuilder: (context, index) {
+            final news = newsProvider.newsList[index];
+            return _buildNewsCard(context, newsProvider, news);
+          },
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Add news functionality
+          _showAddNewsDialog(context, newsProvider);
+        },
+        child: const Icon(Icons.add),
+      ),
+    );
+  }
+
+  Widget _buildNewsCard(
+      BuildContext context, NewsProvider newsProvider, NewsModel news) {
+    return Card(
+      elevation: 4,
+      margin: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              news.title,
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 8.0),
+            Text(
+              news.content,
+              style: const TextStyle(fontSize: 16),
+            ),
+            const SizedBox(height: 12.0),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 IconButton(
                   icon: const Icon(Icons.edit, color: Colors.blue),
@@ -37,15 +80,8 @@ class NewsManagementScreen extends StatelessWidget {
                 ),
               ],
             ),
-          );
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Add news functionality
-          _showAddNewsDialog(context, newsProvider);
-        },
-        child: const Icon(Icons.add),
+          ],
+        ),
       ),
     );
   }
