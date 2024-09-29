@@ -1,6 +1,7 @@
 // custom_drawer.dart
 import 'package:flutter/material.dart';
 import 'package:innovare_campus/Views/web/admin_dashboard/SocietiesManage/societyManagement.dart';
+import 'package:innovare_campus/Views/web/admin_dashboard/admin_dashboard.dart';
 import 'package:innovare_campus/Views/web/admin_dashboard/newsAnoouncement/newsManagementScreen.dart';
 
 class CustomDrawer extends StatelessWidget {
@@ -59,6 +60,16 @@ class CustomDrawer extends StatelessWidget {
             label: 'Lost and Found',
             onTap: () {
               // Handle navigation
+            },
+          ),
+          _buildDrawerItem(
+            context: context,
+            icon: Icons.dashboard,
+            label: 'Dash Board',
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => AdminDashboardScreen(),
+              ));
             },
           ),
         ],
