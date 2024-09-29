@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:innovare_campus/model/cartItem.dart';
 
-
 class CartProvider with ChangeNotifier {
   Map<String, CartItem> _items = {};
 

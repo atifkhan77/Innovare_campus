@@ -1,3 +1,19 @@
+class CafeOrder {
+  final String id;
+  final String name;
+  final double price;
+  final String imageUrl;
+  int quantity;
+
+  CafeOrder({
+    required this.id,
+    required this.name,
+    required this.price,
+    required this.imageUrl,
+    this.quantity = 1,
+  });
+}
+
 class OrderConfirmation {
   String id;
   String email;
@@ -5,7 +21,7 @@ class OrderConfirmation {
   double totalPayment;
   List<Map<String, dynamic>> items; // A list of items in the order
   String paymentMethod;
-  DateTime timestamp; // New field for storing the order date and time
+  DateTime timestamp; // Field for storing the order date and time
 
   OrderConfirmation({
     required this.id,
@@ -31,7 +47,8 @@ class OrderConfirmation {
   }
 
   // Create an OrderConfirmation from a Firestore document snapshot
-  factory OrderConfirmation.fromMap(Map<String, dynamic> map, String documentId) {
+  factory OrderConfirmation.fromMap(
+      Map<String, dynamic> map, String documentId) {
     return OrderConfirmation(
       id: documentId,
       email: map['email'] ?? '',
@@ -39,7 +56,8 @@ class OrderConfirmation {
       totalPayment: map['totalPayment']?.toDouble() ?? 0.0,
       items: List<Map<String, dynamic>>.from(map['items'] ?? []),
       paymentMethod: map['paymentMethod'] ?? '',
-      timestamp: DateTime.parse(map['timestamp'] ?? DateTime.now().toIso8601String()), // Parse the timestamp
+      timestamp: DateTime.parse(map['timestamp'] ??
+          DateTime.now().toIso8601String()), // Parse the timestamp
     );
   }
 }

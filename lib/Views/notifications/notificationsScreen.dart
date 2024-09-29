@@ -14,7 +14,8 @@ class ChatBubble extends StatelessWidget {
   final String message;
   final VoidCallback? onTap;
 
-  const ChatBubble({Key? key, required this.message, this.onTap}) : super(key: key);
+  const ChatBubble({Key? key, required this.message, this.onTap})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,9 +23,17 @@ class ChatBubble extends StatelessWidget {
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.all(12),
+        margin: const EdgeInsets.symmetric(vertical: 5),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          color: Colors.blue,
+          borderRadius: BorderRadius.circular(12),
+          color: Colors.blueAccent, // Updated color for a modern look
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black26,
+              offset: Offset(0, 2),
+              blurRadius: 4,
+            ),
+          ],
         ),
         child: Text(
           message,
@@ -80,7 +89,8 @@ class NotificationsScreen extends StatelessWidget {
       return [];
     }
 
-    final userName = user.displayName; // Assuming displayName is used for matching
+    final userName =
+        user.displayName; // Assuming displayName is used for matching
     if (userName == null) {
       return [];
     }
@@ -129,27 +139,33 @@ class NotificationsScreen extends StatelessWidget {
               }
 
               if (snapshot.hasError) {
-                return const Center(child: Text('Error fetching notifications.'));
+                return const Center(
+                    child: Text('Error fetching notifications.'));
               }
 
               final orderNumber = snapshot.data![0] as String?;
-              final tutoringNotifications = snapshot.data![1] as List<NotificationItem>;
+              final tutoringNotifications =
+                  snapshot.data![1] as List<NotificationItem>;
 
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 16),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                    child: const ChatBubble(
-                      message: "Welcome to Innovare_Campus",
+              return Padding(
+                padding: const EdgeInsets.all(
+                    16.0), // Added padding for better spacing
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 10),
+                    const Text(
+                      "Welcome to Innovare_Campus",
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
                     ),
-                  ),
-                  if (orderNumber != null)
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                      child: ChatBubble(
-                        message: "Your order is placed and your order number is $orderNumber",
+                    const SizedBox(height: 10),
+                    if (orderNumber != null)
+                      ChatBubble(
+                        message:
+                            "Your order is placed and your order number is $orderNumber",
                         onTap: () {
                           Navigator.push(
                             context,
@@ -161,24 +177,29 @@ class NotificationsScreen extends StatelessWidget {
                           );
                         },
                       ),
-                    ),
-                  // Display tutoring notifications
-                  for (var notification in tutoringNotifications)
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ChatBubble(message: notification.message),
-                          Text(
-                            notification.status,
-                            style: const TextStyle(fontSize: 14, color: Colors.grey),
-                          ),
-                        ],
+                    const SizedBox(height: 10),
+                    // Display tutoring notifications
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: tutoringNotifications.length,
+                        itemBuilder: (context, index) {
+                          final notification = tutoringNotifications[index];
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              ChatBubble(message: notification.message),
+                              Text(
+                                notification.status,
+                                style: const TextStyle(
+                                    fontSize: 14, color: Colors.grey),
+                              ),
+                            ],
+                          );
+                        },
                       ),
                     ),
-                  Expanded(child: Container()), // Ensures the Column fills the remaining space
-                ],
+                  ],
+                ),
               );
             },
           ),

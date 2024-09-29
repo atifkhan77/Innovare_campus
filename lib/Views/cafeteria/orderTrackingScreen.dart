@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:innovare_campus/provider/cafeOrder_provider.dart';
+import 'package:provider/provider.dart';
 
 class OrderTrackingScreen extends StatefulWidget {
-  final String? initialOrderNumber; // Add initialOrderNumber parameter
+  final String? initialOrderNumber;
 
   OrderTrackingScreen({Key? key, this.initialOrderNumber}) : super(key: key);
 
@@ -18,11 +21,23 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
   @override
   void initState() {
     super.initState();
-    // Set the initial value of the inputController if initialOrderNumber is provided
     if (widget.initialOrderNumber != null) {
       _inputController.text = widget.initialOrderNumber!;
       _searchOrder();
     }
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Save the provider reference here
+    Provider.of<OrderProvider>(context);
+  }
+
+  @override
+  void dispose() {
+    _inputController.dispose();
+    super.dispose();
   }
 
   Future<void> _searchOrder() async {
@@ -37,13 +52,11 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
     QuerySnapshot orderSnapshot;
     try {
       if (input.contains('@')) {
-        // Search by email
         orderSnapshot = await FirebaseFirestore.instance
             .collection('orders')
             .where('email', isEqualTo: input)
             .get();
       } else {
-        // Search by order number
         orderSnapshot = await FirebaseFirestore.instance
             .collection('orders')
             .where('orderNumber', isEqualTo: input)
@@ -51,25 +64,39 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
       }
 
       if (orderSnapshot.docs.isNotEmpty) {
-        setState(() {
-          orderData = orderSnapshot.docs.first.data() as Map<String, dynamic>?;
-        });
+        if (mounted) {
+          // Check if widget is still mounted before calling setState
+          setState(() {
+            orderData =
+                orderSnapshot.docs.first.data() as Map<String, dynamic>?;
+          });
+        }
       } else {
-        setState(() {
-          orderData = null;
-        });
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('No order found with this email or order number.')),
-        );
+        if (mounted) {
+          setState(() {
+            orderData = null;
+          });
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+                content:
+                    Text('No order found with this email or order number.')),
+          );
+        }
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('An error occurred while searching for the order.')),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+              content:
+                  Text('An error occurred while searching for the order.')),
+        );
+      }
     } finally {
-      setState(() {
-        isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
     }
   }
 
@@ -77,45 +104,166 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Track Your Order'),
+        title: const Text('Track Your Order'),
+        backgroundColor: const Color.fromRGBO(49, 42, 119, 1),
+        elevation: 0,
       ),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            TextField(
-              controller: _inputController,
-              decoration: InputDecoration(
-                labelText: 'Enter your email or order number',
+      body: Stack(
+        children: [
+          // Background image with overlay
+          Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(
+                    'assets/Splash.png'), // Path to your background image
+                fit: BoxFit.cover,
               ),
             ),
-            SizedBox(height: 16.0),
-            ElevatedButton(
-              onPressed: isLoading ? null : _searchOrder,
-              child: isLoading ? CircularProgressIndicator() : Text('Track Order'),
+          ),
+          Container(
+            color: Colors.black.withOpacity(0.4), // Overlay for readability
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Input field with themed gradient border
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    gradient: const LinearGradient(
+                      colors: [
+                        Color.fromRGBO(49, 42, 119, 1),
+                        Color(0xFF7E57C2),
+                      ],
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black26,
+                        offset: Offset(0, 4),
+                        blurRadius: 6,
+                      ),
+                    ],
+                  ),
+                  child: TextField(
+                    controller: _inputController,
+                    decoration: InputDecoration(
+                      labelText: 'Enter your email or order number',
+                      labelStyle: GoogleFonts.poppins(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      filled: true,
+                      fillColor: Colors.white.withOpacity(0.1),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide.none,
+                      ),
+                      contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 12),
+                    ),
+                    style: GoogleFonts.poppins(color: Colors.white),
+                  ),
+                ),
+                const SizedBox(height: 16.0),
+
+                // Track Order Button with gradient and shadow
+                ElevatedButton(
+                  onPressed: isLoading ? null : _searchOrder,
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size(double.infinity, 50),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    textStyle: GoogleFonts.poppins(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                    backgroundColor: const Color.fromRGBO(49, 42, 119, 1),
+                    shadowColor: Color.fromRGBO(49, 42, 119, 0.6),
+                    elevation: 8,
+                  ),
+                  child: isLoading
+                      ? CircularProgressIndicator(
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(Colors.white),
+                        )
+                      : const Text(
+                          'Track Order',
+                        ),
+                ),
+                const SizedBox(height: 24.0),
+
+                // Order details with fade-in animation and reduced size
+                if (orderData != null)
+                  Expanded(
+                    child: AnimatedOpacity(
+                      opacity: orderData != null ? 1.0 : 0.0,
+                      duration: const Duration(milliseconds: 300),
+                      child: Container(
+                        constraints: const BoxConstraints(
+                          maxHeight: 200, // Set max height for the card
+                        ),
+                        child: Card(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12)),
+                          color: Colors.white.withOpacity(0.9),
+                          elevation: 10,
+                          shadowColor:
+                              Color.fromRGBO(49, 42, 119, 0.6), // theme shadow
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: SingleChildScrollView(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Order Status: ${orderData!['status'] ?? 'Unknown'}',
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.bold,
+                                      color:
+                                          const Color.fromRGBO(49, 42, 119, 1),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 8.0),
+                                  Text(
+                                    'Total Payment: \$${orderData!['totalPayment']}',
+                                    style: GoogleFonts.poppins(fontSize: 16.0),
+                                  ),
+                                  const SizedBox(height: 16.0),
+                                  const Text(
+                                    'Items:',
+                                    style: TextStyle(
+                                        fontSize: 16.0,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  const SizedBox(height: 8.0),
+                                  ...orderData!['items'].map<Widget>((item) {
+                                    return Padding(
+                                      padding:
+                                          const EdgeInsets.only(bottom: 4.0),
+                                      child: Text(
+                                        '${item['name']} x ${item['quantity']}',
+                                        style:
+                                            GoogleFonts.poppins(fontSize: 14.0),
+                                      ),
+                                    );
+                                  }).toList(),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
             ),
-            SizedBox(height: 16.0),
-            if (orderData != null) ...[
-              Text(
-                'Order Status: ${orderData!['status']}',
-                style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-              ),
-              Text(
-                'Total Payment: \$${orderData!['totalPayment']}',
-                style: TextStyle(fontSize: 16.0),
-              ),
-              SizedBox(height: 8.0),
-              Text(
-                'Items:',
-                style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
-              ),
-              ...orderData!['items'].map<Widget>((item) {
-                return Text('${item['name']} x ${item['quantity']}');
-              }).toList(),
-            ],
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

@@ -54,7 +54,8 @@ class _ChatPageState extends State<ChatPage> {
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("assets/Splash.png"), // Set your background image here
+            image: AssetImage(
+                "assets/Splash.png"), // Set your background image here
             fit: BoxFit.cover,
           ),
         ),
@@ -67,7 +68,7 @@ class _ChatPageState extends State<ChatPage> {
           ],
         ),
       ),
-     // bottomNavigationBar: const NavBar(),
+      // bottomNavigationBar: const NavBar(),
     );
   }
 

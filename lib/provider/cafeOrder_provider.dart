@@ -13,12 +13,17 @@ class OrderProvider with ChangeNotifier {
       order.id = docRef.id;
 
       // Ensure the Firestore document has the correct ID
-      await _firestore.collection('orders').doc(docRef.id).update({'id': order.id});
+      await _firestore
+          .collection('orders')
+          .doc(docRef.id)
+          .update({'id': order.id});
 
       notifyListeners();
     } catch (e) {
       print('Error placing order: $e');
-      // Handle errors appropriately, e.g., show a notification to the user
+      // You might consider throwing an exception or handling it through a callback
+      throw Exception(
+          'Failed to place order: $e'); // Re-throwing the error for higher-level handling
     }
   }
 

@@ -46,6 +46,7 @@ class _CafeScreenState extends State<CafeScreen> {
                 child: TextField(
                   decoration: InputDecoration(
                     hintText: 'Search food',
+                    hintStyle: TextStyle(color: Colors.white54),
                     prefixIcon: const Icon(Icons.search),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20),
@@ -100,7 +101,9 @@ class _CafeScreenState extends State<CafeScreen> {
           itemBuilder: (context, index) {
             var item = menuItems[index];
             var name = item['name'];
-            var price = item['price'] is int ? (item['price'] as int).toDouble() : item['price'];
+            var price = item['price'] is int
+                ? (item['price'] as int).toDouble()
+                : item['price'];
             var imageUrl = item['imageUrl'];
 
             return Card(
@@ -111,16 +114,22 @@ class _CafeScreenState extends State<CafeScreen> {
                     child: FutureBuilder<String>(
                       future: _getImageUrl(imageUrl),
                       builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
-                          return const Center(child: CircularProgressIndicator());
-                        } else if (snapshot.hasError || !snapshot.hasData || snapshot.data!.isEmpty) {
-                          return Image.asset('assets/logo.png', fit: BoxFit.cover);
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        } else if (snapshot.hasError ||
+                            !snapshot.hasData ||
+                            snapshot.data!.isEmpty) {
+                          return Image.asset('assets/logo.png',
+                              fit: BoxFit.cover);
                         } else {
                           return Image.network(
                             snapshot.data!,
                             fit: BoxFit.cover,
                             errorBuilder: (context, error, stackTrace) {
-                              return Image.asset('assets/logo.png', fit: BoxFit.cover);
+                              return Image.asset('assets/logo.png',
+                                  fit: BoxFit.cover);
                             },
                           );
                         }
