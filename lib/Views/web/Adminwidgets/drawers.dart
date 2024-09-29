@@ -85,9 +85,10 @@ class CustomDrawer extends StatelessWidget {
   }) {
     return ListTile(
       leading: Icon(icon,
-          color: Color.fromRGBO(49, 42, 119, 1)), // Set icon color to white
-      title:
-          Text(label, style: TextStyle(color: Color.fromRGBO(49, 42, 119, 1))),
+          color:
+              const Color.fromRGBO(49, 42, 119, 1)), // Set icon color to white
+      title: Text(label,
+          style: const TextStyle(color: Color.fromRGBO(49, 42, 119, 1))),
       onTap: onTap,
     );
   }
