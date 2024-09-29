@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:innovare_campus/controller/image_upload_service.dart';
 import 'package:innovare_campus/model/menu_item.dart';
 import 'package:innovare_campus/provider/menu_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
 
 class ManageMenuScreen extends StatefulWidget {
   @override
@@ -14,60 +14,61 @@ class _ManageMenuScreenState extends State<ManageMenuScreen> {
   final _nameController = TextEditingController();
   final _priceController = TextEditingController();
   String? _imageUrl;
-  XFile? _imageFile;
   String _selectedCategory = 'Desi'; // Default category
   MenuItem? _editingItem; // For tracking the item being edited
 
+  @override
+  void initState() {
+    super.initState();
+    // Initialize data or fetch initial data if necessary
+  }
+
   Future<void> _pickImage() async {
-    final picker = ImagePicker();
-    final pickedImage = await picker.pickImage(source: ImageSource.gallery);
-    if (pickedImage != null) {
-      setState(() {
-        _imageFile = pickedImage;
-      });
-      final imageUrl = await uploadImageToFirebase(_imageFile!);
+    try {
+      final imageUrl = await uploadImageToFirebaseWeb();
       if (imageUrl.isNotEmpty) {
         setState(() {
-          _imageUrl = imageUrl;
+          _imageUrl = imageUrl; // Set the image URL after upload
         });
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to upload image. Please try again.')),
-        );
+        _showSnackBar('Failed to upload image. Please try again.');
       }
+    } catch (e) {
+      _showSnackBar('An error occurred while uploading the image.');
     }
   }
 
   Future<void> _addOrUpdateMenuItem() async {
     if (_nameController.text.isEmpty || _priceController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Please fill in all fields')),
-      );
+      _showSnackBar('Please fill in all fields');
       return;
     }
 
+    final menuProvider = Provider.of<MenuProvider>(context, listen: false);
+
+    // If it's a new item, generate a new document ID
+    String menuItemId = _editingItem?.id ?? menuProvider.getNewDocumentId();
+
     final menuItem = MenuItem(
-      id: _editingItem?.id ?? '', // ID will be assigned by Firestore if new
+      id: menuItemId, // Use either the editing item ID or a new one
       name: _nameController.text,
       price: double.parse(_priceController.text),
-      imageUrl: _imageUrl ?? '', // Default to empty string if no image
+      imageUrl: _imageUrl ?? '', // Use the uploaded image URL
       category: _selectedCategory,
     );
 
-    final menuProvider = Provider.of<MenuProvider>(context, listen: false);
-
-    if (_editingItem == null) {
-      // Add new item
-      menuProvider.addMenuItem(menuItem);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Item added successfully!')),
-      );
-    } else {
-      // Update existing item
-      menuProvider.updateMenuItem(menuItem);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Item updated successfully!')),
-      );
+    try {
+      if (_editingItem == null) {
+        // Add new item
+        await menuProvider.addMenuItem(menuItem);
+        _showSnackBar('Item added successfully!');
+      } else {
+        // Update existing item
+        await menuProvider.updateMenuItem(menuItem);
+        _showSnackBar('Item updated successfully!');
+      }
+    } catch (e) {
+      _showSnackBar('An error occurred while saving the item.');
     }
 
     _clearForm();
@@ -78,7 +79,6 @@ class _ManageMenuScreenState extends State<ManageMenuScreen> {
     _priceController.clear();
     setState(() {
       _imageUrl = null;
-      _imageFile = null;
       _selectedCategory = 'Desi'; // Reset to default category
       _editingItem = null; // Clear editing state
     });
@@ -97,9 +97,19 @@ class _ManageMenuScreenState extends State<ManageMenuScreen> {
   void _deleteMenuItem(MenuItem item) {
     final menuProvider = Provider.of<MenuProvider>(context, listen: false);
     menuProvider.deleteMenuItem(item);
+    _showSnackBar('Item deleted successfully!');
+  }
+
+  void _showSnackBar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Item deleted successfully!')),
+      SnackBar(content: Text(message)),
     );
+  }
+
+  Future<void> _refreshMenu() async {
+    final menuProvider = Provider.of<MenuProvider>(context, listen: false);
+    await menuProvider.fetchMenuItems();
+    _showSnackBar('Menu items refreshed!');
   }
 
   @override
@@ -108,6 +118,12 @@ class _ManageMenuScreenState extends State<ManageMenuScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(_editingItem == null ? 'Manage Menu' : 'Edit Item'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.refresh),
+            onPressed: _refreshMenu,
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -140,8 +156,8 @@ class _ManageMenuScreenState extends State<ManageMenuScreen> {
             ),
             SizedBox(height: 10),
             _imageUrl == null
-                ? Text('No image selected.')
-                : Image.network(_imageUrl!, height: 150), // Use Image.network to display the uploaded image
+                ? Icon(Icons.image, size: 150) // Placeholder icon if no image URL
+                : Image.network(_imageUrl!, height: 150, fit: BoxFit.cover),
             ElevatedButton.icon(
               onPressed: _pickImage,
               icon: Icon(Icons.image),
@@ -176,34 +192,57 @@ class _ManageMenuScreenState extends State<ManageMenuScreen> {
     );
   }
 
-  Widget _buildCategorySection(String category, MenuProvider menuProvider) {
-    final items = menuProvider.menuItems.where((item) => item.category == category).toList();
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(category, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-        ...items.map((item) => ListTile(
-              leading: item.imageUrl.isNotEmpty
-                  ? Image.network(item.imageUrl, width: 50, height: 50, fit: BoxFit.cover)
-                  : Icon(Icons.image, size: 50), // Display default icon if no image
-              title: Text(item.name),
-              subtitle: Text('Price: \$${item.price.toStringAsFixed(2)}'),
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  IconButton(
-                    icon: Icon(Icons.edit),
-                    onPressed: () => _editMenuItem(item),
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.delete),
-                    onPressed: () => _deleteMenuItem(item),
-                  ),
-                ],
-              ),
-            )),
-        SizedBox(height: 20),
-      ],
-    );
-  }
+ Widget _buildCategorySection(String category, MenuProvider menuProvider) {
+  final items = menuProvider.menuItems.where((item) => item.category == category).toList();
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text(category, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+      ...items.map((item) => ListTile(
+            leading: item.imageUrl.isNotEmpty
+                ? Image.network(
+                    item.imageUrl,
+                    width: 50,
+                    height: 50,
+                    fit: BoxFit.cover,
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) {
+                        return child;
+                      } else {
+                        return Center(
+                          child: CircularProgressIndicator(
+                            value: loadingProgress.expectedTotalBytes != null
+                                ? loadingProgress.cumulativeBytesLoaded / (loadingProgress.expectedTotalBytes ?? 1)
+                                : null,
+                          ),
+                        );
+                      }
+                    },
+                    errorBuilder: (context, error, stackTrace) {
+                      print('Error loading image: $error');
+                      return Icon(Icons.error, size: 50); // Placeholder icon
+                    },
+                  )
+                : Icon(Icons.image, size: 50), // Default icon if no image
+            title: Text(item.name),
+            subtitle: Text('Price: \$${item.price.toStringAsFixed(2)}'),
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                IconButton(
+                  icon: Icon(Icons.edit),
+                  onPressed: () => _editMenuItem(item),
+                ),
+                IconButton(
+                  icon: Icon(Icons.delete),
+                  onPressed: () => _deleteMenuItem(item),
+                ),
+              ],
+            ),
+          )),
+      SizedBox(height: 20),
+    ],
+  );
+}
+
 }

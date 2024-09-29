@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:innovare_campus/Views/cafeteria/orderTrackingScreen.dart';
 import 'package:innovare_campus/provider/cafeOrder_provider.dart';
-import 'package:innovare_campus/stripe/stripe.dart';
-import 'package:provider/provider.dart';
 import 'package:innovare_campus/provider/cart_provider.dart';
 import 'package:innovare_campus/model/cafeOrder.dart';
+import 'package:innovare_campus/stripe/stripe.dart';
+import 'package:provider/provider.dart';
 
 class CartScreen extends StatelessWidget {
   @override
@@ -39,13 +39,18 @@ class CartScreen extends StatelessWidget {
                 color: Colors.transparent,
                 margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                 child: ListTile(
-                  leading: Image.network(
-                    cartItem.imageUrl.isEmpty
-                        ? 'assets/placeholder.png' // Placeholder image
-                        : cartItem.imageUrl,
+                  leading: SizedBox(
                     width: 50,
                     height: 50,
-                    fit: BoxFit.cover,
+                    child: Image.network(
+                      cartItem.imageUrl.isEmpty
+                          ? 'assets/logo.png' // Placeholder image
+                          : cartItem.imageUrl,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Image.asset('assets/logo.png'); // Fallback in case of an error
+                      },
+                    ),
                   ),
                   title: Text(
                     cartItem.name,
@@ -66,14 +71,16 @@ class CartScreen extends StatelessWidget {
                                 'Decreased quantity of ${cartItem.name}',
                                 style: const TextStyle(color: Colors.white),
                               ),
-                              duration: const Duration(seconds: 2),
                             ),
                           );
                         },
                       ),
-                      Text(
-                        'Quantity: ${cartItem.quantity}',
-                        style: const TextStyle(color: Colors.white),
+                      Expanded(
+                        child: Text(
+                          ' ${cartItem.quantity}',
+                          style: const TextStyle(color: Colors.white),
+                          textAlign: TextAlign.center, // Center align for better layout
+                        ),
                       ),
                       IconButton(
                         icon: const Icon(
@@ -100,32 +107,35 @@ class CartScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        '\$${cartItem.price * cartItem.quantity}',
-                        style: const TextStyle(color: Colors.white),
-                      ),
-                      IconButton(
-                        icon: const Icon(
-                          Icons.delete,
-                          color: Colors.white,
+                  trailing: SizedBox(
+                    width: 100, // Set a fixed width for the trailing widget
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          '\$${cartItem.price * cartItem.quantity}',
+                          style: const TextStyle(color: Colors.white),
                         ),
-                        onPressed: () {
-                          cart.removeItem(cartItem.id);
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                '${cartItem.name} removed from cart',
-                                style: const TextStyle(color: Colors.white),
+                        IconButton(
+                          icon: const Icon(
+                            Icons.delete,
+                            color: Colors.white,
+                          ),
+                          onPressed: () {
+                            cart.removeItem(cartItem.id);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  '${cartItem.name} removed from cart',
+                                  style: const TextStyle(color: Colors.white),
+                                ),
+                                duration: const Duration(seconds: 2),
                               ),
-                              duration: const Duration(seconds: 2),
-                            ),
-                          );
-                        },
-                      ),
-                    ],
+                            );
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               );
@@ -139,15 +149,18 @@ class CartScreen extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              'Total: \$${cart.totalAmount}',
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
+            Expanded(
+              child: Text(
+                'Total: \$${cart.totalAmount}',
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
             Row(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 ElevatedButton(
                   onPressed: () {
@@ -155,7 +168,7 @@ class CartScreen extends StatelessWidget {
                   },
                   child: const Text('Checkout'),
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 ElevatedButton(
                   onPressed: () {
                     Navigator.push(
@@ -214,7 +227,6 @@ class CartScreen extends StatelessWidget {
     final orderNumber = DateTime.now().millisecondsSinceEpoch.toString();
     final totalPayment = cart.totalAmount;
 
-    // Create an order object (if needed) to save in Firestore
     final order = OrderConfirmation(
       id: '', // ID will be assigned by Firestore
       email: user.email ?? 'Unknown User', // Use user.email
@@ -228,20 +240,15 @@ class CartScreen extends StatelessWidget {
         'imageUrl': item.imageUrl,
       }).toList(),
       paymentMethod: 'Online',
-      timestamp: DateTime.now(), // Set the timestamp to the current date and time
+      timestamp: DateTime.now(),
     );
 
     try {
-      // Save order to Firestore (if needed)
       await Provider.of<OrderProvider>(context, listen: false).placeOrder(order);
-
-      // Call the Stripe payment method
       await StripeService.instance.makePayment('Comsats Cafeteria', (totalPayment * 100).toInt(), user.email ?? 'Unknown User');
 
-      // Clear the cart
       cart.clearCart();
 
-      // Show a confirmation message
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Order placed successfully!'),
@@ -285,17 +292,14 @@ class CartScreen extends StatelessWidget {
         'imageUrl': item.imageUrl,
       }).toList(),
       paymentMethod: 'Cash',
-      timestamp: DateTime.now(), // Set the timestamp to the current date and time
+      timestamp: DateTime.now(),
     );
 
     try {
-      // Save order to Firestore
       await Provider.of<OrderProvider>(context, listen: false).placeOrder(order);
 
-      // Clear the cart
       cart.clearCart();
 
-      // Show a confirmation message
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Order placed successfully!'),

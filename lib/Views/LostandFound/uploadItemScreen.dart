@@ -1,13 +1,15 @@
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:innovare_campus/components/uiHelper.dart';
-import 'dart:io';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:provider/provider.dart';
 import 'package:innovare_campus/model/lostfind.dart';
 import 'package:innovare_campus/provider/lostfound_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:provider/provider.dart';
 
 class UploadItemScreen extends StatefulWidget {
   const UploadItemScreen({super.key});
@@ -22,24 +24,37 @@ class _UploadItemScreenState extends State<UploadItemScreen> {
   String _location = '';
   File? _imageFile;
 
+  @override
+  void initState() {
+    super.initState();
+    _refreshScreen();
+  }
+
+  Future<void> _refreshScreen() async {
+    // You can implement any necessary logic for refreshing data here.
+    // For now, we'll reset the form and clear the image.
+    setState(() {
+      _description = '';
+      _location = '';
+      _imageFile = null;
+    });
+  }
+
   Future<void> _pickImage() async {
-    try {
-      if (await Permission.photos.request().isGranted) {
-        final pickedFile =
-            await ImagePicker().pickImage(source: ImageSource.gallery);
-        if (pickedFile != null) {
-          setState(() {
-            _imageFile = File(pickedFile.path);
-          });
-        }
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content:
-              Text('Photo library permission is required to pick an image.'),
-        ));
+    final status = await Permission.storage.request();
+
+    if (status.isGranted) {
+      final pickedFile =
+          await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (pickedFile != null) {
+        setState(() {
+          _imageFile = File(pickedFile.path);
+        });
       }
-    } catch (e) {
-      print('Error picking image: $e');
+    } else if (status.isDenied || status.isPermanentlyDenied) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Storage permission is required to pick an image.'),
+      ));
     }
   }
 
@@ -99,8 +114,7 @@ class _UploadItemScreenState extends State<UploadItemScreen> {
           Container(
             decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage(
-                    'assets/Splash.png'), // Replace with your background image
+                image: AssetImage('assets/Splash.png'),
                 fit: BoxFit.cover,
               ),
             ),

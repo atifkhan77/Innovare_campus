@@ -1,24 +1,54 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:innovare_campus/Views/studyBuddy/RequestsScreen.dart';
 import 'package:innovare_campus/Views/userManagment/profileScreen.dart';
 import 'package:innovare_campus/components/uiHelper.dart';
 import 'package:innovare_campus/model/tutor.dart';
 import 'package:innovare_campus/provider/tutor_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class OfferTutorScreen extends StatelessWidget {
+class OfferTutorScreen extends StatefulWidget {
   const OfferTutorScreen({Key? key}) : super(key: key);
+
+  @override
+  _OfferTutorScreenState createState() => _OfferTutorScreenState();
+}
+
+class _OfferTutorScreenState extends State<OfferTutorScreen> {
+  String? _profileImageUrl;
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController subjectController = TextEditingController();
+  final TextEditingController contactController = TextEditingController();
+  String availability = 'Morning'; // Default value
+
+  @override
+  void initState() {
+    super.initState();
+    _loadProfileImage();
+  }
+
+  Future<void> _loadProfileImage() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      try {
+        final docRef = FirebaseFirestore.instance.collection('users').doc(user.uid);
+        final doc = await docRef.get();
+        if (doc.exists && doc['profile_image_url'] != null) {
+          setState(() {
+            _profileImageUrl = doc['profile_image_url'];
+          });
+        }
+      } catch (e) {
+        print('Failed to load profile image: $e');
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
-
-    final TextEditingController nameController = TextEditingController();
-    final TextEditingController subjectController = TextEditingController();
-    final TextEditingController contactController = TextEditingController();
-
-    String availability = 'Morning'; // Default value
 
     return Scaffold(
       appBar: AppBar(
@@ -33,12 +63,14 @@ class OfferTutorScreen extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => ProfileScreen()),
                 );
               },
-              child: const CircleAvatar(
-                backgroundImage: AssetImage('assets/placeholder.png'),
+              child: CircleAvatar(
+                backgroundImage: _profileImageUrl != null
+                    ? NetworkImage(_profileImageUrl!)
+                    : const AssetImage('assets/placeholder.png') as ImageProvider,
               ),
             ),
             const Text(
-              'Welcome back, Tanzeel',
+              'Welcome ',
               style: TextStyle(color: Colors.white70),
             ),
             GestureDetector(
@@ -49,8 +81,7 @@ class OfferTutorScreen extends StatelessWidget {
                       builder: (context) => const RequestsScreen()),
                 );
               },
-              child: const Icon(Icons.school,
-                  color: Colors.white), // Navigate to RequestsScreen
+              child: const Icon(Icons.school, color: Colors.white),
             ),
           ],
         ),
@@ -104,21 +135,27 @@ class OfferTutorScreen extends StatelessWidget {
                         label: const Text('Morning'),
                         selected: availability == 'Morning',
                         onSelected: (selected) {
-                          availability = 'Morning';
+                          setState(() {
+                            availability = 'Morning';
+                          });
                         },
                       ),
                       ChoiceChip(
                         label: const Text('Afternoon'),
                         selected: availability == 'Afternoon',
                         onSelected: (selected) {
-                          availability = 'Afternoon';
+                          setState(() {
+                            availability = 'Afternoon';
+                          });
                         },
                       ),
                       ChoiceChip(
                         label: const Text('Evening'),
                         selected: availability == 'Evening',
                         onSelected: (selected) {
-                          availability = 'Evening';
+                          setState(() {
+                            availability = 'Evening';
+                          });
                         },
                       ),
                     ],
@@ -162,8 +199,7 @@ class OfferTutorScreen extends StatelessWidget {
                         final tutorProvider =
                             Provider.of<TutorProvider>(context, listen: false);
                         tutorProvider.addTutor(tutor);
-                        tutorProvider.setTutor(tutor.name,
-                            tutor.contactNumber); // Set tutor name in provider
+                        tutorProvider.setTutor(tutor.name, tutor.contactNumber); // Set tutor name in provider
                         // Clear fields after submission
                         nameController.clear();
                         subjectController.clear();

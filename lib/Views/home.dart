@@ -31,18 +31,23 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _loadProfileImage() async {
-    try {
-      final ref =
-          FirebaseStorage.instance.ref().child('path/to/profile_picture.png');
-      final url = await ref.getDownloadURL();
+  try {
+    final docRef = FirebaseFirestore.instance.collection('users').doc(widget.userId);
+    final doc = await docRef.get();
+    if (doc.exists && doc['profile_image_url'] != null) {
       setState(() {
-        _profileImageUrl = url;
+        _profileImageUrl = doc['profile_image_url'];
       });
-    } catch (e) {
-      // Handle errors
-      print('Failed to load profile image: $e');
+    } else {
+      setState(() {
+        _profileImageUrl = null; // Set a default value if needed
+      });
     }
+  } catch (e) {
+    // Handle errors
+    print('Failed to load profile image: $e');
   }
+}
 
   Future<void> _loadUserName() async {
     try {
