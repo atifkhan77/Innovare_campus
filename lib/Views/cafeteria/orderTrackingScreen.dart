@@ -104,7 +104,11 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Track Your Order'),
+        title: const Text(
+          'Track Your Order',
+          style: TextStyle(color: Colors.white),
+        ),
+        iconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: const Color.fromRGBO(49, 42, 119, 1),
         elevation: 0,
       ),
@@ -138,7 +142,7 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                         Color(0xFF7E57C2),
                       ],
                     ),
-                    boxShadow: [
+                    boxShadow: const [
                       BoxShadow(
                         color: Colors.black26,
                         offset: Offset(0, 4),
@@ -149,7 +153,7 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                   child: TextField(
                     controller: _inputController,
                     decoration: InputDecoration(
-                      labelText: 'Enter your email or order number',
+                      labelText: 'Enter your order number',
                       labelStyle: GoogleFonts.poppins(
                         color: Colors.white,
                         fontWeight: FontWeight.w500,
@@ -182,16 +186,17 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                       fontSize: 16,
                     ),
                     backgroundColor: const Color.fromRGBO(49, 42, 119, 1),
-                    shadowColor: Color.fromRGBO(49, 42, 119, 0.6),
+                    shadowColor: const Color.fromRGBO(49, 42, 119, 0.6),
                     elevation: 8,
                   ),
                   child: isLoading
-                      ? CircularProgressIndicator(
+                      ? const CircularProgressIndicator(
                           valueColor:
                               AlwaysStoppedAnimation<Color>(Colors.white),
                         )
                       : const Text(
                           'Track Order',
+                          style: TextStyle(color: Colors.white),
                         ),
                 ),
                 const SizedBox(height: 24.0),
@@ -211,8 +216,8 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                               borderRadius: BorderRadius.circular(12)),
                           color: Colors.white.withOpacity(0.9),
                           elevation: 10,
-                          shadowColor:
-                              Color.fromRGBO(49, 42, 119, 0.6), // theme shadow
+                          shadowColor: const Color.fromRGBO(
+                              49, 42, 119, 0.6), // theme shadow
                           child: Padding(
                             padding: const EdgeInsets.all(16.0),
                             child: SingleChildScrollView(

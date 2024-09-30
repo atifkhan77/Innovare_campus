@@ -1,9 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:innovare_campus/components/chatBubble.dart';
-import 'package:innovare_campus/components/my_text_fild.dart';
-import 'package:innovare_campus/components/uiHelper.dart';
 import 'package:innovare_campus/controller/chat_service.dart';
 
 class ChatPage extends StatefulWidget {
@@ -22,6 +19,7 @@ class _ChatPageState extends State<ChatPage> {
   final TextEditingController _messageController = TextEditingController();
   final Chatservice _chatservice = Chatservice();
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  final ScrollController _scrollController = ScrollController();
 
   void sendMessage() async {
     if (_messageController.text.isNotEmpty) {
@@ -30,49 +28,51 @@ class _ChatPageState extends State<ChatPage> {
         _messageController.text,
       );
       _messageController.clear();
+      _scrollToBottom();
     }
   }
 
-  void deleteMessage(String messageId) async {
-    await _chatservice.deleteMessage(
-      _firebaseAuth.currentUser!.email!,
-      widget.recieverUserEmail,
-      messageId,
-    );
+  void _scrollToBottom() {
+    if (_scrollController.hasClients) {
+      _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color.fromRGBO(49, 42, 119, 1),
         title: Text(
           widget.recieverUserEmail,
-          style: const TextStyle(color: Colors.white70),
+          style: const TextStyle(color: Colors.white),
         ),
+        iconTheme: const IconThemeData(color: Colors.white),
+        backgroundColor: const Color.fromRGBO(49, 42, 119, 1),
       ),
-      body: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage(
-                "assets/Splash.png"), // Set your background image here
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: Column(
-          children: [
-            Expanded(
-              child: _buildMessageList(),
+      body: Stack(
+        children: [
+          Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Color(0xFF6C63FF), Color(0xFF42A5F5)],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
             ),
-            _buildMessageInput(),
-          ],
-        ),
+          ),
+          Column(
+            children: [
+              Expanded(
+                child: _buildMessageList(),
+              ),
+              _buildMessageInput(),
+            ],
+          ),
+        ],
       ),
-      // bottomNavigationBar: const NavBar(),
     );
   }
 
-  // Build message list
   Widget _buildMessageList() {
     return StreamBuilder(
       stream: _chatservice.getMessages(
@@ -89,93 +89,118 @@ class _ChatPageState extends State<ChatPage> {
         if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
           return const Center(child: Text('No messages yet.'));
         }
-        return ListView(
-          children: snapshot.data!.docs
-              .map((document) => _buildMessageItem(document))
-              .toList(),
+
+        List<DocumentSnapshot> messages = snapshot.data!.docs;
+        messages.sort((a, b) {
+          Timestamp timestampA = a['timestamp'];
+          Timestamp timestampB = b['timestamp'];
+          return timestampA.compareTo(timestampB);
+        });
+
+        return ListView.builder(
+          controller: _scrollController,
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+          itemCount: messages.length,
+          itemBuilder: (context, index) {
+            return _buildMessageItem(messages[index]);
+          },
         );
       },
     );
   }
 
-  // Build message item
   Widget _buildMessageItem(DocumentSnapshot document) {
     Map<String, dynamic> data = document.data() as Map<String, dynamic>;
-
     var message = data['message'] ?? '';
     var senderId = data['senderId'] ?? '';
-    var messageId = document.id;
+    var isSentByCurrentUser = (senderId == _firebaseAuth.currentUser!.uid);
 
-    var alignment = (senderId == _firebaseAuth.currentUser!.uid)
-        ? Alignment.centerRight
-        : Alignment.centerLeft;
-
-    return GestureDetector(
-      onLongPress: () {
-        _showDeleteDialog(messageId);
-      },
+    return Align(
+      alignment:
+          isSentByCurrentUser ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
-        alignment: alignment,
-        child: Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: Column(
-            crossAxisAlignment: (senderId == _firebaseAuth.currentUser!.uid)
-                ? CrossAxisAlignment.end
-                : CrossAxisAlignment.start,
-            children: [
-              ChatBubble(message: message),
-            ],
+        margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+        decoration: BoxDecoration(
+          color: isSentByCurrentUser
+              ? const Color.fromRGBO(49, 42, 119, 1)
+              : const Color.fromRGBO(49, 41, 120, 1),
+          borderRadius: BorderRadius.only(
+            topLeft: const Radius.circular(20),
+            topRight: const Radius.circular(20),
+            bottomLeft: isSentByCurrentUser
+                ? const Radius.circular(20)
+                : const Radius.circular(0),
+            bottomRight: isSentByCurrentUser
+                ? const Radius.circular(0)
+                : const Radius.circular(20),
           ),
+          boxShadow: const [
+            BoxShadow(
+              color: Colors.black26,
+              blurRadius: 6,
+              offset: Offset(0, 3),
+            ),
+          ],
+        ),
+        child: Text(
+          message,
+          style: const TextStyle(color: Colors.white),
         ),
       ),
     );
   }
 
-  // Show delete confirmation dialog
-  void _showDeleteDialog(String messageId) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Delete Message'),
-          content: const Text('Are you sure you want to delete this message?'),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Cancel'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: const Text('Delete'),
-              onPressed: () {
-                deleteMessage(messageId);
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  // Build message input
   Widget _buildMessageInput() {
-    return Row(
-      children: [
-        // Text field
-        Expanded(
-          child: MyTextField(
-            controller: _messageController,
-            hintText: 'Enter Message',
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        children: [
+          Expanded(
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(30),
+                boxShadow: const [
+                  BoxShadow(
+                    color: Colors.black26,
+                    blurRadius: 6,
+                    offset: Offset(0, 3),
+                  ),
+                ],
+              ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                child: TextField(
+                  controller: _messageController,
+                  decoration: const InputDecoration(
+                    hintText: 'Enter your message',
+                    border: InputBorder.none,
+                  ),
+                ),
+              ),
+            ),
           ),
-        ),
-        IconButton(
-          onPressed: sendMessage,
-          icon: const Icon(Icons.arrow_upward),
-          iconSize: 40,
-        ),
-      ],
+          const SizedBox(width: 8),
+          Container(
+            decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+              color: Color.fromRGBO(0, 0, 70, 1),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black26,
+                  blurRadius: 6,
+                  offset: Offset(0, 3),
+                ),
+              ],
+            ),
+            child: IconButton(
+              icon: const Icon(Icons.send, color: Colors.white),
+              onPressed: sendMessage,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

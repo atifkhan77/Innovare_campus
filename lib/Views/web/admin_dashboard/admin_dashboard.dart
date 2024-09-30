@@ -161,7 +161,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                               child: regNoCounts.isEmpty
                                   ? const Center(
                                       child: CircularProgressIndicator())
-                                  : CustomPieChart(regNoCounts: regNoCounts),
+                                  : CustomDonutChart(regNoCounts: regNoCounts),
                             ),
                           ),
                           const SizedBox(width: 10),

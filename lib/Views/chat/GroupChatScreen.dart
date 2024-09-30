@@ -75,7 +75,9 @@ class _GroupChatScreenState extends State<GroupChatScreen> {
 
                       return ListTile(
                         title: Text(messageSender),
-                        subtitle: ChatBubble(message: messageText),
+                        subtitle: ChatBubble(
+                          message: messageText,
+                        ),
                       );
                     },
                   );

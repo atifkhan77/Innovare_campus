@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart'; // For the Pie Chart
 
-class CustomPieChart extends StatelessWidget {
+class CustomDonutChart extends StatelessWidget {
   final Map<String, int> regNoCounts;
 
-  CustomPieChart({required this.regNoCounts});
+  CustomDonutChart({required this.regNoCounts});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +15,8 @@ class CustomPieChart extends StatelessWidget {
     return PieChart(
       PieChartData(
         sections: _showingSections(),
-        centerSpaceRadius: 0, // Remove hollow center
+        centerSpaceRadius:
+            40, // Adjusted hollow center radius for smaller donut chart
         borderData:
             FlBorderData(show: false), // Hide borders for a cleaner look
         sectionsSpace: 2,
@@ -36,16 +37,17 @@ class CustomPieChart extends StatelessWidget {
 
       return PieChartSectionData(
         color: sectionColors[colorIndex], // Assign different colors to sections
-        value: percentage,
+        value: entry.value.toDouble(), // Use raw count for value
         title:
             '${entry.key}: ${percentage.toStringAsFixed(1)}%', // Show both key and percentage
-        radius: 110, // Increased radius
+        radius: 70, // Reduced radius for a smaller donut chart
         titleStyle: const TextStyle(
           fontSize: 14,
           fontWeight: FontWeight.bold,
           color: Colors.white,
         ),
-        titlePositionPercentageOffset: 1.3, // Adjust title position
+        titlePositionPercentageOffset:
+            1.6, // Adjusted title position to avoid overlap
       );
     }).toList();
   }

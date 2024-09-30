@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:innovare_campus/controller/dialogflow_service.dart';
 
 class ChatbotScreen extends StatefulWidget {
   const ChatbotScreen({Key? key}) : super(key: key);
@@ -9,11 +8,10 @@ class ChatbotScreen extends StatefulWidget {
 }
 
 class _ChatbotScreenState extends State<ChatbotScreen> {
-  final DialogflowService _dialogflowService = DialogflowService();
   final TextEditingController _messageController = TextEditingController();
-  final ScrollController _scrollController = ScrollController();
   List<Map<String, String>> _messages = [];
 
+  // Placeholder for sending a message
   void _sendMessage() async {
     final message = _messageController.text;
     if (message.isNotEmpty) {
@@ -22,100 +20,83 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
       });
       _messageController.clear();
 
-      // Scroll to bottom
-      _scrollController.animateTo(
-        _scrollController.position.maxScrollExtent,
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeOut,
-      );
-
-      final response = await _dialogflowService.getResponse(message);
+      // Simulate chatbot response for now
+      await Future.delayed(const Duration(seconds: 1));
       setState(() {
-        _messages.add({"role": "assistant", "content": response});
+        _messages.add({
+          "role": "assistant",
+          "content": "This is a response from the chatbot."
+        });
       });
-
-      // Auto-scroll to bottom after the assistant replies
-      _scrollController.animateTo(
-        _scrollController.position.maxScrollExtent,
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeOut,
-      );
     }
-  }
-
-  Widget _buildMessage(String content, String role) {
-    bool isUser = role == 'user';
-    return Container(
-      alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
-      margin: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-      child: Container(
-        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-        decoration: BoxDecoration(
-          color: isUser ? Colors.blue.shade400 : Colors.green.shade300,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(isUser ? 12 : 0),
-            topRight: Radius.circular(isUser ? 0 : 12),
-            bottomLeft: Radius.circular(12),
-            bottomRight: Radius.circular(12),
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black12,
-              offset: Offset(2, 2),
-              blurRadius: 5,
-            ),
-          ],
-        ),
-        child: Text(
-          content,
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 16,
-          ),
-        ),
-      ),
-    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Chat with Chatbot"),
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Colors.blue, Colors.green],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-          ),
+        title: const Text(
+          "Chat with Chatbot",
+          style: TextStyle(color: Colors.white),
         ),
+        backgroundColor:
+            const Color.fromRGBO(49, 42, 119, 1), // Your theme color
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: Stack(
         children: [
-          // Background Image
-          Positioned.fill(
-            child: Opacity(
-              opacity: 0.2, // Adjust opacity to make text more readable
-              child: Image.asset(
-                'assets/Splash.png', // Replace with your image path
-                fit: BoxFit.cover,
+          Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Color(0xFF6C63FF), Color(0xFF42A5F5)],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
               ),
             ),
           ),
-          // Chat content
           Column(
             children: [
               Expanded(
                 child: ListView.builder(
-                  controller: _scrollController,
                   itemCount: _messages.length,
                   itemBuilder: (context, index) {
                     final message = _messages[index];
-                    return _buildMessage(
-                      message['content']!,
-                      message['role']!,
+                    bool isUser = message['role'] == 'user';
+                    return Align(
+                      alignment:
+                          isUser ? Alignment.centerRight : Alignment.centerLeft,
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(
+                            vertical: 8, horizontal: 16),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 12, horizontal: 16),
+                        decoration: BoxDecoration(
+                          color: isUser
+                              ? const Color.fromRGBO(49, 42, 119, 1)
+                              : const Color.fromRGBO(49, 41, 120, 1),
+                          borderRadius: BorderRadius.only(
+                            topLeft: const Radius.circular(20),
+                            topRight: const Radius.circular(20),
+                            bottomLeft: isUser
+                                ? const Radius.circular(20)
+                                : const Radius.circular(0),
+                            bottomRight: isUser
+                                ? const Radius.circular(0)
+                                : const Radius.circular(20),
+                          ),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Colors.black26,
+                              blurRadius: 6,
+                              offset: Offset(0, 3),
+                            ),
+                          ],
+                        ),
+                        child: Text(
+                          message['content']!,
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                      ),
                     );
                   },
                 ),
@@ -125,31 +106,45 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
                 child: Row(
                   children: [
                     Expanded(
-                      child: TextField(
-                        controller: _messageController,
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: Colors.grey.shade100,
-                          hintText: 'Enter your message',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20),
-                            borderSide: BorderSide.none,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(30),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Colors.black26,
+                              blurRadius: 6,
+                              offset: Offset(0, 3),
+                            ),
+                          ],
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                          child: TextField(
+                            controller: _messageController,
+                            decoration: const InputDecoration(
+                              hintText: 'Enter your message',
+                              border: InputBorder.none,
+                            ),
                           ),
                         ),
                       ),
                     ),
-                    SizedBox(width: 8),
+                    const SizedBox(width: 8),
                     Container(
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         shape: BoxShape.circle,
-                        gradient: LinearGradient(
-                          colors: [Colors.blue, Colors.green],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ),
+                        color: Color.fromRGBO(0, 0, 70, 1), // Your theme color
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black26,
+                            blurRadius: 6,
+                            offset: Offset(0, 3),
+                          ),
+                        ],
                       ),
                       child: IconButton(
-                        icon: Icon(Icons.send, color: Colors.white),
+                        icon: const Icon(Icons.send, color: Colors.white),
                         onPressed: _sendMessage,
                       ),
                     ),
