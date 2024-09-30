@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:innovare_campus/Views/LostandFound/lostfoundScreen.dart';
 import 'package:innovare_campus/Views/Societies/clubs/societyScreen.dart';
@@ -31,23 +30,24 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _loadProfileImage() async {
-  try {
-    final docRef = FirebaseFirestore.instance.collection('users').doc(widget.userId);
-    final doc = await docRef.get();
-    if (doc.exists && doc['profile_image_url'] != null) {
-      setState(() {
-        _profileImageUrl = doc['profile_image_url'];
-      });
-    } else {
-      setState(() {
-        _profileImageUrl = null; // Set a default value if needed
-      });
+    try {
+      final docRef =
+          FirebaseFirestore.instance.collection('users').doc(widget.userId);
+      final doc = await docRef.get();
+      if (doc.exists && doc['profile_image_url'] != null) {
+        setState(() {
+          _profileImageUrl = doc['profile_image_url'];
+        });
+      } else {
+        setState(() {
+          _profileImageUrl = null; // Set a default value if needed
+        });
+      }
+    } catch (e) {
+      // Handle errors
+      print('Failed to load profile image: $e');
     }
-  } catch (e) {
-    // Handle errors
-    print('Failed to load profile image: $e');
   }
-}
 
   Future<void> _loadUserName() async {
     try {

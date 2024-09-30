@@ -1,17 +1,25 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:innovare_campus/Views/web/cafeadmin_dashbaord/manageOrdersScreen.dart';
-import 'package:innovare_campus/Views/web/cafeadmin_dashbaord/manage_menuScreen.dart';
-import 'package:innovare_campus/Views/web/cafeadmin_dashbaord/viewOrdersScreen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:innovare_campus/Views/web/cafeadmin_dashbaord/cafeComponents/cafeDrawer.dart'; // Import the drawer
 
 class CafeAdminDashboardScreen extends StatefulWidget {
   @override
-  _CafeAdminDashboardScreenState createState() => _CafeAdminDashboardScreenState();
+  _CafeAdminDashboardScreenState createState() =>
+      _CafeAdminDashboardScreenState();
 }
 
-class _CafeAdminDashboardScreenState extends State<CafeAdminDashboardScreen> with SingleTickerProviderStateMixin {
+class _CafeAdminDashboardScreenState extends State<CafeAdminDashboardScreen>
+    with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
   late Animation<Offset> _slideAnimation;
+
+  Map<String, int> orderStatusCount = {
+    'Pending': 0,
+    'In Process': 0,
+    'Completed': 0,
+  };
 
   @override
   void initState() {
@@ -33,6 +41,31 @@ class _CafeAdminDashboardScreenState extends State<CafeAdminDashboardScreen> wit
       parent: _animationController,
       curve: Curves.easeOut,
     ));
+
+    _fetchOrderStatusCount(); // Fetch the order status data
+  }
+
+  Future<void> _fetchOrderStatusCount() async {
+    final snapshot =
+        await FirebaseFirestore.instance.collection('orders').get();
+    final orders = snapshot.docs;
+
+    Map<String, int> statusCount = {
+      'Pending': 0,
+      'In Process': 0,
+      'Completed': 0,
+    };
+
+    for (var order in orders) {
+      String status = order.data()['status'] ?? 'Pending';
+      if (statusCount.containsKey(status)) {
+        statusCount[status] = statusCount[status]! + 1;
+      }
+    }
+
+    setState(() {
+      orderStatusCount = statusCount;
+    });
   }
 
   @override
@@ -45,25 +78,26 @@ class _CafeAdminDashboardScreenState extends State<CafeAdminDashboardScreen> wit
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Cafe Admin Dashboard'),
-        automaticallyImplyLeading: false,
+        title: const Text('Cafe Admin Dashboard',
+            style: TextStyle(color: Colors.white)),
+        backgroundColor: const Color.fromRGBO(79, 76, 116, 1),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
+      drawer: CafeAdminDrawer(),
       body: Stack(
         fit: StackFit.expand,
         children: [
-          // Background image
           Positioned.fill(
             child: Image.asset(
-              'assets/splash.png', // Background image for the dashboard
+              'assets/splash.png', // Background image
               fit: BoxFit.cover,
             ),
           ),
-          // Diagonal background image
           Positioned.fill(
             child: Transform.rotate(
-              angle: -0.2, // Adjust angle for diagonal effect
+              angle: -0.2,
               child: Opacity(
-                opacity: 0.2, // Adjust opacity for diagonal effect
+                opacity: 0.2,
                 child: Image.asset(
                   'assets/splash.png',
                   fit: BoxFit.cover,
@@ -71,7 +105,6 @@ class _CafeAdminDashboardScreenState extends State<CafeAdminDashboardScreen> wit
               ),
             ),
           ),
-          // Centered and faded logo image
           Align(
             alignment: Alignment.center,
             child: Opacity(
@@ -83,7 +116,6 @@ class _CafeAdminDashboardScreenState extends State<CafeAdminDashboardScreen> wit
               ),
             ),
           ),
-          // Content of the page
           SlideTransition(
             position: _slideAnimation,
             child: FadeTransition(
@@ -127,43 +159,11 @@ class _CafeAdminDashboardScreenState extends State<CafeAdminDashboardScreen> wit
                         ],
                       ),
                     ),
+                    // Add one chart and two placeholders in a row
                     Padding(
-                      padding: const EdgeInsets.all(32.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          _buildAnimatedCard(
-                            icon: Icons.person,
-                            label: 'Manage Menu',
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => ManageMenuScreen()),
-                              );
-                            },
-                          ),
-                          _buildAnimatedCard(
-                            icon: Icons.fastfood,
-                            label: 'Manage Orders',
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => ManageOrderScreen()),
-                              );
-                            },
-                          ),
-                          _buildAnimatedCard(
-                            icon: Icons.list,
-                            label: 'View Orders',
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => ViewOrdersScreen()),
-                              );
-                            },
-                          ),
-                        ],
-                      ),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16.0, vertical: 20.0),
+                      child: _buildChartsRow(), // Call the row of charts
                     ),
                   ],
                 ),
@@ -175,45 +175,141 @@ class _CafeAdminDashboardScreenState extends State<CafeAdminDashboardScreen> wit
     );
   }
 
-  Widget _buildAnimatedCard({required IconData icon, required String label, required VoidCallback? onTap}) {
-    return AnimatedBuilder(
-      animation: _animationController,
-      builder: (context, child) {
-        return Transform.scale(
-          scale: _animationController.value * 0.2 + 1,
-          child: GestureDetector(
-            onTap: onTap,
-            child: Card(
-              color: const Color.fromRGBO(49, 42, 119, 1),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              elevation: 6,
-              child: Container(
-                width: 160,
-                height: 160,
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(icon, size: 48, color: Colors.white),
-                    const SizedBox(height: 16),
-                    Text(
-                      label,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
+  // Function to build one chart and two empty placeholders in a row
+  Widget _buildChartsRow() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        // Orders status chart
+        _buildOrderStatusBarChart(),
+
+        // Placeholder 1
+        _buildPlaceholderChart('Placeholder 1'),
+
+        // Placeholder 2
+        _buildPlaceholderChart('Placeholder 2'),
+      ],
+    );
+  }
+
+  // Function to build the order status bar chart
+  Widget _buildOrderStatusBarChart() {
+    return Expanded(
+      child: AspectRatio(
+        aspectRatio: 1,
+        child: Card(
+          elevation: 4,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Column(
+            children: [
+              const Padding(
+                padding: EdgeInsets.all(16),
+                child: Text(
+                  'Order Status Breakdown',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
               ),
+              Expanded(
+                child: BarChart(
+                  BarChartData(
+                    alignment: BarChartAlignment.spaceAround,
+                    barGroups: [
+                      BarChartGroupData(
+                        x: 0,
+                        barRods: [
+                          BarChartRodData(
+                            toY: orderStatusCount['Pending']!.toDouble(),
+                            color: Colors.orange,
+                            width: 20,
+                          ),
+                        ],
+                        showingTooltipIndicators: [0],
+                      ),
+                      BarChartGroupData(
+                        x: 1,
+                        barRods: [
+                          BarChartRodData(
+                            toY: orderStatusCount['In Process']!.toDouble(),
+                            color: Colors.blue,
+                            width: 20,
+                          ),
+                        ],
+                        showingTooltipIndicators: [0],
+                      ),
+                      BarChartGroupData(
+                        x: 2,
+                        barRods: [
+                          BarChartRodData(
+                            toY: orderStatusCount['Completed']!.toDouble(),
+                            color: Colors.green,
+                            width: 20,
+                          ),
+                        ],
+                        showingTooltipIndicators: [0],
+                      ),
+                    ],
+                    borderData: FlBorderData(show: false),
+                    titlesData: FlTitlesData(
+                      bottomTitles: AxisTitles(
+                        sideTitles: SideTitles(
+                          showTitles: true,
+                          getTitlesWidget: (value, meta) {
+                            switch (value.toInt()) {
+                              case 0:
+                                return const Text('Pending');
+                              case 1:
+                                return const Text('In Process');
+                              case 2:
+                                return const Text('Completed');
+                              default:
+                                return const Text('');
+                            }
+                          },
+                        ),
+                      ),
+                      leftTitles: AxisTitles(
+                        sideTitles: SideTitles(
+                          showTitles: false,
+                          interval: 1,
+                          reservedSize: 30,
+                        ),
+                      ),
+                      topTitles:
+                          AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                      rightTitles:
+                          AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                    ),
+                    gridData: FlGridData(show: false),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  // Function to build placeholder chart
+  Widget _buildPlaceholderChart(String title) {
+    return Expanded(
+      child: AspectRatio(
+        aspectRatio: 1,
+        child: Card(
+          elevation: 4,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Center(
+            child: Text(
+              title,
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 }
