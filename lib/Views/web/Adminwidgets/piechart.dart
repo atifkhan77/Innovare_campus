@@ -16,7 +16,7 @@ class CustomDonutChart extends StatelessWidget {
       PieChartData(
         sections: _showingSections(),
         centerSpaceRadius:
-            40, // Adjusted hollow center radius for smaller donut chart
+            30, // Adjusted hollow center radius for smaller donut chart
         borderData:
             FlBorderData(show: false), // Hide borders for a cleaner look
         sectionsSpace: 2,

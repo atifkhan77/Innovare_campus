@@ -15,6 +15,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
   late Animation<double> _fadeAnimation;
   late Animation<Offset> _slideAnimation;
   Map<String, int> regNoCounts = {};
+  Map<String, int> tutorCounts = {}; // New map for tutor counts
   List<FlSpot> userGrowthData = [];
 
   @override
@@ -40,6 +41,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
 
     fetchUsersData();
     fetchUserGrowthData(); // Fetch area chart data
+    fetchTutorsData(); // Fetch tutors data for the donut chart
   }
 
   @override
@@ -70,6 +72,29 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
       });
     } catch (e) {
       print('Error fetching user data: $e');
+    }
+  }
+
+  Future<void> fetchTutorsData() async {
+    try {
+      QuerySnapshot snapshot =
+          await FirebaseFirestore.instance.collection('tutors').get();
+
+      Map<String, int> tempCounts = {};
+      for (var doc in snapshot.docs) {
+        String subject = doc['subjectExpertise'];
+        if (tempCounts.containsKey(subject)) {
+          tempCounts[subject] = tempCounts[subject]! + 1;
+        } else {
+          tempCounts[subject] = 1;
+        }
+      }
+
+      setState(() {
+        tutorCounts = tempCounts; // Store the fetched data
+      });
+    } catch (e) {
+      print('Error fetching tutor data: $e');
     }
   }
 
@@ -160,7 +185,8 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                               title: 'Users by Category',
                               child: regNoCounts.isEmpty
                                   ? const Center(
-                                      child: CircularProgressIndicator())
+                                      child: CircularProgressIndicator(),
+                                    )
                                   : CustomDonutChart(regNoCounts: regNoCounts),
                             ),
                           ),
@@ -177,15 +203,38 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                           const SizedBox(width: 10),
                           Expanded(
                             child: _buildCard(
-                              title: 'Third Chart',
-                              child: const Center(
-                                child: Text(
-                                  'Placeholder for Third Chart',
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              ),
+                              title: 'Tutors by Subject',
+                              child: tutorCounts.isEmpty
+                                  ? const Center(
+                                      child: CircularProgressIndicator())
+                                  : CustomDonutChart(regNoCounts: tutorCounts),
                             ),
                           ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    const Text(
+                      'Events happening soon',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 15),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 40),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          _buildEventCard(
+                              'assets/webDashboard/pic1.jpg', 'CSC Event '),
+                          _buildEventCard(
+                              'assets/webDashboard/pic2.jpg', ' TedXCui'),
+                          _buildEventCard(
+                              'assets/webDashboard/pic3.jpg', 'Expo'),
+                          _buildEventCard(
+                              'assets/webDashboard/pic4.jpg', 'Convocation'),
                         ],
                       ),
                     ),
@@ -257,6 +306,39 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
             ),
             const SizedBox(height: 10),
             SizedBox(height: 200, child: child),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // New method to create event cards
+  Widget _buildEventCard(String imagePath, String title) {
+    return Expanded(
+      child: Card(
+        elevation: 5,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Column(
+          children: [
+            ClipRRect(
+              borderRadius:
+                  const BorderRadius.vertical(top: Radius.circular(10)),
+              child: Image.asset(
+                imagePath,
+                fit: BoxFit.cover,
+                height: 180,
+                width: double.infinity,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                title,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
           ],
         ),
       ),

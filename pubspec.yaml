@@ -97,6 +97,10 @@ flutter:
     - assets/homeScreen/lostfound.jpeg
     - assets/studyBuddy/girls.png
     - assets/your-service-account.json
+    - assets/webDashboard/pic1.jpg
+    - assets/webDashboard/pic2.jpg
+    - assets/webDashboard/pic3.jpg
+    - assets/webDashboard/pic4.jpg
 
   
     
