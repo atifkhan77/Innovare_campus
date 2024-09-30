@@ -250,273 +250,245 @@ class _CafeAdminDashboardScreenState extends State<CafeAdminDashboardScreen> wit
       ],
     );
   }
-    Widget _buildOrderStatusBarChart() {
-    return Expanded(
-      child: AspectRatio(
-        aspectRatio: 1,
-        child: Card(
-          elevation: 4,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Column(
-            children: [
-              const Padding(
-                padding: EdgeInsets.all(16),
-                child: Text(
-                  'Order Status Breakdown',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
+
+ Widget _buildOrderStatusBarChart() {
+  return Container(
+    width: 400,  // Set the desired width
+    height: 400, // Set the desired height
+    decoration: BoxDecoration(
+      color: Colors.lightBlue[50], // Set your desired background color
+      borderRadius: BorderRadius.circular(12),
+    ),
+    child: AspectRatio(
+      aspectRatio: 1,
+      child: Card(
+        elevation: 4,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Column(
+          children: [
+            const Padding(
+              padding: EdgeInsets.all(16),
+              child: Text(
+                'Order Status Breakdown',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
-              Expanded(
-                child: BarChart(
-                  BarChartData(
-                    alignment: BarChartAlignment.spaceAround,
-                    barGroups: [
-                      BarChartGroupData(
-                        x: 0,
-                        barRods: [
-                          BarChartRodData(
-                            toY: orderStatusCount['Pending']!.toDouble(),
-                            color: Colors.orange,
-                            width: 20,
-                          ),
-                        ],
-                        showingTooltipIndicators: [0],
-                      ),
-                      BarChartGroupData(
-                        x: 1,
-                        barRods: [
-                          BarChartRodData(
-                            toY: orderStatusCount['In Process']!.toDouble(),
-                            color: Colors.blue,
-                            width: 20,
-                          ),
-                        ],
-                        showingTooltipIndicators: [0],
-                      ),
-                      BarChartGroupData(
-                        x: 2,
-                        barRods: [
-                          BarChartRodData(
-                            toY: orderStatusCount['Completed']!.toDouble(),
-                            color: Colors.green,
-                            width: 20,
-                          ),
-                        ],
-                        showingTooltipIndicators: [0],
-                      ),
-                    ],
-                    borderData: FlBorderData(show: false),
-                    titlesData: FlTitlesData(
-                      bottomTitles: AxisTitles(
-                        sideTitles: SideTitles(
-                          showTitles: true,
-                          getTitlesWidget: (value, meta) {
-                            switch (value.toInt()) {
-                              case 0:
-                                return const Text('Pending');
-                              case 1:
-                                return const Text('In Process');
-                              case 2:
-                                return const Text('Completed');
-                              default:
-                                return const Text('');
-                            }
-                          },
+            ),
+            Expanded(
+              child: BarChart(
+                BarChartData(
+                  alignment: BarChartAlignment.spaceAround,
+                  barGroups: [
+                    BarChartGroupData(
+                      x: 0,
+                      barRods: [
+                        BarChartRodData(
+                          toY: orderStatusCount['Pending']!.toDouble(),
+                          color: Colors.orange,
+                          width: 20,
                         ),
-                      ),
-                      leftTitles: AxisTitles(
-                        sideTitles: SideTitles(
-                          showTitles: false,
-                          interval: 1,
-                          reservedSize: 30,
-                        ),
-                      ),
-                      topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                      rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                      ],
+                      showingTooltipIndicators: [0],
                     ),
-                    gridData: FlGridData(show: false),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildMenuCategoriesDonutChart() {
-    return Expanded(
-      child: AspectRatio(
-        aspectRatio: 1,
-        child: Card(
-          elevation: 4,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Column(
-            children: [
-              const Padding(
-                padding: EdgeInsets.all(16),
-                child: Text(
-                  'Menu Categories',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-              ),
-              Expanded(
-                child: PieChart(
-                  PieChartData(
-                    sectionsSpace: 0,
-                    centerSpaceRadius: 40,
-                    sections: _getMenuCategorySections(),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  List<PieChartSectionData> _getMenuCategorySections() {
-    List<Color> colors = [
-      Colors.red,
-      Colors.blue,
-      Colors.green,
-      Colors.yellow,
-      Colors.purple,
-      Colors.orange,
-      Colors.teal,
-    ];
-
-    return menuCategoriesCount.entries.map((entry) {
-      int index = menuCategoriesCount.keys.toList().indexOf(entry.key);
-      double percentage = entry.value / menuCategoriesCount.values.reduce((a, b) => a + b) * 100;
-      return PieChartSectionData(
-        color: colors[index % colors.length],
-        value: entry.value.toDouble(),
-        title: '${entry.key}\n${percentage.toStringAsFixed(1)}%',
-        radius: 50,
-        titleStyle: const TextStyle(
-          fontSize: 12,
-          fontWeight: FontWeight.bold,
-          color: Colors.white,
-        ),
-      );
-    }).toList();
-  }
-
-
-
-  // This method remains the same for other charts
-
-  Widget _buildOrderGraphChart() {
-    if (orderData.isEmpty) {
-      return Expanded(
-        child: AspectRatio(
-          aspectRatio: 1,
-          child: Card(
-            elevation: 4,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: const Center(
-              child: Text('No order data available'),
-            ),
-          ),
-        ),
-      );
-    }
-
-    return Expanded(
-      child: AspectRatio(
-        aspectRatio: 1,
-        child: Card(
-          elevation: 4,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              children: [
-                const Text(
-                  'Order Values by Payment Method',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 16),
-                Expanded(
-                  child: LineChart(
-                    LineChartData(
-                      lineBarsData: _getLineBarsData(),
-                      titlesData: FlTitlesData(
-                        bottomTitles: AxisTitles(
-                          sideTitles: SideTitles(
-                            showTitles: true,
-                            reservedSize: 22,
-                            getTitlesWidget: (value, meta) {
-                              return Text(
-                                '${value.toInt()}',
-                                style: const TextStyle(color: Colors.black, fontSize: 12),
-                              );
-                            },
-                          ),
+                    BarChartGroupData(
+                      x: 1,
+                      barRods: [
+                        BarChartRodData(
+                          toY: orderStatusCount['In Process']!.toDouble(),
+                          color: Colors.blue,
+                          width: 20,
                         ),
-                        leftTitles: AxisTitles(
-                          sideTitles: SideTitles(
-                            showTitles: true,
-                            reservedSize: 40,
-                            getTitlesWidget: (value, meta) {
-                              return Text(
-                                '\$${value.toInt()}',
-                                style: const TextStyle(color: Colors.black, fontSize: 12),
-                              );
-                            },
-                          ),
+                      ],
+                      showingTooltipIndicators: [0],
+                    ),
+                    BarChartGroupData(
+                      x: 2,
+                      barRods: [
+                        BarChartRodData(
+                          toY: orderStatusCount['Completed']!.toDouble(),
+                          color: Colors.green,
+                          width: 20,
                         ),
-                        topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                        rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                      ],
+                      showingTooltipIndicators: [0],
+                    ),
+                  ],
+                  borderData: FlBorderData(show: false),
+                  titlesData: FlTitlesData(
+                    bottomTitles: AxisTitles(
+                      sideTitles: SideTitles(
+                        showTitles: true,
+                        getTitlesWidget: (value, meta) {
+                          switch (value.toInt()) {
+                            case 0:
+                              return const Text('Pending');
+                            case 1:
+                              return const Text('In Process');
+                            case 2:
+                              return const Text('Completed');
+                            default:
+                              return const Text('');
+                          }
+                        },
                       ),
-                      gridData: FlGridData(show: true),
-                      borderData: FlBorderData(show: true),
+                    ),
+                    leftTitles: AxisTitles(
+                      sideTitles: SideTitles(
+                        showTitles: false,
+                        interval: 1,
+                        reservedSize: 30,
+                      ),
+                    ),
+                    topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                    rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                  ),
+                  gridData: FlGridData(show: false),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
+}
+
+Widget _buildMenuCategoriesDonutChart() {
+  double total = menuCategoriesCount.values.fold(0, (sum, value) => sum + value);
+
+  return Container(
+    width: 400,  // Set the desired width
+    height: 400, // Set the desired height
+    decoration: BoxDecoration(
+      color: Colors.lightGreen[50], // Set your desired background color
+      borderRadius: BorderRadius.circular(12),
+    ),
+    child: AspectRatio(
+      aspectRatio: 1,
+      child: Card(
+        elevation: 4,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Column(
+          children: [
+            const Padding(
+              padding: EdgeInsets.all(16),
+              child: Text(
+                'Menu Categories',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+            ),
+            Expanded(
+              child: PieChart(
+                PieChartData(
+                  sections: menuCategoriesCount.entries.map((entry) {
+                    double percentage = (entry.value / total) * 100;
+                    return PieChartSectionData(
+                      color: _getCategoryColor(entry.key),
+                      value: entry.value.toDouble(),
+                      title: '${entry.key} (${percentage.toStringAsFixed(1)}%)',
+                      radius: 30,
+                    );
+                  }).toList(),
+                  borderData: FlBorderData(show: false),
+                  sectionsSpace: 0,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
+}
+
+Widget _buildOrderGraphChart() {
+  return Container(
+    width: 400,  // Set the desired width
+    height: 400, // Set the desired height
+    decoration: BoxDecoration(
+      color: Colors.pink[50], // Set your desired background color
+      borderRadius: BorderRadius.circular(12),
+    ),
+    child: AspectRatio(
+      aspectRatio: 1,
+      child: Card(
+        elevation: 4,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Column(
+          children: [
+            const Padding(
+              padding: EdgeInsets.all(16),
+              child: Text(
+                'Order Values by Payment Method',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+            ),
+            Expanded(
+              child: LineChart(
+                LineChartData(
+                  gridData: FlGridData(show: true),
+                  titlesData: FlTitlesData(
+                    leftTitles: AxisTitles(
+                      sideTitles: SideTitles(showTitles: false),
+                    ),
+                    bottomTitles: AxisTitles(
+                      sideTitles: SideTitles(showTitles: true),
                     ),
                   ),
+                  borderData: FlBorderData(show: true),
+                  lineBarsData: orderData.entries.map((entry) {
+                    return LineChartBarData(
+                      spots: entry.value
+                          .asMap()
+                          .map((index, value) => MapEntry(index, FlSpot(index.toDouble(), value)))
+                          .values
+                          .toList(),
+                      isCurved: true,
+                      color: _getPaymentMethodColor(entry.key),
+                      belowBarData: BarAreaData(show: true),
+                      aboveBarData: BarAreaData(show: false),
+                    );
+                  }).toList(),
                 ),
-              ],
+              ),
             ),
-          ),
+          ],
         ),
       ),
-    );
-  }
-
-  List<LineChartBarData> _getLineBarsData() {
-    List<Color> colors = [
-      Colors.blue,
-      Colors.green,
-      Colors.red,
-      Colors.orange,
-      Colors.purple,
-    ];
-
-    return orderData.entries.map((entry) {
-      int index = orderData.keys.toList().indexOf(entry.key);
-      return LineChartBarData(
-        spots: entry.value.asMap().entries.map((e) {
-          return FlSpot(e.key.toDouble(), e.value);
-        }).toList(),
-        isCurved: true,
-        gradient: LinearGradient(
-          colors: [colors[index % colors.length]],
-        ),
-        barWidth: 4,
-        belowBarData: BarAreaData(show: false),
-      );
-    }).toList();
-  }
+    ),
+  );
 }
 
 
+
+  Color _getCategoryColor(String category) {
+    switch (category) {
+      case 'Drinks':
+        return Colors.blue;
+      case 'Fast Food':
+        return Colors.green;
+      case 'Desi':
+        return Colors.orange;
+      default:
+        return Colors.grey;
+    }
+  }
+
+  Color _getPaymentMethodColor(String method) {
+    switch (method) {
+      case 'Cash':
+        return Colors.yellow;
+      case 'Card':
+        return Colors.red;
+      case 'Online':
+        return Colors.purple;
+      default:
+        return Colors.grey;
+    }
+  }
+}
