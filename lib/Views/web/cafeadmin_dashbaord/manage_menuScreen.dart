@@ -156,7 +156,8 @@ class _ManageMenuScreenState extends State<ManageMenuScreen> {
             ),
             SizedBox(height: 10),
             _imageUrl == null
-                ? Icon(Icons.image, size: 150) // Placeholder icon if no image URL
+                ? Icon(Icons.image,
+                    size: 150) // Placeholder icon if no image URL
                 : Image.network(_imageUrl!, height: 150, fit: BoxFit.cover),
             ElevatedButton.icon(
               onPressed: _pickImage,
@@ -192,57 +193,60 @@ class _ManageMenuScreenState extends State<ManageMenuScreen> {
     );
   }
 
- Widget _buildCategorySection(String category, MenuProvider menuProvider) {
-  final items = menuProvider.menuItems.where((item) => item.category == category).toList();
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Text(category, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-      ...items.map((item) => ListTile(
-            leading: item.imageUrl.isNotEmpty
-                ? Image.network(
-                    item.imageUrl,
-                    width: 50,
-                    height: 50,
-                    fit: BoxFit.cover,
-                    loadingBuilder: (context, child, loadingProgress) {
-                      if (loadingProgress == null) {
-                        return child;
-                      } else {
-                        return Center(
-                          child: CircularProgressIndicator(
-                            value: loadingProgress.expectedTotalBytes != null
-                                ? loadingProgress.cumulativeBytesLoaded / (loadingProgress.expectedTotalBytes ?? 1)
-                                : null,
-                          ),
-                        );
-                      }
-                    },
-                    errorBuilder: (context, error, stackTrace) {
-                      print('Error loading image: $error');
-                      return Icon(Icons.error, size: 50); // Placeholder icon
-                    },
-                  )
-                : Icon(Icons.image, size: 50), // Default icon if no image
-            title: Text(item.name),
-            subtitle: Text('Price: \$${item.price.toStringAsFixed(2)}'),
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                IconButton(
-                  icon: Icon(Icons.edit),
-                  onPressed: () => _editMenuItem(item),
-                ),
-                IconButton(
-                  icon: Icon(Icons.delete),
-                  onPressed: () => _deleteMenuItem(item),
-                ),
-              ],
-            ),
-          )),
-      SizedBox(height: 20),
-    ],
-  );
-}
-
+  Widget _buildCategorySection(String category, MenuProvider menuProvider) {
+    final items = menuProvider.menuItems
+        .where((item) => item.category == category)
+        .toList();
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(category,
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+        ...items.map((item) => ListTile(
+              leading: item.imageUrl.isNotEmpty
+                  ? Image.network(
+                      item.imageUrl,
+                      width: 50,
+                      height: 50,
+                      fit: BoxFit.cover,
+                      loadingBuilder: (context, child, loadingProgress) {
+                        if (loadingProgress == null) {
+                          return child;
+                        } else {
+                          return Center(
+                            child: CircularProgressIndicator(
+                              value: loadingProgress.expectedTotalBytes != null
+                                  ? loadingProgress.cumulativeBytesLoaded /
+                                      (loadingProgress.expectedTotalBytes ?? 1)
+                                  : null,
+                            ),
+                          );
+                        }
+                      },
+                      errorBuilder: (context, error, stackTrace) {
+                        print('Error loading image: $error');
+                        return Icon(Icons.error, size: 50); // Placeholder icon
+                      },
+                    )
+                  : Icon(Icons.image, size: 50), // Default icon if no image
+              title: Text(item.name),
+              subtitle: Text('Price: \$${item.price.toStringAsFixed(2)}'),
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  IconButton(
+                    icon: Icon(Icons.edit),
+                    onPressed: () => _editMenuItem(item),
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.delete),
+                    onPressed: () => _deleteMenuItem(item),
+                  ),
+                ],
+              ),
+            )),
+        SizedBox(height: 20),
+      ],
+    );
+  }
 }

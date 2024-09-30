@@ -100,9 +100,14 @@ class CafeteriaOrdersScreen extends StatelessWidget {
   Widget _buildLoadingCard(Map<String, dynamic> orderData) {
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      elevation: 4,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
       child: ListTile(
         title: Text('Order Number: ${orderData['orderNumber']}'),
         subtitle: Text('Fetching user details...'),
+        tileColor: Colors.grey[200],
       ),
     );
   }
@@ -110,9 +115,14 @@ class CafeteriaOrdersScreen extends StatelessWidget {
   Widget _buildErrorCard(Map<String, dynamic> orderData) {
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      elevation: 4,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
       child: ListTile(
         title: Text('Order Number: ${orderData['orderNumber']}'),
         subtitle: Text('Error fetching user details'),
+        tileColor: Colors.red[100],
       ),
     );
   }
@@ -127,14 +137,22 @@ class CafeteriaOrdersScreen extends StatelessWidget {
       BuildContext context) {
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      elevation: 4,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
       child: ListTile(
-        title: Text('Order Number: ${orderData['orderNumber']}'),
+        title: Text(
+          'Order Number: ${orderData['orderNumber']}',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text('Total: \$${orderData['totalPayment']}'),
             Text('User: $name (RegNo: $regNo)'),
-            Text('Status: $status'),
+            Text('Status: $status',
+                style: TextStyle(color: _getStatusColor(status))),
             ...items.map((item) {
               final itemName = item['name'] ?? 'Unnamed Item';
               final itemQuantity = item['quantity'] ?? 0;
@@ -158,9 +176,22 @@ class CafeteriaOrdersScreen extends StatelessWidget {
               PopupMenuItem(value: 'Delete', child: Text('Delete')),
             ];
           },
-          icon: Icon(Icons.more_vert),
+          icon: Icon(Icons.more_vert, color: Colors.grey),
         ),
       ),
     );
+  }
+
+  Color _getStatusColor(String status) {
+    switch (status) {
+      case 'Pending':
+        return Colors.orange;
+      case 'In Process':
+        return Colors.blue;
+      case 'Completed':
+        return Colors.green;
+      default:
+        return Colors.black;
+    }
   }
 }

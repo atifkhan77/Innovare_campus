@@ -23,7 +23,9 @@ class PrintsScreen extends StatelessWidget {
   }
 
   void _downloadDocument(String url) async {
+    // ignore: deprecated_member_use
     if (await canLaunch(url)) {
+      // ignore: deprecated_member_use
       await launch(url);
     } else {
       print('Could not launch $url');
@@ -36,7 +38,7 @@ class PrintsScreen extends StatelessWidget {
       stream: FirebaseFirestore.instance.collection('prints').snapshots(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         }
 
         if (snapshot.hasError) {
@@ -44,7 +46,7 @@ class PrintsScreen extends StatelessWidget {
         }
 
         if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-          return Center(child: Text('No documents available.'));
+          return const Center(child: Text('No documents available.'));
         }
 
         final documents = snapshot.data!.docs;
@@ -81,8 +83,8 @@ class PrintsScreen extends StatelessWidget {
   }
 
   Widget _buildLoadingCard() {
-    return Card(
-      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+    return const Card(
+      margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       child: ListTile(
         title: Text('Fetching user details...'),
       ),
@@ -90,8 +92,8 @@ class PrintsScreen extends StatelessWidget {
   }
 
   Widget _buildErrorCard() {
-    return Card(
-      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+    return const Card(
+      margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       child: ListTile(
         title: Text('Error fetching user details'),
       ),
@@ -105,7 +107,7 @@ class PrintsScreen extends StatelessWidget {
         title: Text('Document uploaded by $name (RegNo: $regNo)'),
         subtitle: Text('File URL: $url'),
         trailing: IconButton(
-          icon: Icon(Icons.download),
+          icon: const Icon(Icons.download),
           onPressed: () {
             if (url.isNotEmpty) {
               _downloadDocument(url);
