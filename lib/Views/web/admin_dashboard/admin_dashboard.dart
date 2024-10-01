@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:fl_chart/fl_chart.dart'; // Chart package
+import 'package:fl_chart/fl_chart.dart';
 import 'package:innovare_campus/Views/web/Adminwidgets/drawers.dart';
 import 'package:innovare_campus/Views/web/Adminwidgets/piechart.dart';
 
@@ -15,7 +15,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
   late Animation<double> _fadeAnimation;
   late Animation<Offset> _slideAnimation;
   Map<String, int> regNoCounts = {};
-  Map<String, int> tutorCounts = {}; // New map for tutor counts
+  Map<String, int> tutorCounts = {};
   List<FlSpot> userGrowthData = [];
 
   @override
@@ -40,8 +40,8 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
     ));
 
     fetchUsersData();
-    fetchUserGrowthData(); // Fetch area chart data
-    fetchTutorsData(); // Fetch tutors data for the donut chart
+    fetchUserGrowthData();
+    fetchTutorsData();
   }
 
   @override
@@ -91,7 +91,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
       }
 
       setState(() {
-        tutorCounts = tempCounts; // Store the fetched data
+        tutorCounts = tempCounts;
       });
     } catch (e) {
       print('Error fetching tutor data: $e');
@@ -99,12 +99,11 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
   }
 
   Future<void> fetchUserGrowthData() async {
-    // Simulating user growth data for the area chart
     List<FlSpot> tempData = [
-      const FlSpot(0, 10), // Month 1, 10 users
-      const FlSpot(1, 20), // Month 2, 20 users
-      const FlSpot(2, 40), // Month 3, 40 users
-      const FlSpot(3, 80), // Month 4, 80 users
+      const FlSpot(0, 10),
+      const FlSpot(1, 20),
+      const FlSpot(2, 40),
+      const FlSpot(3, 80),
     ];
 
     setState(() {
@@ -287,7 +286,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
             color: Colors.black.withOpacity(0.2),
             spreadRadius: 2,
             blurRadius: 5,
-            offset: const Offset(0, 3), // Changes the position of the shadow
+            offset: const Offset(0, 3),
           ),
         ],
       ),
@@ -312,7 +311,6 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
     );
   }
 
-  // New method to create event cards
   Widget _buildEventCard(String imagePath, String title) {
     return Expanded(
       child: Card(

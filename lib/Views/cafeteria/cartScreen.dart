@@ -21,16 +21,14 @@ class CartScreen extends StatelessWidget {
       ),
       body: Stack(
         children: [
-          // Background image
           Container(
             decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/Splash.png'), // Your background image
+                image: AssetImage('assets/Splash.png'),
                 fit: BoxFit.cover,
               ),
             ),
           ),
-          // Cart items
           ListView.builder(
             itemCount: cart.itemCount,
             itemBuilder: (context, index) {
@@ -45,12 +43,11 @@ class CartScreen extends StatelessWidget {
                     height: 50,
                     child: Image.network(
                       cartItem.imageUrl.isEmpty
-                          ? 'assets/logo.png' // Placeholder image
+                          ? 'assets/logo.png'
                           : cartItem.imageUrl,
                       fit: BoxFit.cover,
                       errorBuilder: (context, error, stackTrace) {
-                        return Image.asset(
-                            'assets/logo.png'); // Fallback in case of an error
+                        return Image.asset('assets/logo.png');
                       },
                     ),
                   ),
@@ -75,8 +72,7 @@ class CartScreen extends StatelessWidget {
                         child: Text(
                           ' ${cartItem.quantity}',
                           style: const TextStyle(color: Colors.white),
-                          textAlign: TextAlign
-                              .center, // Center align for better layout
+                          textAlign: TextAlign.center,
                         ),
                       ),
                       IconButton(
@@ -98,7 +94,7 @@ class CartScreen extends StatelessWidget {
                     ],
                   ),
                   trailing: SizedBox(
-                    width: 100, // Set a fixed width for the trailing widget
+                    width: 100,
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -192,14 +188,14 @@ class CartScreen extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () {
-              Navigator.of(context).pop(); // Close the dialog
+              Navigator.of(context).pop();
               _handleCashPayment(context, cart);
             },
             child: const Text('Pay with Cash'),
           ),
           TextButton(
             onPressed: () async {
-              Navigator.of(context).pop(); // Close the dialog
+              Navigator.of(context).pop();
               await _handleOnlinePayment(context, cart);
             },
             child: const Text('Pay Online'),
@@ -222,8 +218,8 @@ class CartScreen extends StatelessWidget {
     final totalPayment = cart.totalAmount;
 
     final order = OrderConfirmation(
-      id: '', // ID will be assigned by Firestore
-      email: user.email ?? 'Unknown User', // Use user.email
+      id: '',
+      email: user.email ?? 'Unknown User',
       orderNumber: orderNumber,
       totalPayment: totalPayment,
       items: cart.items.values
@@ -265,8 +261,8 @@ class CartScreen extends StatelessWidget {
     final totalPayment = cart.totalAmount;
 
     final order = OrderConfirmation(
-      id: '', // ID will be assigned by Firestore
-      email: user.email ?? 'Unknown User', // Use user.email
+      id: '',
+      email: user.email ?? 'Unknown User',
       orderNumber: orderNumber,
       totalPayment: totalPayment,
       items: cart.items.values

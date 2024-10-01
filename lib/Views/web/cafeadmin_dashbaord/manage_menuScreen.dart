@@ -14,13 +14,12 @@ class _ManageMenuScreenState extends State<ManageMenuScreen> {
   final _nameController = TextEditingController();
   final _priceController = TextEditingController();
   String? _imageUrl;
-  String _selectedCategory = 'Desi'; // Default category
-  MenuItem? _editingItem; // For tracking the item being edited
+  String _selectedCategory = 'Desi';
+  MenuItem? _editingItem;
 
   @override
   void initState() {
     super.initState();
-    // Initialize data or fetch initial data if necessary
   }
 
   Future<void> _pickImage() async {
@@ -28,7 +27,7 @@ class _ManageMenuScreenState extends State<ManageMenuScreen> {
       final imageUrl = await uploadImageToFirebaseWeb();
       if (imageUrl.isNotEmpty) {
         setState(() {
-          _imageUrl = imageUrl; // Set the image URL after upload
+          _imageUrl = imageUrl;
         });
       } else {
         _showSnackBar('Failed to upload image. Please try again.');
@@ -46,14 +45,13 @@ class _ManageMenuScreenState extends State<ManageMenuScreen> {
 
     final menuProvider = Provider.of<MenuProvider>(context, listen: false);
 
-    // If it's a new item, generate a new document ID
     String menuItemId = _editingItem?.id ?? menuProvider.getNewDocumentId();
 
     final menuItem = MenuItem(
-      id: menuItemId, // Use either the editing item ID or a new one
+      id: menuItemId,
       name: _nameController.text,
       price: double.parse(_priceController.text),
-      imageUrl: _imageUrl ?? '', // Use the uploaded image URL
+      imageUrl: _imageUrl ?? '',
       category: _selectedCategory,
     );
 
@@ -79,8 +77,8 @@ class _ManageMenuScreenState extends State<ManageMenuScreen> {
     _priceController.clear();
     setState(() {
       _imageUrl = null;
-      _selectedCategory = 'Desi'; // Reset to default category
-      _editingItem = null; // Clear editing state
+      _selectedCategory = 'Desi';
+      _editingItem = null;
     });
   }
 
@@ -120,7 +118,7 @@ class _ManageMenuScreenState extends State<ManageMenuScreen> {
         title: Text(_editingItem == null ? 'Manage Menu' : 'Edit Item'),
         actions: [
           IconButton(
-            icon: Icon(Icons.refresh),
+            icon: const Icon(Icons.refresh),
             onPressed: _refreshMenu,
           ),
         ],
@@ -131,14 +129,14 @@ class _ManageMenuScreenState extends State<ManageMenuScreen> {
           children: [
             TextField(
               controller: _nameController,
-              decoration: InputDecoration(labelText: 'Item Name'),
+              decoration: const InputDecoration(labelText: 'Item Name'),
             ),
             TextField(
               controller: _priceController,
-              decoration: InputDecoration(labelText: 'Item Price'),
+              decoration: const InputDecoration(labelText: 'Item Price'),
               keyboardType: TextInputType.number,
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             DropdownButton<String>(
               value: _selectedCategory,
               onChanged: (newValue) {
@@ -154,17 +152,16 @@ class _ManageMenuScreenState extends State<ManageMenuScreen> {
                 );
               }).toList(),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             _imageUrl == null
-                ? Icon(Icons.image,
-                    size: 150) // Placeholder icon if no image URL
+                ? const Icon(Icons.image, size: 150)
                 : Image.network(_imageUrl!, height: 150, fit: BoxFit.cover),
             ElevatedButton.icon(
               onPressed: _pickImage,
-              icon: Icon(Icons.image),
-              label: Text('Select Image'),
+              icon: const Icon(Icons.image),
+              label: const Text('Select Image'),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: _addOrUpdateMenuItem,
               child: Text(_editingItem == null ? 'Add Item' : 'Update Item'),
@@ -172,12 +169,12 @@ class _ManageMenuScreenState extends State<ManageMenuScreen> {
             if (_editingItem != null)
               ElevatedButton(
                 onPressed: _clearForm,
-                child: Text('Cancel Editing'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.grey,
                 ),
+                child: const Text('Cancel Editing'),
               ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Expanded(
               child: ListView(
                 children: [
@@ -201,7 +198,7 @@ class _ManageMenuScreenState extends State<ManageMenuScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(category,
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
         ...items.map((item) => ListTile(
               leading: item.imageUrl.isNotEmpty
                   ? Image.network(
@@ -225,27 +222,29 @@ class _ManageMenuScreenState extends State<ManageMenuScreen> {
                       },
                       errorBuilder: (context, error, stackTrace) {
                         print('Error loading image: $error');
-                        return Icon(Icons.error, size: 50); // Placeholder icon
+                        return const Icon(Icons.error,
+                            size: 50); // Placeholder icon
                       },
                     )
-                  : Icon(Icons.image, size: 50), // Default icon if no image
+                  : const Icon(Icons.image,
+                      size: 50), // Default icon if no image
               title: Text(item.name),
               subtitle: Text('Price: \$${item.price.toStringAsFixed(2)}'),
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   IconButton(
-                    icon: Icon(Icons.edit),
+                    icon: const Icon(Icons.edit),
                     onPressed: () => _editMenuItem(item),
                   ),
                   IconButton(
-                    icon: Icon(Icons.delete),
+                    icon: const Icon(Icons.delete),
                     onPressed: () => _deleteMenuItem(item),
                   ),
                 ],
               ),
             )),
-        SizedBox(height: 20),
+        const SizedBox(height: 20),
       ],
     );
   }

@@ -31,7 +31,6 @@ class NewsManagementScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // Add news functionality
           _showAddNewsDialog(context, newsProvider);
         },
         child: const Icon(Icons.add),
@@ -68,7 +67,6 @@ class NewsManagementScreen extends StatelessWidget {
                 IconButton(
                   icon: const Icon(Icons.edit, color: Colors.blue),
                   onPressed: () {
-                    // Update news functionality
                     _showEditNewsDialog(context, newsProvider, news);
                   },
                 ),
@@ -106,17 +104,15 @@ class NewsManagementScreen extends StatelessWidget {
                 controller: contentController,
                 decoration: const InputDecoration(labelText: 'Content'),
               ),
-              // Additional fields like Image URL, Link, QR Code can be added here
             ],
           ),
           actions: [
             TextButton(
               onPressed: () {
                 final newNews = NewsModel(
-                  id: '', // ID will be assigned by Firestore
+                  id: '',
                   title: titleController.text,
                   content: contentController.text,
-                  // Add other fields if necessary
                 );
                 newsProvider.addNews(newNews);
                 Navigator.of(context).pop();
@@ -150,7 +146,6 @@ class NewsManagementScreen extends StatelessWidget {
                 controller: contentController,
                 decoration: const InputDecoration(labelText: 'Content'),
               ),
-              // Additional fields like Image URL, Link, QR Code can be added here
             ],
           ),
           actions: [
@@ -158,7 +153,7 @@ class NewsManagementScreen extends StatelessWidget {
               onPressed: () {
                 news.title = titleController.text;
                 news.content = contentController.text;
-                // Update other fields if necessary
+
                 newsProvider.updateNews(news);
                 Navigator.of(context).pop();
               },

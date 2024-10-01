@@ -17,12 +17,12 @@ class UserManagementScreen extends StatelessWidget {
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: const Color.fromRGBO(49, 42, 119, 1),
-        iconTheme: const IconThemeData(color: Colors.white), // Primary Color
+        iconTheme: const IconThemeData(color: Colors.white),
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh, color: Colors.white),
             onPressed: () {
-              userProvider.refreshUsers(); // Refresh the user list
+              userProvider.refreshUsers();
             },
           ),
         ],

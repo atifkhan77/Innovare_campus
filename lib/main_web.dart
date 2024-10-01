@@ -19,9 +19,6 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  // Uncomment this line only during development
-  // await registerAdmins();
-
   runApp(MyWebApp());
 }
 
@@ -29,13 +26,11 @@ Future<void> registerAdmins() async {
   try {
     final FirebaseAuth _auth = FirebaseAuth.instance;
 
-    // Register admin user
     await _auth.createUserWithEmailAndPassword(
       email: 'admin@example.com',
       password: 'adminpassword',
     );
 
-    // Register cafe admin user
     await _auth.createUserWithEmailAndPassword(
       email: 'cafeadmin@example.com',
       password: 'cafepassword',
@@ -64,8 +59,7 @@ class MyWebApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         home: AdminScreen(),
         routes: {
-          '/manage-menu': (context) =>
-              ManageMenuScreen(), // Add route for ManageMenuScreen
+          '/manage-menu': (context) => ManageMenuScreen(),
         },
       ),
     );

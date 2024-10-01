@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:innovare_campus/Views/print/printScreen.dart';
 import 'package:innovare_campus/provider/cafeOrder_provider.dart';
 import 'package:innovare_campus/provider/cart_provider.dart';
@@ -36,7 +35,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         home: SplashScreen(),
         routes: {
-          '/print': (context) => PrintScreen(), // Added route for PrintScreen
+          '/print': (context) => PrintScreen(),
         },
       ),
     );

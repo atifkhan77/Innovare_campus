@@ -21,7 +21,7 @@ class SocietyManagementScreen extends StatelessWidget {
           style: TextStyle(color: Colors.white),
         ),
         iconTheme: const IconThemeData(color: Colors.white),
-        backgroundColor: const Color.fromRGBO(49, 42, 119, 1), // AppBar color
+        backgroundColor: const Color.fromRGBO(49, 42, 119, 1),
       ),
       drawer: CustomDrawer(),
       body: Consumer<SocietyProvider>(
@@ -34,7 +34,7 @@ class SocietyManagementScreen extends StatelessWidget {
                 margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 elevation: 5,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10), // Rounded corners
+                  borderRadius: BorderRadius.circular(10),
                 ),
                 child: ListTile(
                   title: Text(
@@ -82,7 +82,7 @@ class SocietyManagementScreen extends StatelessWidget {
           _showAddDialog(context);
         },
         backgroundColor: const Color.fromRGBO(49, 42, 119, 1),
-        child: const Icon(Icons.add), // FAB color
+        child: const Icon(Icons.add),
       ),
     );
   }

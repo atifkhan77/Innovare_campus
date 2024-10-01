@@ -37,7 +37,6 @@ class CustomDrawer extends StatelessWidget {
                   builder: (context) => UserManagementScreen(),
                 ),
               );
-              // Handle navigation
             },
           ),
           _buildDrawerItem(
@@ -64,9 +63,7 @@ class CustomDrawer extends StatelessWidget {
             context: context,
             icon: Icons.perm_device_information_sharp,
             label: 'Lost and Found',
-            onTap: () {
-              // Handle navigation
-            },
+            onTap: () {},
           ),
           _buildDrawerItem(
             context: context,
@@ -90,11 +87,16 @@ class CustomDrawer extends StatelessWidget {
     required VoidCallback onTap,
   }) {
     return ListTile(
-      leading: Icon(icon,
-          color:
-              const Color.fromRGBO(49, 42, 119, 1)), // Set icon color to white
-      title: Text(label,
-          style: const TextStyle(color: Color.fromRGBO(49, 42, 119, 1))),
+      leading: Icon(
+        icon,
+        color: const Color.fromRGBO(49, 42, 119, 1),
+      ),
+      title: Text(
+        label,
+        style: const TextStyle(
+          color: Color.fromRGBO(49, 42, 119, 1),
+        ),
+      ),
       onTap: onTap,
     );
   }

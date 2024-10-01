@@ -30,7 +30,7 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // Save the provider reference here
+
     Provider.of<OrderProvider>(context);
   }
 
@@ -65,7 +65,6 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
 
       if (orderSnapshot.docs.isNotEmpty) {
         if (mounted) {
-          // Check if widget is still mounted before calling setState
           setState(() {
             orderData =
                 orderSnapshot.docs.first.data() as Map<String, dynamic>?;
@@ -114,25 +113,22 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
       ),
       body: Stack(
         children: [
-          // Background image with overlay
           Container(
             decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage(
-                    'assets/Splash.png'), // Path to your background image
+                image: AssetImage('assets/Splash.png'),
                 fit: BoxFit.cover,
               ),
             ),
           ),
           Container(
-            color: Colors.black.withOpacity(0.4), // Overlay for readability
+            color: Colors.black.withOpacity(0.4),
           ),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Input field with themed gradient border
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
@@ -171,8 +167,6 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                   ),
                 ),
                 const SizedBox(height: 16.0),
-
-                // Track Order Button with gradient and shadow
                 ElevatedButton(
                   onPressed: isLoading ? null : _searchOrder,
                   style: ElevatedButton.styleFrom(
@@ -200,8 +194,6 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                         ),
                 ),
                 const SizedBox(height: 24.0),
-
-                // Order details with fade-in animation and reduced size
                 if (orderData != null)
                   Expanded(
                     child: AnimatedOpacity(
@@ -209,15 +201,14 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                       duration: const Duration(milliseconds: 300),
                       child: Container(
                         constraints: const BoxConstraints(
-                          maxHeight: 200, // Set max height for the card
+                          maxHeight: 200,
                         ),
                         child: Card(
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12)),
                           color: Colors.white.withOpacity(0.9),
                           elevation: 10,
-                          shadowColor: const Color.fromRGBO(
-                              49, 42, 119, 0.6), // theme shadow
+                          shadowColor: const Color.fromRGBO(49, 42, 119, 0.6),
                           child: Padding(
                             padding: const EdgeInsets.all(16.0),
                             child: SingleChildScrollView(

@@ -43,7 +43,6 @@ class _LoginScreenState extends State<LoginScreen> {
         );
       }
     } catch (e) {
-      // Handle login error
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Failed to login: $e')),
       );
@@ -91,8 +90,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 color: Colors.white,
               ),
-              // ignore: prefer_const_constructors
-              padding: EdgeInsets.all(20),
+              padding: const EdgeInsets.all(20),
               child: SingleChildScrollView(
                 child: Form(
                   key: _formKey,

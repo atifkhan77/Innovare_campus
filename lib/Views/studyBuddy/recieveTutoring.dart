@@ -39,14 +39,15 @@ class _RecieveTutorState extends State<RecieveTutor> {
       });
       await _loadProfileImage();
     } else {
-      print("No user is currently logged in");
+      debugPrint("No user is currently logged in");
     }
   }
 
   Future<void> _loadProfileImage() async {
     if (_userId == null) return;
     try {
-      final docRef = FirebaseFirestore.instance.collection('users').doc(_userId);
+      final docRef =
+          FirebaseFirestore.instance.collection('users').doc(_userId);
       final doc = await docRef.get();
       if (doc.exists && doc['profile_image_url'] != null) {
         setState(() {
@@ -54,11 +55,11 @@ class _RecieveTutorState extends State<RecieveTutor> {
         });
       } else {
         setState(() {
-          _profileImageUrl = null; // Handle no image
+          _profileImageUrl = null;
         });
       }
     } catch (e) {
-      print('Failed to load profile image: $e');
+      debugPrint('Failed to load profile image: $e');
     }
   }
 
@@ -67,8 +68,8 @@ class _RecieveTutorState extends State<RecieveTutor> {
       _searchQuery = query;
       _filteredTutors = Provider.of<TutorProvider>(context, listen: false)
           .tutors
-          .where((tutor) =>
-              tutor.name.toLowerCase().contains(query.toLowerCase()))
+          .where(
+              (tutor) => tutor.name.toLowerCase().contains(query.toLowerCase()))
           .toList();
     });
   }
@@ -93,7 +94,8 @@ class _RecieveTutorState extends State<RecieveTutor> {
               child: CircleAvatar(
                 backgroundImage: _profileImageUrl != null
                     ? NetworkImage(_profileImageUrl!)
-                    : const AssetImage('assets/placeholder.png') as ImageProvider,
+                    : const AssetImage('assets/placeholder.png')
+                        as ImageProvider,
               ),
             ),
             const SizedBox(width: 8),
@@ -118,9 +120,9 @@ class _RecieveTutorState extends State<RecieveTutor> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 SizedBox(height: screenHeight * 0.03),
-                Padding(
-                  padding: const EdgeInsets.only(left: 95.0),
-                  child: const Text(
+                const Padding(
+                  padding: EdgeInsets.only(left: 95.0),
+                  child: Text(
                     'StudyBuddy',
                     style: TextStyle(
                         color: Colors.white70,
@@ -205,7 +207,8 @@ class _RecieveTutorState extends State<RecieveTutor> {
                             onPressed: () {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
-                                  builder: (context) => OfferTutorScreen(),
+                                  builder: (context) =>
+                                      const OfferTutorScreen(),
                                 ),
                               );
                             }),
@@ -269,7 +272,6 @@ class TutorListScreen extends StatelessWidget {
       ),
       body: Stack(
         children: [
-          // Background image
           Container(
             height: screenHeight,
             width: screenWidth,
@@ -286,7 +288,7 @@ class TutorListScreen extends StatelessWidget {
             itemBuilder: (context, index) {
               final tutor = tutors[index];
               return Card(
-                color: Colors.white.withOpacity(0.8), // Semi-transparent card
+                color: Colors.white.withOpacity(0.8),
                 child: ListTile(
                   title: Text(tutor.name),
                   subtitle:

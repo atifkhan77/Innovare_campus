@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:innovare_campus/Views/web/cafeadmin_dashbaord/cafeAdminDashboardScreen.dart';
 import 'package:innovare_campus/Views/web/cafeadmin_dashbaord/manageOrdersScreen.dart';
 import 'package:innovare_campus/Views/web/cafeadmin_dashbaord/manage_menuScreen.dart';
-import 'package:innovare_campus/Views/web/cafeadmin_dashbaord/viewOrdersScreen.dart'; // Import the CafeAdminDashboardScreen
+import 'package:innovare_campus/Views/web/cafeadmin_dashbaord/viewOrdersScreen.dart';
 
 class CafeAdminDrawer extends StatelessWidget {
   @override
@@ -29,7 +29,7 @@ class CafeAdminDrawer extends StatelessWidget {
                 const SizedBox(height: 10),
                 Center(
                   child: Image.asset(
-                    'assets/logo.png', // Add the path to your logo here
+                    'assets/logo.png',
                     width: 80,
                     height: 80,
                   ),

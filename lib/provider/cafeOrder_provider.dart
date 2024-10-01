@@ -9,10 +9,8 @@ class OrderProvider with ChangeNotifier {
     try {
       final docRef = await _firestore.collection('orders').add(order.toMap());
 
-      // Update the order ID with the generated document ID
       order.id = docRef.id;
 
-      // Ensure the Firestore document has the correct ID
       await _firestore
           .collection('orders')
           .doc(docRef.id)
@@ -20,10 +18,8 @@ class OrderProvider with ChangeNotifier {
 
       notifyListeners();
     } catch (e) {
-      print('Error placing order: $e');
-      // You might consider throwing an exception or handling it through a callback
-      throw Exception(
-          'Failed to place order: $e'); // Re-throwing the error for higher-level handling
+      debugPrint('Error placing order: $e');
+      throw Exception('Failed to place order: $e');
     }
   }
 
@@ -34,7 +30,7 @@ class OrderProvider with ChangeNotifier {
         return OrderConfirmation.fromMap(doc.data()!, doc.id);
       }
     } catch (e) {
-      print('Error fetching order: $e');
+      debugPrint('Error fetching order: $e');
     }
     return null;
   }

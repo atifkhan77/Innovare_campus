@@ -5,10 +5,12 @@ import 'package:innovare_campus/Views/web/cafeadmin_dashbaord/cafeComponents/caf
 
 class CafeAdminDashboardScreen extends StatefulWidget {
   @override
-  _CafeAdminDashboardScreenState createState() => _CafeAdminDashboardScreenState();
+  _CafeAdminDashboardScreenState createState() =>
+      _CafeAdminDashboardScreenState();
 }
 
-class _CafeAdminDashboardScreenState extends State<CafeAdminDashboardScreen> with SingleTickerProviderStateMixin {
+class _CafeAdminDashboardScreenState extends State<CafeAdminDashboardScreen>
+    with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
   late Animation<Offset> _slideAnimation;
@@ -68,7 +70,8 @@ class _CafeAdminDashboardScreenState extends State<CafeAdminDashboardScreen> wit
   }
 
   Future<void> _fetchOrderStatusCount() async {
-    final snapshot = await FirebaseFirestore.instance.collection('orders').get();
+    final snapshot =
+        await FirebaseFirestore.instance.collection('orders').get();
     final orders = snapshot.docs;
 
     Map<String, int> statusCount = {
@@ -106,16 +109,19 @@ class _CafeAdminDashboardScreenState extends State<CafeAdminDashboardScreen> wit
   }
 
   Future<void> _fetchOrderData() async {
-    final snapshot = await FirebaseFirestore.instance.collection('orders').get();
+    final snapshot =
+        await FirebaseFirestore.instance.collection('orders').get();
     final orders = snapshot.docs;
 
     Map<String, List<double>> data = {};
 
     for (var order in orders) {
-      String paymentMethod = order.data()['paymentMethod'] as String? ?? 'Unknown';
+      String paymentMethod =
+          order.data()['paymentMethod'] as String? ?? 'Unknown';
       List<dynamic> items = order.data()['items'] as List<dynamic>? ?? [];
-      
-      double totalValue = items.fold(0.0, (sum, item) => sum + ((item['price'] as num?)?.toDouble() ?? 0.0));
+
+      double totalValue = items.fold(0.0,
+          (sum, item) => sum + ((item['price'] as num?)?.toDouble() ?? 0.0));
 
       if (!data.containsKey(paymentMethod)) {
         data[paymentMethod] = [];
@@ -123,7 +129,6 @@ class _CafeAdminDashboardScreenState extends State<CafeAdminDashboardScreen> wit
       data[paymentMethod]!.add(totalValue);
     }
 
-    // Sort the values for each payment method
     data.forEach((key, value) {
       value.sort();
     });
@@ -143,8 +148,9 @@ class _CafeAdminDashboardScreenState extends State<CafeAdminDashboardScreen> wit
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Cafe Admin Dashboard', style: TextStyle(color: Colors.white)),
-        backgroundColor: const Color.fromRGBO(79, 76, 116, 1),
+        title: const Text('Cafe Admin Dashboard',
+            style: TextStyle(color: Colors.white)),
+        backgroundColor: const Color.fromRGBO(49, 42, 119, 1),
         iconTheme: const IconThemeData(color: Colors.white),
       ),
       drawer: CafeAdminDrawer(),
@@ -203,7 +209,8 @@ class _CafeAdminDashboardScreenState extends State<CafeAdminDashboardScreen> wit
                                     ),
                                     const SizedBox(width: 24),
                                     const Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           'Cafe Admin',
@@ -227,7 +234,8 @@ class _CafeAdminDashboardScreenState extends State<CafeAdminDashboardScreen> wit
                                 ),
                               ),
                               Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20.0),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16.0, vertical: 20.0),
                                 child: _buildChartsRow(),
                               ),
                             ],
@@ -251,220 +259,223 @@ class _CafeAdminDashboardScreenState extends State<CafeAdminDashboardScreen> wit
     );
   }
 
- Widget _buildOrderStatusBarChart() {
-  return Container(
-    width: 400,  // Set the desired width
-    height: 400, // Set the desired height
-    decoration: BoxDecoration(
-      color: Colors.lightBlue[50], // Set your desired background color
-      borderRadius: BorderRadius.circular(12),
-    ),
-    child: AspectRatio(
-      aspectRatio: 1,
-      child: Card(
-        elevation: 4,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Column(
-          children: [
-            const Padding(
-              padding: EdgeInsets.all(16),
-              child: Text(
-                'Order Status Breakdown',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+  Widget _buildOrderStatusBarChart() {
+    return Container(
+      width: 400,
+      height: 400,
+      decoration: BoxDecoration(
+        color: Colors.lightBlue[50],
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: AspectRatio(
+        aspectRatio: 1,
+        child: Card(
+          elevation: 4,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Column(
+            children: [
+              const Padding(
+                padding: EdgeInsets.all(16),
+                child: Text(
+                  'Order Status Breakdown',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
               ),
-            ),
-            Expanded(
-              child: BarChart(
-                BarChartData(
-                  alignment: BarChartAlignment.spaceAround,
-                  barGroups: [
-                    BarChartGroupData(
-                      x: 0,
-                      barRods: [
-                        BarChartRodData(
-                          toY: orderStatusCount['Pending']!.toDouble(),
-                          color: Colors.orange,
-                          width: 20,
+              Expanded(
+                child: BarChart(
+                  BarChartData(
+                    alignment: BarChartAlignment.spaceAround,
+                    barGroups: [
+                      BarChartGroupData(
+                        x: 0,
+                        barRods: [
+                          BarChartRodData(
+                            toY: orderStatusCount['Pending']!.toDouble(),
+                            color: Colors.orange,
+                            width: 20,
+                          ),
+                        ],
+                        showingTooltipIndicators: [0],
+                      ),
+                      BarChartGroupData(
+                        x: 1,
+                        barRods: [
+                          BarChartRodData(
+                            toY: orderStatusCount['In Process']!.toDouble(),
+                            color: Colors.blue,
+                            width: 20,
+                          ),
+                        ],
+                        showingTooltipIndicators: [0],
+                      ),
+                      BarChartGroupData(
+                        x: 2,
+                        barRods: [
+                          BarChartRodData(
+                            toY: orderStatusCount['Completed']!.toDouble(),
+                            color: Colors.green,
+                            width: 20,
+                          ),
+                        ],
+                        showingTooltipIndicators: [0],
+                      ),
+                    ],
+                    borderData: FlBorderData(show: false),
+                    titlesData: FlTitlesData(
+                      bottomTitles: AxisTitles(
+                        sideTitles: SideTitles(
+                          showTitles: true,
+                          getTitlesWidget: (value, meta) {
+                            switch (value.toInt()) {
+                              case 0:
+                                return const Text('Pending');
+                              case 1:
+                                return const Text('In Process');
+                              case 2:
+                                return const Text('Completed');
+                              default:
+                                return const Text('');
+                            }
+                          },
                         ),
-                      ],
-                      showingTooltipIndicators: [0],
-                    ),
-                    BarChartGroupData(
-                      x: 1,
-                      barRods: [
-                        BarChartRodData(
-                          toY: orderStatusCount['In Process']!.toDouble(),
-                          color: Colors.blue,
-                          width: 20,
+                      ),
+                      leftTitles: const AxisTitles(
+                        sideTitles: SideTitles(
+                          showTitles: false,
+                          interval: 1,
+                          reservedSize: 30,
                         ),
-                      ],
-                      showingTooltipIndicators: [0],
+                      ),
+                      topTitles: const AxisTitles(
+                          sideTitles: SideTitles(showTitles: false)),
+                      rightTitles: const AxisTitles(
+                          sideTitles: SideTitles(showTitles: false)),
                     ),
-                    BarChartGroupData(
-                      x: 2,
-                      barRods: [
-                        BarChartRodData(
-                          toY: orderStatusCount['Completed']!.toDouble(),
-                          color: Colors.green,
-                          width: 20,
-                        ),
-                      ],
-                      showingTooltipIndicators: [0],
-                    ),
-                  ],
-                  borderData: FlBorderData(show: false),
-                  titlesData: FlTitlesData(
-                    bottomTitles: AxisTitles(
-                      sideTitles: SideTitles(
-                        showTitles: true,
-                        getTitlesWidget: (value, meta) {
-                          switch (value.toInt()) {
-                            case 0:
-                              return const Text('Pending');
-                            case 1:
-                              return const Text('In Process');
-                            case 2:
-                              return const Text('Completed');
-                            default:
-                              return const Text('');
-                          }
-                        },
+                    gridData: const FlGridData(show: false),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMenuCategoriesDonutChart() {
+    double total =
+        menuCategoriesCount.values.fold(0, (sum, value) => sum + value);
+
+    return Container(
+      width: 400,
+      height: 400,
+      decoration: BoxDecoration(
+        color: Colors.lightGreen[50],
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: AspectRatio(
+        aspectRatio: 1,
+        child: Card(
+          elevation: 4,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Column(
+            children: [
+              const Padding(
+                padding: EdgeInsets.all(16),
+                child: Text(
+                  'Menu Categories',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+              ),
+              Expanded(
+                child: PieChart(
+                  PieChartData(
+                    sections: menuCategoriesCount.entries.map((entry) {
+                      double percentage = (entry.value / total) * 100;
+                      return PieChartSectionData(
+                        color: _getCategoryColor(entry.key),
+                        value: entry.value.toDouble(),
+                        title:
+                            '${entry.key} (${percentage.toStringAsFixed(1)}%)',
+                        radius: 30,
+                      );
+                    }).toList(),
+                    borderData: FlBorderData(show: false),
+                    sectionsSpace: 0,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildOrderGraphChart() {
+    return Container(
+      width: 400,
+      height: 400,
+      decoration: BoxDecoration(
+        color: Colors.pink[50],
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: AspectRatio(
+        aspectRatio: 1,
+        child: Card(
+          elevation: 4,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Column(
+            children: [
+              const Padding(
+                padding: EdgeInsets.all(16),
+                child: Text(
+                  'Order Values by Payment Method',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+              ),
+              Expanded(
+                child: LineChart(
+                  LineChartData(
+                    gridData: const FlGridData(show: true),
+                    titlesData: const FlTitlesData(
+                      leftTitles: AxisTitles(
+                        sideTitles: SideTitles(showTitles: false),
+                      ),
+                      bottomTitles: AxisTitles(
+                        sideTitles: SideTitles(showTitles: true),
                       ),
                     ),
-                    leftTitles: AxisTitles(
-                      sideTitles: SideTitles(
-                        showTitles: false,
-                        interval: 1,
-                        reservedSize: 30,
-                      ),
-                    ),
-                    topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                    rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                    borderData: FlBorderData(show: true),
+                    lineBarsData: orderData.entries.map((entry) {
+                      return LineChartBarData(
+                        spots: entry.value
+                            .asMap()
+                            .map((index, value) => MapEntry(
+                                index, FlSpot(index.toDouble(), value)))
+                            .values
+                            .toList(),
+                        isCurved: true,
+                        color: _getPaymentMethodColor(entry.key),
+                        belowBarData: BarAreaData(show: true),
+                        aboveBarData: BarAreaData(show: false),
+                      );
+                    }).toList(),
                   ),
-                  gridData: FlGridData(show: false),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
-    ),
-  );
-}
-
-Widget _buildMenuCategoriesDonutChart() {
-  double total = menuCategoriesCount.values.fold(0, (sum, value) => sum + value);
-
-  return Container(
-    width: 400,  // Set the desired width
-    height: 400, // Set the desired height
-    decoration: BoxDecoration(
-      color: Colors.lightGreen[50], // Set your desired background color
-      borderRadius: BorderRadius.circular(12),
-    ),
-    child: AspectRatio(
-      aspectRatio: 1,
-      child: Card(
-        elevation: 4,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Column(
-          children: [
-            const Padding(
-              padding: EdgeInsets.all(16),
-              child: Text(
-                'Menu Categories',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-            ),
-            Expanded(
-              child: PieChart(
-                PieChartData(
-                  sections: menuCategoriesCount.entries.map((entry) {
-                    double percentage = (entry.value / total) * 100;
-                    return PieChartSectionData(
-                      color: _getCategoryColor(entry.key),
-                      value: entry.value.toDouble(),
-                      title: '${entry.key} (${percentage.toStringAsFixed(1)}%)',
-                      radius: 30,
-                    );
-                  }).toList(),
-                  borderData: FlBorderData(show: false),
-                  sectionsSpace: 0,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    ),
-  );
-}
-
-Widget _buildOrderGraphChart() {
-  return Container(
-    width: 400,  // Set the desired width
-    height: 400, // Set the desired height
-    decoration: BoxDecoration(
-      color: Colors.pink[50], // Set your desired background color
-      borderRadius: BorderRadius.circular(12),
-    ),
-    child: AspectRatio(
-      aspectRatio: 1,
-      child: Card(
-        elevation: 4,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Column(
-          children: [
-            const Padding(
-              padding: EdgeInsets.all(16),
-              child: Text(
-                'Order Values by Payment Method',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-            ),
-            Expanded(
-              child: LineChart(
-                LineChartData(
-                  gridData: FlGridData(show: true),
-                  titlesData: FlTitlesData(
-                    leftTitles: AxisTitles(
-                      sideTitles: SideTitles(showTitles: false),
-                    ),
-                    bottomTitles: AxisTitles(
-                      sideTitles: SideTitles(showTitles: true),
-                    ),
-                  ),
-                  borderData: FlBorderData(show: true),
-                  lineBarsData: orderData.entries.map((entry) {
-                    return LineChartBarData(
-                      spots: entry.value
-                          .asMap()
-                          .map((index, value) => MapEntry(index, FlSpot(index.toDouble(), value)))
-                          .values
-                          .toList(),
-                      isCurved: true,
-                      color: _getPaymentMethodColor(entry.key),
-                      belowBarData: BarAreaData(show: true),
-                      aboveBarData: BarAreaData(show: false),
-                    );
-                  }).toList(),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    ),
-  );
-}
-
-
+    );
+  }
 
   Color _getCategoryColor(String category) {
     switch (category) {

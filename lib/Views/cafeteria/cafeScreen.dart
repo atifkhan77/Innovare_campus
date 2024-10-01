@@ -187,7 +187,7 @@ class _CafeScreenState extends State<CafeScreen> {
       }
       return '';
     } catch (e) {
-      print('Error fetching image URL: $e');
+      debugPrint('Error fetching image URL: $e');
       return '';
     }
   }

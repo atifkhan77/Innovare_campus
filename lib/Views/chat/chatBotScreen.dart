@@ -22,7 +22,6 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
       });
       _messageController.clear();
 
-      // Scroll to bottom
       _scrollController.animateTo(
         _scrollController.position.maxScrollExtent,
         duration: const Duration(milliseconds: 300),
@@ -34,7 +33,6 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
         _messages.add({"role": "assistant", "content": response});
       });
 
-      // Auto-scroll to bottom after the assistant replies
       _scrollController.animateTo(
         _scrollController.position.maxScrollExtent,
         duration: const Duration(milliseconds: 300),
@@ -58,12 +56,10 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
           borderRadius: BorderRadius.only(
             topLeft: const Radius.circular(20),
             topRight: const Radius.circular(20),
-            bottomLeft: isUser
-                ? const Radius.circular(20)
-                : const Radius.circular(0),
-            bottomRight: isUser
-                ? const Radius.circular(0)
-                : const Radius.circular(20),
+            bottomLeft:
+                isUser ? const Radius.circular(20) : const Radius.circular(0),
+            bottomRight:
+                isUser ? const Radius.circular(0) : const Radius.circular(20),
           ),
           boxShadow: const [
             BoxShadow(
@@ -90,7 +86,6 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
       ),
       body: Stack(
         children: [
-          // Background gradient
           Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(

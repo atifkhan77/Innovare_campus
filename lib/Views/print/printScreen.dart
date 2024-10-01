@@ -29,7 +29,6 @@ class _PrintScreenState extends State<PrintScreen> {
 
   void _pickFile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles();
-    // No restriction on file type, allows any file format
     if (result != null) {
       setState(() {
         _selectedFile = result.files.first;
@@ -40,10 +39,10 @@ class _PrintScreenState extends State<PrintScreen> {
   void _submitFile(BuildContext context) async {
     if (_selectedFile != null && userId != null) {
       await Provider.of<DocumentProvider>(context, listen: false)
-          .uploadDocument(_selectedFile!, userId!, _numOfPrints); 
+          .uploadDocument(_selectedFile!, userId!, _numOfPrints);
       setState(() {
         _selectedFile = null;
-        _numOfPrints = 1; // Reset number of prints after submission
+        _numOfPrints = 1;
       });
 
       ScaffoldMessenger.of(context).showSnackBar(
@@ -79,14 +78,18 @@ class _PrintScreenState extends State<PrintScreen> {
                     padding: EdgeInsets.all(16.0),
                     child: Text(
                       'Welcome back, Printer',
-                      style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
+                      style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
                     ),
                   ),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                         backgroundColor: const Color.fromRGBO(0, 0, 70, 1)),
                     onPressed: _pickFile,
-                    child: const Text('Upload your files', style: TextStyle(color: Colors.white)),
+                    child: const Text('Upload your files',
+                        style: TextStyle(color: Colors.white)),
                   ),
                   if (_selectedFile != null)
                     Column(
@@ -98,8 +101,9 @@ class _PrintScreenState extends State<PrintScreen> {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: TextFormField(
-                            decoration: const InputDecoration(labelText: 'Number of prints'),
-                            initialValue: '1', 
+                            decoration: const InputDecoration(
+                                labelText: 'Number of prints'),
+                            initialValue: '1',
                             keyboardType: TextInputType.number,
                             onChanged: (value) {
                               setState(() {
@@ -113,7 +117,8 @@ class _PrintScreenState extends State<PrintScreen> {
                             backgroundColor: const Color.fromRGBO(0, 0, 70, 1),
                           ),
                           onPressed: () => _submitFile(context),
-                          child: const Text('Submit', style: TextStyle(color: Colors.white)),
+                          child: const Text('Submit',
+                              style: TextStyle(color: Colors.white)),
                         ),
                       ],
                     ),
@@ -124,7 +129,8 @@ class _PrintScreenState extends State<PrintScreen> {
                         Document document = documentProvider.documents[index];
                         return ListTile(
                           title: Text(document.name),
-                          subtitle: Text('Number of prints: ${document.numOfPrints}'),
+                          subtitle:
+                              Text('Number of prints: ${document.numOfPrints}'),
                           trailing: IconButton(
                             icon: const Icon(Icons.delete, color: Colors.red),
                             onPressed: () {

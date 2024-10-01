@@ -12,11 +12,11 @@ class ViewOrdersScreen extends StatelessWidget {
       if (querySnapshot.docs.isNotEmpty) {
         return querySnapshot.docs.first.data();
       } else {
-        print('No user found with email: $email');
+        debugPrint('No user found with email: $email');
         return {};
       }
     } catch (e) {
-      print('Error fetching user details: $e');
+      debugPrint('Error fetching user details: $e');
       return {};
     }
   }
@@ -25,14 +25,18 @@ class ViewOrdersScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('View Orders'),
+        title: const Text(
+          'View Orders',
+          style: TextStyle(color: Colors.white),
+        ),
         backgroundColor: const Color.fromRGBO(49, 42, 119, 1),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance.collection('orders').snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
 
           if (snapshot.hasError) {
@@ -40,7 +44,7 @@ class ViewOrdersScreen extends StatelessWidget {
           }
 
           if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return Center(child: Text('No orders available.'));
+            return const Center(child: Text('No orders available.'));
           }
 
           final orders = snapshot.data!.docs;
@@ -57,20 +61,22 @@ class ViewOrdersScreen extends StatelessWidget {
                 builder: (context, userSnapshot) {
                   if (userSnapshot.connectionState == ConnectionState.waiting) {
                     return Card(
-                      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                      margin: const EdgeInsets.symmetric(
+                          vertical: 8, horizontal: 16),
                       child: ListTile(
                         title: Text('Order Number: ${order['orderNumber']}'),
-                        subtitle: Text('Fetching user details...'),
+                        subtitle: const Text('Fetching user details...'),
                       ),
                     );
                   }
 
                   if (userSnapshot.hasError) {
                     return Card(
-                      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                      margin: const EdgeInsets.symmetric(
+                          vertical: 8, horizontal: 16),
                       child: ListTile(
                         title: Text('Order Number: ${order['orderNumber']}'),
-                        subtitle: Text('Error fetching user details'),
+                        subtitle: const Text('Error fetching user details'),
                       ),
                     );
                   }
@@ -80,7 +86,8 @@ class ViewOrdersScreen extends StatelessWidget {
                   final regNo = userData['regNo'] ?? 'Unknown RegNo';
 
                   return Card(
-                    margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                    margin:
+                        const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                     child: ListTile(
                       title: Text('Order Number: ${order['orderNumber']}'),
                       subtitle: Column(
@@ -98,10 +105,8 @@ class ViewOrdersScreen extends StatelessWidget {
                         ],
                       ),
                       trailing: IconButton(
-                        icon: Icon(Icons.more_vert),
-                        onPressed: () {
-                          // Add logic to show order details or perform other actions
-                        },
+                        icon: const Icon(Icons.more_vert),
+                        onPressed: () {},
                       ),
                     ),
                   );

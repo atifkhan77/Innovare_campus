@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:innovare_campus/model/news.dart';
 
-
 class NewsProvider with ChangeNotifier {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   List<NewsModel> _newsList = [];
@@ -16,10 +15,12 @@ class NewsProvider with ChangeNotifier {
   Future<void> _loadNews() async {
     try {
       final snapshot = await _firestore.collection('news').get();
-      _newsList = snapshot.docs.map((doc) => NewsModel.fromMap(doc.data(), doc.id)).toList();
+      _newsList = snapshot.docs
+          .map((doc) => NewsModel.fromMap(doc.data(), doc.id))
+          .toList();
       notifyListeners();
     } catch (e) {
-      print('Error loading news: $e');
+      debugPrint('Error loading news: $e');
     }
   }
 
@@ -30,7 +31,7 @@ class NewsProvider with ChangeNotifier {
       _newsList.add(news);
       notifyListeners();
     } catch (e) {
-      print('Error adding news: $e');
+      debugPrint('Error adding news: $e');
     }
   }
 
@@ -43,7 +44,7 @@ class NewsProvider with ChangeNotifier {
         notifyListeners();
       }
     } catch (e) {
-      print('Error updating news: $e');
+      debugPrint('Error updating news: $e');
     }
   }
 
@@ -53,7 +54,7 @@ class NewsProvider with ChangeNotifier {
       _newsList.removeWhere((news) => news.id == id);
       notifyListeners();
     } catch (e) {
-      print('Error deleting news: $e');
+      debugPrint('Error deleting news: $e');
     }
   }
 }

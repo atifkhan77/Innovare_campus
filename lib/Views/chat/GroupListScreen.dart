@@ -22,8 +22,7 @@ class GroupListScreen extends StatelessWidget {
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage(
-                "assets/Splash.png"), // Set your background image here
+            image: AssetImage("assets/Splash.png"),
             fit: BoxFit.cover,
           ),
         ),

@@ -15,16 +15,14 @@ class ItemDetailScreen extends StatelessWidget {
       ),
       body: Stack(
         children: [
-          // Background image
           Container(
             decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/Splash.png'), // Your background image
+                image: AssetImage('assets/Splash.png'),
                 fit: BoxFit.cover,
               ),
             ),
           ),
-          // Content
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
@@ -33,7 +31,7 @@ class ItemDetailScreen extends StatelessWidget {
                 Center(
                   child: Image.network(
                     item.imageUrl.isEmpty
-                        ? 'https://via.placeholder.com/150' // Placeholder URL
+                        ? 'https://via.placeholder.com/150'
                         : item.imageUrl,
                     height: 200,
                     width: 200,
@@ -45,7 +43,7 @@ class ItemDetailScreen extends StatelessWidget {
                   'Description: ${item.description}',
                   style: const TextStyle(
                     fontSize: 18,
-                    color: Colors.white, // Adjust text color for visibility
+                    color: Colors.white,
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -53,7 +51,7 @@ class ItemDetailScreen extends StatelessWidget {
                   'Location: ${item.location}',
                   style: const TextStyle(
                     fontSize: 18,
-                    color: Colors.white, // Adjust text color for visibility
+                    color: Colors.white,
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -61,7 +59,7 @@ class ItemDetailScreen extends StatelessWidget {
                   'Timestamp: ${item.timestamp.toDate()}',
                   style: const TextStyle(
                     fontSize: 18,
-                    color: Colors.white, // Adjust text color for visibility
+                    color: Colors.white,
                   ),
                 ),
               ],

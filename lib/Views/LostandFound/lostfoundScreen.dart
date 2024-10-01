@@ -22,18 +22,17 @@ class _LostFoundScreenState extends State<LostFoundScreen> {
   @override
   void initState() {
     super.initState();
-    _getCurrentUserId();  // Get the logged-in user's ID
+    _getCurrentUserId();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _refreshLostFoundItems();
     });
   }
 
-  // Get the currently logged-in user's userId
   Future<void> _getCurrentUserId() async {
     User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
       setState(() {
-        _userId = user.uid;  // Set userId for later use
+        _userId = user.uid;
       });
       await _loadProfileImage();
     } else {
@@ -41,11 +40,11 @@ class _LostFoundScreenState extends State<LostFoundScreen> {
     }
   }
 
-  // Fetch profile image from Firestore
   Future<void> _loadProfileImage() async {
     if (_userId == null) return;
     try {
-      final docRef = FirebaseFirestore.instance.collection('users').doc(_userId);
+      final docRef =
+          FirebaseFirestore.instance.collection('users').doc(_userId);
       final doc = await docRef.get();
       if (doc.exists && doc['profile_image_url'] != null) {
         setState(() {
@@ -53,7 +52,7 @@ class _LostFoundScreenState extends State<LostFoundScreen> {
         });
       } else {
         setState(() {
-          _profileImageUrl = null; // Handle no image
+          _profileImageUrl = null;
         });
       }
     } catch (e) {
@@ -61,7 +60,6 @@ class _LostFoundScreenState extends State<LostFoundScreen> {
     }
   }
 
-  // Refresh lost and found items
   Future<void> _refreshLostFoundItems() async {
     await Provider.of<LostFoundProvider>(context, listen: false).fetchItems();
   }
@@ -90,16 +88,14 @@ class _LostFoundScreenState extends State<LostFoundScreen> {
       ),
       body: Stack(
         children: [
-          // Background image
           Container(
             decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/Splash.png'), // Your background image
+                image: AssetImage('assets/Splash.png'),
                 fit: BoxFit.cover,
               ),
             ),
           ),
-          // Main content
           Column(
             children: [
               SizedBox(height: screenHeight * 0.05),
@@ -120,8 +116,10 @@ class _LostFoundScreenState extends State<LostFoundScreen> {
                   );
                 },
                 child: Container(
-                  padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
-                  margin: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+                  margin:
+                      const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
                   decoration: BoxDecoration(
                     color: Colors.white.withOpacity(0.2),
                     borderRadius: BorderRadius.circular(16),
@@ -150,7 +148,8 @@ class _LostFoundScreenState extends State<LostFoundScreen> {
                   builder: (context, provider, child) {
                     final items = provider.items;
                     return GridView.builder(
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 3,
                         mainAxisSpacing: 8,
                         crossAxisSpacing: 8,
@@ -163,7 +162,8 @@ class _LostFoundScreenState extends State<LostFoundScreen> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => ItemDetailScreen(item: item),
+                                builder: (context) =>
+                                    ItemDetailScreen(item: item),
                               ),
                             );
                           },
@@ -173,7 +173,7 @@ class _LostFoundScreenState extends State<LostFoundScreen> {
                               borderRadius: BorderRadius.circular(8),
                               child: Image.network(
                                 item.imageUrl.isEmpty
-                                    ? 'https://via.placeholder.com/150' // Placeholder URL
+                                    ? 'https://via.placeholder.com/150'
                                     : item.imageUrl,
                                 fit: BoxFit.cover,
                               ),

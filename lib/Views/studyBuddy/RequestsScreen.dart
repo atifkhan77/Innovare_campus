@@ -16,7 +16,7 @@ class RequestsScreen extends StatelessWidget {
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("assets/Splash.png"), // Update the image path if necessary
+            image: AssetImage("assets/Splash.png"),
             fit: BoxFit.cover,
           ),
         ),
@@ -24,8 +24,10 @@ class RequestsScreen extends StatelessWidget {
           padding: const EdgeInsets.all(16.0),
           child: FutureBuilder(
             future: Future.wait([
-              Provider.of<TutorProvider>(context, listen: false).fetchCurrentTutor(),
-              Provider.of<TutorProvider>(context, listen: false).fetchRequests(),
+              Provider.of<TutorProvider>(context, listen: false)
+                  .fetchCurrentTutor(),
+              Provider.of<TutorProvider>(context, listen: false)
+                  .fetchRequests(),
             ]),
             builder: (context, AsyncSnapshot<List<void>> snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
@@ -45,10 +47,12 @@ class RequestsScreen extends StatelessWidget {
                   }
 
                   final pendingRequests = tutorProvider.requests
-                      .where((r) => r.status == 'pending' && r.tutorName == tutorName)
+                      .where((r) =>
+                          r.status == 'pending' && r.tutorName == tutorName)
                       .toList();
                   final acceptedRequests = tutorProvider.requests
-                      .where((r) => r.status == 'accepted' && r.tutorName == tutorName)
+                      .where((r) =>
+                          r.status == 'accepted' && r.tutorName == tutorName)
                       .toList();
 
                   return Column(
@@ -76,22 +80,31 @@ class RequestsScreen extends StatelessWidget {
                           itemBuilder: (context, index) {
                             final request = pendingRequests[index];
                             return ListTile(
-                              leading: const Icon(Icons.person, color: Colors.white),
-                              title: Text(request.studentName, style: const TextStyle(color: Colors.white)),
-                              subtitle: Text(request.message, style: const TextStyle(color: Colors.white)),
+                              leading:
+                                  const Icon(Icons.person, color: Colors.white),
+                              title: Text(request.studentName,
+                                  style: const TextStyle(color: Colors.white)),
+                              subtitle: Text(request.message,
+                                  style: const TextStyle(color: Colors.white)),
                               trailing: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   IconButton(
-                                    icon: const Icon(Icons.check, color: Colors.green),
+                                    icon: const Icon(Icons.check,
+                                        color: Colors.green),
                                     onPressed: () {
-                                      Provider.of<TutorProvider>(context, listen: false).acceptRequest(request.id);
+                                      Provider.of<TutorProvider>(context,
+                                              listen: false)
+                                          .acceptRequest(request.id);
                                     },
                                   ),
                                   IconButton(
-                                    icon: const Icon(Icons.close, color: Colors.red),
+                                    icon: const Icon(Icons.close,
+                                        color: Colors.red),
                                     onPressed: () {
-                                      Provider.of<TutorProvider>(context, listen: false).declineRequest(request.id);
+                                      Provider.of<TutorProvider>(context,
+                                              listen: false)
+                                          .declineRequest(request.id);
                                     },
                                   ),
                                 ],
@@ -111,10 +124,14 @@ class RequestsScreen extends StatelessWidget {
                           itemBuilder: (context, index) {
                             final request = acceptedRequests[index];
                             return ListTile(
-                              leading: const Icon(Icons.person, color: Colors.white),
-                              title: Text(request.studentName, style: const TextStyle(color: Colors.white)),
-                              subtitle: Text(request.message, style: const TextStyle(color: Colors.white)),
-                              trailing: Text(request.status, style: const TextStyle(color: Colors.white)),
+                              leading:
+                                  const Icon(Icons.person, color: Colors.white),
+                              title: Text(request.studentName,
+                                  style: const TextStyle(color: Colors.white)),
+                              subtitle: Text(request.message,
+                                  style: const TextStyle(color: Colors.white)),
+                              trailing: Text(request.status,
+                                  style: const TextStyle(color: Colors.white)),
                             );
                           },
                         ),

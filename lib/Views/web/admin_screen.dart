@@ -28,8 +28,8 @@ class _AdminScreenState extends State<AdminScreen>
         AnimationController(vsync: this, duration: const Duration(seconds: 3));
 
     _slideAnimation = Tween<Offset>(
-      begin: const Offset(0, 1), // Start from bottom of the screen
-      end: Offset.zero, // End at its final position
+      begin: const Offset(0, 1),
+      end: Offset.zero,
     ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
 
     _controller.forward();
@@ -86,7 +86,6 @@ class _AdminScreenState extends State<AdminScreen>
   @override
   void reassemble() {
     super.reassemble();
-    // Reinitialize anything that might be affected by hot reload.
   }
 
   @override
@@ -108,11 +107,11 @@ class _AdminScreenState extends State<AdminScreen>
           ),
           Positioned(
             left: screenWidth * .41,
-            top: screenHeight * .10, // Adjusted to accommodate the image
+            top: screenHeight * .10,
             child: Column(
               children: [
                 Image.asset('assets/logo.png'),
-                const SizedBox(height: 20), // Spacing between image and text
+                const SizedBox(height: 20),
                 const Text(
                   "Admin Login",
                   style: TextStyle(color: Colors.white, fontSize: 36),
@@ -123,8 +122,7 @@ class _AdminScreenState extends State<AdminScreen>
           SlideTransition(
             position: _slideAnimation,
             child: Padding(
-              padding: EdgeInsets.only(
-                  top: screenHeight * .40), // Adjusted to accommodate the image
+              padding: EdgeInsets.only(top: screenHeight * .40),
               child: Container(
                 decoration: const BoxDecoration(
                   borderRadius: BorderRadius.only(

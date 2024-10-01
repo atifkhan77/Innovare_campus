@@ -46,21 +46,17 @@ class _ChatScreenState extends State<ChatScreen> {
       ),
       body: Stack(
         children: [
-          // Background image with opacity
           Container(
             decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage(
-                    "assets/Splash.png"), // Set your background image
+                image: AssetImage("assets/Splash.png"),
                 fit: BoxFit.cover,
               ),
             ),
             child: Container(
-              color:
-                  Colors.black.withOpacity(0.6), // Dark overlay for readability
+              color: Colors.black.withOpacity(0.6),
             ),
           ),
-          // Main content
           Column(
             children: [
               Padding(
@@ -84,7 +80,6 @@ class _ChatScreenState extends State<ChatScreen> {
               ),
               Expanded(child: _buildUserList()),
               const SizedBox(height: 15),
-              // Buttons in a row
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: Row(
@@ -98,7 +93,7 @@ class _ChatScreenState extends State<ChatScreen> {
                               builder: (context) => const ChatbotScreen()),
                         );
                       },
-                      screenWidth * 0.4, // Reduce button width for row
+                      screenWidth * 0.4,
                       screenHeight,
                     ),
                     _buildGradientButton(
@@ -109,7 +104,7 @@ class _ChatScreenState extends State<ChatScreen> {
                               builder: (context) => const CreateGroupScreen()),
                         );
                       },
-                      screenWidth * 0.4, // Reduce button width for row
+                      screenWidth * 0.4,
                       screenHeight,
                     ),
                   ],
@@ -122,7 +117,7 @@ class _ChatScreenState extends State<ChatScreen> {
           ),
         ],
       ),
-      bottomNavigationBar: const NavBar(), // Assuming you have a NavBar widget
+      bottomNavigationBar: const NavBar(),
     );
   }
 
@@ -148,8 +143,8 @@ class _ChatScreenState extends State<ChatScreen> {
           itemCount: users.length,
           itemBuilder: (context, index) {
             final data = users[index].data()! as Map<String, dynamic>;
-            final profileImageUrl = data['profile_image_url'] ??
-                'assets/placeholder.png'; // Default image if not found
+            final profileImageUrl =
+                data['profile_image_url'] ?? 'assets/placeholder.png';
 
             return Padding(
               padding:
@@ -176,9 +171,9 @@ class _ChatScreenState extends State<ChatScreen> {
                     'Hey, how are you?',
                     style: TextStyle(color: Colors.grey),
                   ),
-                  trailing: Column(
+                  trailing: const Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
+                    children: [
                       Text('2h ago', style: TextStyle(color: Colors.grey)),
                       Icon(Icons.message, color: Colors.grey),
                     ],
@@ -213,7 +208,7 @@ class _ChatScreenState extends State<ChatScreen> {
       onPressed: onPressed,
       child: Ink(
         decoration: BoxDecoration(
-          color: Color.fromRGBO(0, 0, 70, 1),
+          color: const Color.fromRGBO(0, 0, 70, 1),
           borderRadius: BorderRadius.circular(30.0),
         ),
         child: Container(

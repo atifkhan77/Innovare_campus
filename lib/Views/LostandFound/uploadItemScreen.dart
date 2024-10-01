@@ -31,8 +31,6 @@ class _UploadItemScreenState extends State<UploadItemScreen> {
   }
 
   Future<void> _refreshScreen() async {
-    // You can implement any necessary logic for refreshing data here.
-    // For now, we'll reset the form and clear the image.
     setState(() {
       _description = '';
       _location = '';
@@ -110,7 +108,6 @@ class _UploadItemScreenState extends State<UploadItemScreen> {
       ),
       body: Stack(
         children: [
-          // Background image
           Container(
             decoration: const BoxDecoration(
               image: DecorationImage(
@@ -119,7 +116,6 @@ class _UploadItemScreenState extends State<UploadItemScreen> {
               ),
             ),
           ),
-          // Content
           SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(16),

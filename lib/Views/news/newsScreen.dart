@@ -16,7 +16,7 @@ class _NewsScreenState extends State<NewsScreen> {
           .map((doc) => doc.data() as Map<String, dynamic>)
           .toList();
     } catch (e) {
-      print('Failed to load news: $e');
+      debugPrint('Failed to load news: $e');
       return [];
     }
   }
@@ -34,17 +34,14 @@ class _NewsScreenState extends State<NewsScreen> {
       ),
       body: Stack(
         children: [
-          // Background image
           Container(
             decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage(
-                    "assets/Splash.png"), // Replace with your image path
+                image: AssetImage("assets/Splash.png"),
                 fit: BoxFit.cover,
               ),
             ),
           ),
-          // FutureBuilder for news items
           FutureBuilder<List<Map<String, dynamic>>>(
             future: _fetchNews(),
             builder: (context, snapshot) {
@@ -57,8 +54,7 @@ class _NewsScreenState extends State<NewsScreen> {
               } else {
                 final newsItems = snapshot.data!;
                 return ListView.builder(
-                  padding:
-                      const EdgeInsets.all(16.0), // Added padding to the list
+                  padding: const EdgeInsets.all(16.0),
                   itemCount: newsItems.length,
                   itemBuilder: (context, index) {
                     final news = newsItems[index];

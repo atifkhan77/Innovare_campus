@@ -37,10 +37,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future<void> _loadUserProfile() async {
     try {
-      // Get current user ID
       String userId = _auth.currentUser!.uid;
 
-      // Load user data from Firestore
       final doc = await FirebaseFirestore.instance
           .collection('users')
           .doc(userId)
@@ -57,7 +55,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
           _addressController.text = _address ?? '';
         });
 
-        // Load profile image from Firebase Storage
         try {
           final ref = FirebaseStorage.instance
               .ref()
@@ -67,13 +64,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
             _profileImageUrl = url;
           });
         } catch (e) {
-          print('Failed to load profile image: $e');
+          debugPrint('Failed to load profile image: $e');
         }
       } else {
-        print('User document does not exist');
+        debugPrint('User document does not exist');
       }
     } catch (e) {
-      print('Failed to load user profile: $e');
+      debugPrint('Failed to load user profile: $e');
     }
   }
 
@@ -81,10 +78,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     try {
       String? profileImageUrl;
 
-      // Get current user ID
       String userId = _auth.currentUser!.uid;
 
-      // If a new image is selected, upload it to Firebase Storage
       if (_imageFile != null) {
         try {
           final ref = FirebaseStorage.instance
@@ -96,11 +91,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
             _profileImageUrl = profileImageUrl;
           });
         } catch (e) {
-          print('Failed to upload profile image: $e');
+          debugPrint('Failed to upload profile image: $e');
         }
       }
 
-      // Update user data in Firestore
       await FirebaseFirestore.instance.collection('users').doc(userId).update({
         'name': _userNameController.text,
         'email': _userEmailController.text,
@@ -115,7 +109,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
       );
     } catch (e) {
-      print('Failed to update user profile: $e');
+      debugPrint('Failed to update user profile: $e');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Failed to update profile: $e'),
@@ -140,10 +134,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-            builder: (context) => LoginScreen()), // Navigate to login screen
+          builder: (context) => LoginScreen(),
+        ),
       );
     } catch (e) {
-      print('Failed to log out: $e');
+      debugPrint('Failed to log out: $e');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Failed to log out: $e'),

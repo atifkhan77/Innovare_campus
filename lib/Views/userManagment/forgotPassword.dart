@@ -79,7 +79,6 @@ class ForgotPassword extends StatelessWidget {
                             .sendPasswordResetEmail(
                                 email: _emailController.text.toString())
                             .then((_) {
-                          // Password reset email sent successfully
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                               content: Text('Password reset email sent.'),
@@ -91,8 +90,7 @@ class ForgotPassword extends StatelessWidget {
                                 builder: (context) => LoginScreen()),
                           );
                         }).catchError((error) {
-                          // Handle error if sending email fails
-                          print(error.toString());
+                          debugPrint(error.toString());
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                               content:
@@ -114,9 +112,7 @@ class ForgotPassword extends StatelessWidget {
                             ),
                           ),
                           TextButton(
-                            onPressed: () {
-                              // Handle resend email action
-                            },
+                            onPressed: () {},
                             child: const Text(
                               'Resend email',
                               style: TextStyle(

@@ -50,7 +50,7 @@ class CafeteriaOrdersScreen extends StatelessWidget {
       stream: FirebaseFirestore.instance.collection('orders').snapshots(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         }
 
         if (snapshot.hasError) {
@@ -58,7 +58,7 @@ class CafeteriaOrdersScreen extends StatelessWidget {
         }
 
         if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-          return Center(child: Text('No orders available.'));
+          return const Center(child: Text('No orders available.'));
         }
 
         final orders = snapshot.data!.docs;
@@ -106,7 +106,7 @@ class CafeteriaOrdersScreen extends StatelessWidget {
       ),
       child: ListTile(
         title: Text('Order Number: ${orderData['orderNumber']}'),
-        subtitle: Text('Fetching user details...'),
+        subtitle: const Text('Fetching user details...'),
         tileColor: Colors.grey[200],
       ),
     );
@@ -121,7 +121,7 @@ class CafeteriaOrdersScreen extends StatelessWidget {
       ),
       child: ListTile(
         title: Text('Order Number: ${orderData['orderNumber']}'),
-        subtitle: Text('Error fetching user details'),
+        subtitle: const Text('Error fetching user details'),
         tileColor: Colors.red[100],
       ),
     );
@@ -144,7 +144,7 @@ class CafeteriaOrdersScreen extends StatelessWidget {
       child: ListTile(
         title: Text(
           'Order Number: ${orderData['orderNumber']}',
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -170,13 +170,14 @@ class CafeteriaOrdersScreen extends StatelessWidget {
           },
           itemBuilder: (BuildContext context) {
             return [
-              PopupMenuItem(value: 'Pending', child: Text('Pending')),
-              PopupMenuItem(value: 'In Process', child: Text('In Process')),
-              PopupMenuItem(value: 'Completed', child: Text('Completed')),
-              PopupMenuItem(value: 'Delete', child: Text('Delete')),
+              const PopupMenuItem(value: 'Pending', child: Text('Pending')),
+              const PopupMenuItem(
+                  value: 'In Process', child: Text('In Process')),
+              const PopupMenuItem(value: 'Completed', child: Text('Completed')),
+              const PopupMenuItem(value: 'Delete', child: Text('Delete')),
             ];
           },
-          icon: Icon(Icons.more_vert, color: Colors.grey),
+          icon: const Icon(Icons.more_vert, color: Colors.grey),
         ),
       ),
     );

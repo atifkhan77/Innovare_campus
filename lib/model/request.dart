@@ -1,14 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Request {
-  final String id; // Add this line
+  final String id;
   final String tutorName;
   final String studentName;
   final String message;
-  final String status; // add a status field
+  final String status;
 
   Request({
-    required this.id, // Add this line
+    required this.id,
     required this.tutorName,
     required this.studentName,
     required this.message,
@@ -26,7 +26,7 @@ class Request {
 
   static Request fromDocument(DocumentSnapshot doc) {
     return Request(
-      id: doc.id, // Set the id
+      id: doc.id,
       tutorName: doc['tutorName'],
       studentName: doc['studentName'],
       message: doc['message'],

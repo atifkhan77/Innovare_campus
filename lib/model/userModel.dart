@@ -20,12 +20,12 @@ class UserModel {
   factory UserModel.fromMap(Map<String, dynamic> data, String id) {
     return UserModel(
       id: id,
-      address: data['address'] ?? '', // Provide default value if null
-      contactNumber: data['contact_number'] ?? '', // Provide default value if null
-      email: data['email'] ?? '', // Provide default value if null
-      name: data['name'] ?? '', // Provide default value if null
-      profileImageUrl: data['profile_image_url'] ?? '', // Provide default value if null
-      regNo: data['regNo'] ?? '', // Provide default value if null
+      address: data['address'] ?? '',
+      contactNumber: data['contact_number'] ?? '',
+      email: data['email'] ?? '',
+      name: data['name'] ?? '',
+      profileImageUrl: data['profile_image_url'] ?? '',
+      regNo: data['regNo'] ?? '',
     );
   }
 

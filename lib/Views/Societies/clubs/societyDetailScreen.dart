@@ -1,14 +1,13 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:innovare_campus/model/society.dart';
-import 'package:url_launcher/url_launcher.dart'; // Add this package to your pubspec.yaml
+import 'package:url_launcher/url_launcher.dart';
 
 class SocietyDetailsScreen extends StatelessWidget {
   final Society society;
 
   SocietyDetailsScreen({required this.society});
 
-  // Function to launch URLs
   Future<void> _launchURL(String url) async {
     if (await canLaunch(url)) {
       await launch(url);
@@ -17,7 +16,6 @@ class SocietyDetailsScreen extends StatelessWidget {
     }
   }
 
-  // Function to create TextSpan with URL detection
   TextSpan _createTextSpan(String text) {
     final RegExp urlRegex = RegExp(
       r'(https?:\/\/[^\s]+)',

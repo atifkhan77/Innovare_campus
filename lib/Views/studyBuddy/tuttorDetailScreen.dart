@@ -52,7 +52,8 @@ class TutorDetailScreen extends StatelessWidget {
           .get();
 
       if (userDocSnapshot.exists) {
-        return userDocSnapshot.data()?['profile_image_url'] ?? 'assets/placeholder.png';
+        return userDocSnapshot.data()?['profile_image_url'] ??
+            'assets/placeholder.png';
       }
     }
     return 'assets/placeholder.png';
@@ -67,7 +68,6 @@ class TutorDetailScreen extends StatelessWidget {
       ),
       body: Stack(
         children: [
-          // Fullscreen background image
           Container(
             decoration: const BoxDecoration(
               image: DecorationImage(
@@ -76,7 +76,6 @@ class TutorDetailScreen extends StatelessWidget {
               ),
             ),
           ),
-          // Content over the background image
           SafeArea(
             child: SingleChildScrollView(
               child: Column(
@@ -88,16 +87,20 @@ class TutorDetailScreen extends StatelessWidget {
                         return const Center(child: CircularProgressIndicator());
                       }
 
-                      final String studentName = snapshot.data ?? 'Unknown User';
+                      final String studentName =
+                          snapshot.data ?? 'Unknown User';
 
                       return FutureBuilder<String>(
                         future: _getTutorImageUrl(),
                         builder: (context, imageSnapshot) {
-                          if (imageSnapshot.connectionState == ConnectionState.waiting) {
-                            return const Center(child: CircularProgressIndicator());
+                          if (imageSnapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Center(
+                                child: CircularProgressIndicator());
                           }
 
-                          final String tutorImageUrl = imageSnapshot.data ?? 'assets/placeholder.png';
+                          final String tutorImageUrl =
+                              imageSnapshot.data ?? 'assets/placeholder.png';
 
                           return Container(
                             margin: const EdgeInsets.all(16),
@@ -127,7 +130,8 @@ class TutorDetailScreen extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   CircleAvatar(
-                                    backgroundImage: NetworkImage(tutorImageUrl),
+                                    backgroundImage:
+                                        NetworkImage(tutorImageUrl),
                                     radius: 50,
                                   ),
                                   const SizedBox(height: 16),
@@ -151,7 +155,8 @@ class TutorDetailScreen extends StatelessWidget {
                                   const Divider(color: Colors.white70),
                                   const SizedBox(height: 16),
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       const Text(
                                         'Contact',
@@ -171,7 +176,8 @@ class TutorDetailScreen extends StatelessWidget {
                                   ),
                                   const SizedBox(height: 16),
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       const Text(
                                         'Availability',
@@ -192,25 +198,33 @@ class TutorDetailScreen extends StatelessWidget {
                                   const SizedBox(height: 16),
                                   ElevatedButton(
                                     onPressed: () async {
-                                      final studentName = await _getStudentName();
+                                      final studentName =
+                                          await _getStudentName();
 
                                       final request = Request(
                                         tutorName: name,
                                         studentName: studentName,
-                                        message: 'Requesting for tutoring in $subjectExpertise',
+                                        message:
+                                            'Requesting for tutoring in $subjectExpertise',
                                         id: '',
                                       );
 
-                                      await Provider.of<TutorProvider>(context, listen: false)
+                                      await Provider.of<TutorProvider>(context,
+                                              listen: false)
                                           .sendRequest(request);
 
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                        const SnackBar(content: Text('Request sent successfully')),
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                            content: Text(
+                                                'Request sent successfully')),
                                       );
                                     },
                                     style: ElevatedButton.styleFrom(
-                                      backgroundColor: const Color.fromRGBO(49, 42, 119, 1),
-                                      padding: const EdgeInsets.symmetric(vertical: 16),
+                                      backgroundColor:
+                                          const Color.fromRGBO(49, 42, 119, 1),
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 16),
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(8),
                                       ),
@@ -236,7 +250,7 @@ class TutorDetailScreen extends StatelessWidget {
           ),
         ],
       ),
-      bottomNavigationBar: const NavBar(), // Assuming you have a NavBar widget
+      bottomNavigationBar: const NavBar(),
     );
   }
 }

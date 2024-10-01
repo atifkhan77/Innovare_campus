@@ -11,26 +11,21 @@ class RotatedBackground extends StatelessWidget {
     return Stack(
       fit: StackFit.expand,
       children: [
-        // First Image: Straight from top to middle
         Positioned.fill(
           child: Image.asset(
             imagePath,
             fit: BoxFit.cover,
           ),
         ),
-        // Second Image: Rotated diagonally
         Positioned(
-          top:
-              -50, // Adjust this value to position the rotated image as desired
-          left:
-              -100, // Adjust this value to position the rotated image as desired
+          top: -50,
+          left: -100,
           child: Transform.rotate(
-            angle: -0.785398, // 45 degrees in radians
+            angle: -0.785398,
             child: Image.asset(
               imagePath,
               fit: BoxFit.cover,
-              width: MediaQuery.of(context).size.width *
-                  1.5, // Adjust the width for the rotated image
+              width: MediaQuery.of(context).size.width * 1.5,
             ),
           ),
         ),

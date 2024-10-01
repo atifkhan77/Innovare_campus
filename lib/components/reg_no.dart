@@ -9,7 +9,6 @@ class RegistrationNumberField extends StatelessWidget {
     if (value == null || value.isEmpty) {
       return 'Please enter your registration number';
     }
-    // Case insensitivity is handled by the caseSensitive parameter
     final regExp =
         RegExp(r'^(FA|SP)\d{2}-[A-Z]{3}-\d{3}$', caseSensitive: false);
     if (!regExp.hasMatch(value)) {

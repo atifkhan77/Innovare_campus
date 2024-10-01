@@ -7,28 +7,26 @@ class PrintsScreen extends StatelessWidget {
     try {
       final userSnapshot = await FirebaseFirestore.instance
           .collection('users')
-          .doc(userId) // Use doc() to fetch user by document ID
+          .doc(userId)
           .get();
 
       if (userSnapshot.exists) {
         return userSnapshot.data()!;
       } else {
-        print('No user found with userId: $userId');
+        debugPrint('No user found with userId: $userId');
         return {};
       }
     } catch (e) {
-      print('Error fetching user details: $e');
+      debugPrint('Error fetching user details: $e');
       return {};
     }
   }
 
   void _downloadDocument(String url) async {
-    // ignore: deprecated_member_use
     if (await canLaunch(url)) {
-      // ignore: deprecated_member_use
       await launch(url);
     } else {
-      print('Could not launch $url');
+      debugPrint('Could not launch $url');
     }
   }
 
@@ -56,7 +54,7 @@ class PrintsScreen extends StatelessWidget {
           itemBuilder: (context, index) {
             final document = documents[index].data() as Map<String, dynamic>;
             final url = document['url'];
-            final userId = document['userId']; // Use userId here
+            final userId = document['userId'];
 
             return FutureBuilder<Map<String, dynamic>>(
               future: _fetchUserDetailsByUserID(userId),
@@ -112,7 +110,7 @@ class PrintsScreen extends StatelessWidget {
             if (url.isNotEmpty) {
               _downloadDocument(url);
             } else {
-              print('No URL provided for download');
+              debugPrint('No URL provided for download');
             }
           },
         ),

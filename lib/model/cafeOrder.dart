@@ -19,9 +19,9 @@ class OrderConfirmation {
   String email;
   String orderNumber;
   double totalPayment;
-  List<Map<String, dynamic>> items; // A list of items in the order
+  List<Map<String, dynamic>> items;
   String paymentMethod;
-  DateTime timestamp; // Field for storing the order date and time
+  DateTime timestamp;
 
   OrderConfirmation({
     required this.id,
@@ -30,10 +30,9 @@ class OrderConfirmation {
     required this.totalPayment,
     required this.items,
     required this.paymentMethod,
-    required this.timestamp, // Initialize the timestamp
+    required this.timestamp,
   });
 
-  // Convert OrderConfirmation to a Map for Firestore
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -42,11 +41,10 @@ class OrderConfirmation {
       'totalPayment': totalPayment,
       'items': items,
       'paymentMethod': paymentMethod,
-      'timestamp': timestamp.toIso8601String(), // Store as ISO 8601 string
+      'timestamp': timestamp.toIso8601String(),
     };
   }
 
-  // Create an OrderConfirmation from a Firestore document snapshot
   factory OrderConfirmation.fromMap(
       Map<String, dynamic> map, String documentId) {
     return OrderConfirmation(
@@ -56,8 +54,8 @@ class OrderConfirmation {
       totalPayment: map['totalPayment']?.toDouble() ?? 0.0,
       items: List<Map<String, dynamic>>.from(map['items'] ?? []),
       paymentMethod: map['paymentMethod'] ?? '',
-      timestamp: DateTime.parse(map['timestamp'] ??
-          DateTime.now().toIso8601String()), // Parse the timestamp
+      timestamp:
+          DateTime.parse(map['timestamp'] ?? DateTime.now().toIso8601String()),
     );
   }
 }

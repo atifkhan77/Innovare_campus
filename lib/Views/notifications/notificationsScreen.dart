@@ -26,8 +26,8 @@ class ChatBubble extends StatelessWidget {
         margin: const EdgeInsets.symmetric(vertical: 5),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
-          color: Colors.blueAccent, // Updated color for a modern look
-          boxShadow: [
+          color: Colors.blueAccent,
+          boxShadow: const [
             BoxShadow(
               color: Colors.black26,
               offset: Offset(0, 2),
@@ -52,13 +52,13 @@ class NotificationsScreen extends StatelessWidget {
       final user = FirebaseAuth.instance.currentUser;
 
       if (user == null) {
-        print('User is not logged in');
+        debugPrint('User is not logged in');
         return null;
       }
 
       final userEmail = user.email;
       if (userEmail == null) {
-        print('User email is null');
+        debugPrint('User email is null');
         return null;
       }
 
@@ -73,10 +73,10 @@ class NotificationsScreen extends StatelessWidget {
         final latestOrder = querySnapshot.docs.first;
         return latestOrder['orderNumber'] as String?;
       } else {
-        print('No orders found for the user');
+        debugPrint('No orders found for the user');
       }
     } catch (e) {
-      print('Error fetching order: $e');
+      debugPrint('Error fetching order: $e');
     }
 
     return null;
@@ -89,8 +89,7 @@ class NotificationsScreen extends StatelessWidget {
       return [];
     }
 
-    final userName =
-        user.displayName; // Assuming displayName is used for matching
+    final userName = user.displayName;
     if (userName == null) {
       return [];
     }
@@ -122,13 +121,13 @@ class NotificationsScreen extends StatelessWidget {
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: const Color.fromRGBO(49, 42, 119, 1),
-        iconTheme: IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: Stack(
         children: [
           Positioned.fill(
             child: Image.asset(
-              "assets/Splash.png", // Background image
+              "assets/Splash.png",
               fit: BoxFit.cover,
             ),
           ),
@@ -152,8 +151,7 @@ class NotificationsScreen extends StatelessWidget {
                   snapshot.data![1] as List<NotificationItem>;
 
               return Padding(
-                padding: const EdgeInsets.all(
-                    16.0), // Added padding for better spacing
+                padding: const EdgeInsets.all(16.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -182,7 +180,6 @@ class NotificationsScreen extends StatelessWidget {
                         },
                       ),
                     const SizedBox(height: 10),
-                    // Display tutoring notifications
                     Expanded(
                       child: ListView.builder(
                         itemCount: tutoringNotifications.length,

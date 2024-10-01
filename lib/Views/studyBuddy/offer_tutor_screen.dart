@@ -20,7 +20,7 @@ class _OfferTutorScreenState extends State<OfferTutorScreen> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController subjectController = TextEditingController();
   final TextEditingController contactController = TextEditingController();
-  String availability = 'Morning'; // Default value
+  String availability = 'Morning';
 
   @override
   void initState() {
@@ -32,7 +32,8 @@ class _OfferTutorScreenState extends State<OfferTutorScreen> {
     User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
       try {
-        final docRef = FirebaseFirestore.instance.collection('users').doc(user.uid);
+        final docRef =
+            FirebaseFirestore.instance.collection('users').doc(user.uid);
         final doc = await docRef.get();
         if (doc.exists && doc['profile_image_url'] != null) {
           setState(() {
@@ -40,7 +41,7 @@ class _OfferTutorScreenState extends State<OfferTutorScreen> {
           });
         }
       } catch (e) {
-        print('Failed to load profile image: $e');
+        debugPrint('Failed to load profile image: $e');
       }
     }
   }
@@ -66,7 +67,8 @@ class _OfferTutorScreenState extends State<OfferTutorScreen> {
               child: CircleAvatar(
                 backgroundImage: _profileImageUrl != null
                     ? NetworkImage(_profileImageUrl!)
-                    : const AssetImage('assets/placeholder.png') as ImageProvider,
+                    : const AssetImage('assets/placeholder.png')
+                        as ImageProvider,
               ),
             ),
             const Text(
@@ -199,12 +201,11 @@ class _OfferTutorScreenState extends State<OfferTutorScreen> {
                         final tutorProvider =
                             Provider.of<TutorProvider>(context, listen: false);
                         tutorProvider.addTutor(tutor);
-                        tutorProvider.setTutor(tutor.name, tutor.contactNumber); // Set tutor name in provider
-                        // Clear fields after submission
+                        tutorProvider.setTutor(tutor.name, tutor.contactNumber);
+
                         nameController.clear();
                         subjectController.clear();
                         contactController.clear();
-                        // Show a confirmation message
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
                               content: Text('Tutor submitted successfully')),
@@ -222,7 +223,7 @@ class _OfferTutorScreenState extends State<OfferTutorScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: const NavBar(), // assuming you have a NavBar widget
+      bottomNavigationBar: const NavBar(),
     );
   }
 }

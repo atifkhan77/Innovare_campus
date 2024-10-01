@@ -40,12 +40,11 @@ class _HomeScreenState extends State<HomeScreen> {
         });
       } else {
         setState(() {
-          _profileImageUrl = null; // Set a default value if needed
+          _profileImageUrl = null;
         });
       }
     } catch (e) {
-      // Handle errors
-      print('Failed to load profile image: $e');
+      debugPrint('Failed to load profile image: $e');
     }
   }
 
@@ -64,8 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
         });
       }
     } catch (e) {
-      // Handle errors
-      print('Failed to load user name: $e');
+      debugPrint('Failed to load user name: $e');
     }
   }
 
@@ -109,27 +107,23 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         child: Column(
           children: [
-            SizedBox(
-                height: screenHeight *
-                    0.05), // Add some spacing between AppBar and image
+            SizedBox(height: screenHeight * 0.05),
             Center(
               child: Image.asset(
-                'assets/homeScreen/homeScreen.png', // Replace with your image asset
+                'assets/homeScreen/homeScreen.png',
                 width: screenWidth * 0.99,
                 height: screenHeight * 0.30,
               ),
             ),
-            const SizedBox(
-                height: 16), // Add some spacing between the image and the grid
+            const SizedBox(height: 16),
             Expanded(
               child: GridView.count(
-                crossAxisCount: 3, // Three cards per row
+                crossAxisCount: 3,
                 children: [
                   CardComponent(
                     title: 'Study Buddy',
                     assetPath: 'assets/homeScreen/Man.png',
                     onTap: () {
-                      // ignore: prefer_const_constructors
                       Navigator.push(
                           context,
                           MaterialPageRoute(

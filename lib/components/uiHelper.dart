@@ -5,6 +5,7 @@ import 'package:innovare_campus/Views/home.dart';
 import 'package:innovare_campus/Views/notifications/notificationsScreen.dart';
 
 class UiHelper {
+  // ignore: non_constant_identifier_names
   static CustomTextField(TextEditingController controller, String text,
       bool hide, IconData iconData) {
     return TextField(
@@ -84,16 +85,13 @@ class NavBar extends StatelessWidget {
             onPressed: () {
               Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) => const ChatScreen()));
-              // Add functionality for notification icon here
             },
           ),
           IconButton(
             color: Colors.white70,
             iconSize: 35,
             icon: const Icon(Icons.assistant_navigation),
-            onPressed: () {
-              // Add functionality for settings icon here
-            },
+            onPressed: () {},
           ),
           IconButton(
             color: Colors.white70,
@@ -136,10 +134,9 @@ class CardComponent extends StatelessWidget {
               height: 50,
             ),
             Container(
-              // Use Container to wrap the Divider
-              height: 2, // Set the initial height of the line
-              width: 60, // Make the line expand to full width
-              color: Colors.white70, // Set the color of the line
+              height: 2,
+              width: 60,
+              color: Colors.white70,
             ),
             const SizedBox(height: 8),
             Text(

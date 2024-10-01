@@ -17,17 +17,16 @@ class UserProvider with ChangeNotifier {
       final snapshot = await _firestore.collection('users').get();
       _users = snapshot.docs.map((doc) {
         final data = doc.data();
-        // Check for null values and handle them
         return UserModel.fromMap(data, doc.id);
       }).toList();
       notifyListeners();
     } catch (e) {
-      print('Error loading users: $e');
+      debugPrint('Error loading users: $e');
     }
   }
 
   Future<void> refreshUsers() async {
-    await _loadUsers(); // Calls the private method to reload users
+    await _loadUsers();
   }
 
   Future<void> addUser(UserModel user) async {
@@ -37,7 +36,7 @@ class UserProvider with ChangeNotifier {
       _users.add(user);
       notifyListeners();
     } catch (e) {
-      print('Error adding user: $e');
+      debugPrint('Error adding user: $e');
     }
   }
 
@@ -47,7 +46,7 @@ class UserProvider with ChangeNotifier {
       _users.removeWhere((u) => u.id == user.id);
       notifyListeners();
     } catch (e) {
-      print('Error deleting user: $e');
+      debugPrint('Error deleting user: $e');
     }
   }
 
@@ -60,7 +59,7 @@ class UserProvider with ChangeNotifier {
         notifyListeners();
       }
     } catch (e) {
-      print('Error updating user: $e');
+      debugPrint('Error updating user: $e');
     }
   }
 }

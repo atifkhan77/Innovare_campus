@@ -16,11 +16,10 @@ class _SplashScreenState extends State<SplashScreen>
   void initState() {
     super.initState();
 
-    // Initialize the AnimationController
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 3), // Adjust the duration if needed
-    ); // Continuously repeat the animation
+      duration: const Duration(seconds: 3),
+    );
 
     _rotationAnimation = Tween<double>(
       begin: 0.0,
@@ -30,9 +29,7 @@ class _SplashScreenState extends State<SplashScreen>
       curve: Curves.linear,
     ));
 
-    // Set a Timer for 3 seconds
-    Timer(Duration(seconds: 4), () {
-      // Navigate to the login screen
+    Timer(const Duration(seconds: 4), () {
       Navigator.of(context)
           .pushReplacement(MaterialPageRoute(builder: (_) => LoginScreen()));
     });
@@ -59,7 +56,7 @@ class _SplashScreenState extends State<SplashScreen>
             ),
           ),
           Positioned(
-            top: 50, // Adjust this value to position the logo vertically
+            top: 50,
             left: 0,
             right: 0,
             child: Center(
@@ -68,32 +65,32 @@ class _SplashScreenState extends State<SplashScreen>
                 child: Image.asset(
                   'assets/logo.png',
                   width: 200,
-                  height: 200, // Adjust height to fit the logo appropriately
+                  height: 200,
                 ),
               ),
             ),
           ),
           Positioned(
-            top: 250, // Adjust this value to position the text vertically
+            top: 250,
             left: 0,
             right: 0,
             child: Center(
               child: Image.asset(
                 'assets/text.png',
                 width: 200,
-                height: 100, // Adjust height to fit the text appropriately
+                height: 100,
               ),
             ),
           ),
           Positioned(
-            top: 360, // Adjust this value to position the text vertically
+            top: 360,
             left: 0,
             right: 0,
             child: Center(
               child: Image.asset(
                 'assets/text2.png',
                 width: 200,
-                height: 100, // Adjust height to fit the text appropriately
+                height: 100,
               ),
             ),
           ),

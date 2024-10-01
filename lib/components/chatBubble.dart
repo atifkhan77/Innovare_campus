@@ -14,7 +14,7 @@ class ChatBubble extends StatelessWidget {
       ),
       child: Text(
         message,
-        style: TextStyle(fontSize: 16),
+        style: const TextStyle(fontSize: 16),
       ),
     );
   }
