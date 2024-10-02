@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:innovare_campus/Views/web/admin_screen.dart';
 import 'package:innovare_campus/Views/web/cafeadmin_dashbaord/cafeAdminDashboardScreen.dart';
 import 'package:innovare_campus/Views/web/cafeadmin_dashbaord/manageOrdersScreen.dart';
 import 'package:innovare_campus/Views/web/cafeadmin_dashbaord/manage_menuScreen.dart';
@@ -108,6 +109,28 @@ class CafeAdminDrawer extends StatelessWidget {
                 context,
                 MaterialPageRoute(builder: (context) => ViewOrdersScreen()),
               );
+            },
+          ),
+          const Divider(), // Optional: adds a divider above the logout button
+          ListTile(
+            leading: const Icon(
+              Icons.logout,
+              color: Color.fromRGBO(49, 42, 119, 1),
+            ),
+            title: const Text(
+              'Logout',
+              style: TextStyle(
+                color: Color.fromRGBO(49, 42, 119, 1),
+              ),
+            ),
+            onTap: () {
+              // Implement your logout logic here
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (BuildContext context) => AdminScreen(),
+                ),
+              ); // Replace with your actual login route
             },
           ),
         ],
