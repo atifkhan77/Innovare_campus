@@ -24,7 +24,7 @@ class TutorProvider with ChangeNotifier {
   Future<void> fetchCurrentTutor() async {
     User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
-      print('Fetching tutor for user: ${user.uid}');
+      debugPrint('Fetching tutor for user: ${user.uid}');
       final doc = await FirebaseFirestore.instance
           .collection('tutors')
           .doc(user.uid)
@@ -33,13 +33,13 @@ class TutorProvider with ChangeNotifier {
         final tutor = Tutor.fromDocument(doc);
         _tutorName = tutor.name;
         _tutorId = tutor.contactNumber;
-        print('Tutor found: $_tutorName');
+        debugPrint('Tutor found: $_tutorName');
         notifyListeners();
       } else {
-        print('No tutor document found for user: ${user.uid}');
+        debugPrint('No tutor document found for user: ${user.uid}');
       }
     } else {
-      print('No user is currently logged in.');
+      debugPrint('No user is currently logged in.');
     }
   }
 
@@ -62,7 +62,7 @@ class TutorProvider with ChangeNotifier {
       _tutors.add(tutor);
       notifyListeners();
     } else {
-      print('No user is currently logged in. Cannot add tutor.');
+      debugPrint('No user is currently logged in. Cannot add tutor.');
     }
   }
 
@@ -79,7 +79,7 @@ class TutorProvider with ChangeNotifier {
     final List<Request> fetchedRequests = result.docs.map((doc) {
       final data = doc.data() as Map<String, dynamic>;
       final request = Request.fromDocument(doc);
-      print(
+      debugPrint(
           'Fetched request: ${data['message']} for tutor: ${data['tutorName']}');
       return request;
     }).toList();

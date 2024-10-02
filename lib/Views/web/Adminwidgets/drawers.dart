@@ -1,9 +1,9 @@
-// custom_drawer.dart
 import 'package:flutter/material.dart';
 import 'package:innovare_campus/Views/web/admin_dashboard/SocietiesManage/societyManagement.dart';
 import 'package:innovare_campus/Views/web/admin_dashboard/admin_dashboard.dart';
 import 'package:innovare_campus/Views/web/admin_dashboard/newsAnoouncement/newsManagementScreen.dart';
 import 'package:innovare_campus/Views/web/admin_dashboard/useraManage/usermanagementScreen.dart';
+import 'package:innovare_campus/Views/web/admin_screen.dart';
 
 class CustomDrawer extends StatelessWidget {
   @override
@@ -73,6 +73,22 @@ class CustomDrawer extends StatelessWidget {
               Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => AdminDashboardScreen(),
               ));
+            },
+          ),
+          const Divider(), // Optional: adds a divider above the logout button
+          _buildDrawerItem(
+            context: context,
+            icon: Icons.logout,
+            label: 'Logout',
+            onTap: () {
+              // Implement your logout logic here
+              // e.g., clear user session, navigate to login screen, etc.
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (BuildContext context) => AdminScreen(),
+                ),
+              );
             },
           ),
         ],
