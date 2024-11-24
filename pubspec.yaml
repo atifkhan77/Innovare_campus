@@ -56,6 +56,8 @@ dependencies:
   image_cropper: ^8.0.2
   dotted_border: ^2.1.0
   google_fonts: ^6.2.1
+  external_app_launcher: ^4.0.0
+ 
   
 
 dev_dependencies:
