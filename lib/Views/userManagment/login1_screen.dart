@@ -1,5 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:innovare_campus/Views/userManagment/forgotPassword.dart';
 import 'package:innovare_campus/Views/home.dart';
 import 'package:innovare_campus/Views/userManagment/signup_screen.dart';
@@ -58,126 +58,142 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
-      body: Stack(
-        fit: StackFit.expand,
-        children: <Widget>[
-          Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/Splash.png"),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          Positioned(
-            left: screenWidth * .35,
-            top: screenHeight * .20,
-            child: const Text(
-              "Login",
-              style: TextStyle(color: Colors.white, fontSize: 36),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: screenHeight * .30),
+      body: Row(
+        children: [
+          // Left column: Welcome text and additional message
+          Expanded(
+            flex: 1,
             child: Container(
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  topRight: Radius.circular(20),
+              color: const Color.fromRGBO(49, 42, 119, 1),
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: const [
+                    Text(
+                      "Welcome to Innovare Campus",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white70,
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    Text(
+                      "Your gateway to excellence in education.\nPlease log in to continue.",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.white60,
+                      ),
+                    ),
+                  ],
                 ),
-                color: Colors.white,
               ),
-              padding: const EdgeInsets.all(20),
-              child: SingleChildScrollView(
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      const SizedBox(height: 20),
-                      UiHelper.customText("Email"),
-                      TextFormField(
-                        controller: _emailController,
-                        decoration: const InputDecoration(
-                          hintText: 'Enter your Email',
-                          hintStyle: TextStyle(color: Colors.black26),
+            ),
+          ),
+          // Right column: Login form
+          Expanded(
+            flex: 1,
+            child: Container(
+              padding: const EdgeInsets.all(24.0),
+              child: Center(
+                child: SingleChildScrollView(
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        const Text(
+                          "Login",
+                          style: TextStyle(
+                            fontSize: 28,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
                         ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your email';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 20),
-                      UiHelper.customText("Password"),
-                      TextFormField(
-                        controller: _passwordController,
-                        obscureText: _obscureText,
-                        decoration: InputDecoration(
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              _obscureText
-                                  ? Icons.visibility
-                                  : Icons.visibility_off,
+                        const SizedBox(height: 20),
+                        UiHelper.customText("Email"),
+                        TextFormField(
+                          controller: _emailController,
+                          decoration: const InputDecoration(
+                            hintText: 'Enter your Email',
+                            hintStyle: TextStyle(color: Colors.black26),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your email';
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 20),
+                        UiHelper.customText("Password"),
+                        TextFormField(
+                          controller: _passwordController,
+                          obscureText: _obscureText,
+                          decoration: InputDecoration(
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                _obscureText
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                              ),
+                              onPressed: _togglePasswordVisibility,
                             ),
-                            onPressed: _togglePasswordVisibility,
+                            hintText: 'Enter your Password',
+                            hintStyle: const TextStyle(color: Colors.black26),
                           ),
-                          hintText: 'Enter your Password',
-                          hintStyle: const TextStyle(color: Colors.black26),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your password';
+                            }
+                            return null;
+                          },
                         ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your password';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 10),
-                      Row(
-                        children: [
-                          Checkbox(
-                            value: _staySignedIn,
-                            onChanged: (bool? value) {
-                              setState(() {
-                                _staySignedIn = value!;
-                              });
-                            },
-                          ),
-                          const Text('Stay signed in'),
-                          const Spacer(),
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                    builder: (context) => ForgotPassword()),
-                              );
-                            },
-                            child: const Text('Forgot password?'),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 20),
-                      CustomButton(
-                        text: "Login",
-                        onPressed: _login,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(left: screenWidth * 0.5),
-                        child: TextButton(
+                        const SizedBox(height: 10),
+                        Row(
+                          children: [
+                            Checkbox(
+                              value: _staySignedIn,
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  _staySignedIn = value!;
+                                });
+                              },
+                            ),
+                            const Text('Stay signed in'),
+                            const Spacer(),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                      builder: (context) => ForgotPassword()),
+                                );
+                              },
+                              child: const Text('Forgot password?'),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 20),
+                        CustomButton(
+                          text: "Login",
+                          onPressed: _login,
+                        ),
+                        const SizedBox(height: 20),
+                        TextButton(
                           onPressed: () {
                             Navigator.of(context).push(
                               MaterialPageRoute(
                                   builder: (context) => SignupScreen()),
                             );
                           },
-                          child: const Text("Not Registered?"),
+                          child: const Text("Not Registered? Sign up here!"),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),

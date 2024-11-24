@@ -11,108 +11,121 @@ class ForgotPassword extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
-      body: Stack(
-        fit: StackFit.expand,
-        children: <Widget>[
-          Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/Splash.png"),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          Positioned(
-            left: screenWidth * .12,
-            top: screenHeight * .20,
-            child: const Text(
-              "Forgot password",
-              style: TextStyle(color: Colors.white, fontSize: 36),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: screenHeight * .30),
+      body: Row(
+        children: [
+          // Left Column: Welcome message
+          Expanded(
+            flex: 1,
             child: Container(
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  topRight: Radius.circular(20),
-                ),
-                color: Colors.white,
-              ),
-              padding: const EdgeInsets.all(20),
-              child: SingleChildScrollView(
+              color: const Color.fromRGBO(49, 42, 119, 1),
+              child: const Center(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text(
-                      'Please enter your email to reset the password',
+                    Text(
+                      "Forgot Your Password?",
+                      textAlign: TextAlign.center,
                       style: TextStyle(
-                        color: Colors.black26,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w700,
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white70,
                       ),
                     ),
-                    const SizedBox(height: 10),
-                    UiHelper.customText("Your email"),
-                    TextField(
-                      controller: _emailController,
-                      decoration: const InputDecoration(
-                        hintText: 'Enter your Email',
-                        hintStyle: TextStyle(color: Colors.black26),
+                    SizedBox(height: 20),
+                    Text(
+                      "Don’t worry! We’ll help you recover it.",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.white54,
                       ),
                     ),
-                    const SizedBox(height: 20),
-                    const Text(
-                      'We will send a password reset link to this email address',
-                      style: TextStyle(color: Colors.black26, fontSize: 12),
-                    ),
-                    const SizedBox(height: 10),
-                    const SizedBox(height: 20),
-                    CustomButton(
-                      text: "Reset Password",
-                      onPressed: () {
-                        auth
-                            .sendPasswordResetEmail(
-                                email: _emailController.text.toString())
-                            .then((_) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Password reset email sent.'),
-                            ),
-                          );
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => LoginScreen()),
-                          );
-                        }).catchError((error) {
-                          debugPrint(error.toString());
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content:
-                                  Text('Failed to send password reset email.'),
-                            ),
-                          );
-                        });
-                      },
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 20, left: 20),
-                      child: Row(
+                  ],
+                ),
+              ),
+            ),
+          ),
+          // Right Column: Form
+          Expanded(
+            flex: 1,
+            child: Container(
+              padding: const EdgeInsets.all(24.0),
+              child: Center(
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      const Text(
+                        'Reset Your Password',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      const Text(
+                        'Enter your registered email address to receive a password reset link.',
+                        style: TextStyle(
+                          color: Colors.black54,
+                          fontSize: 14,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 20),
+                      UiHelper.customText("Your Email"),
+                      TextField(
+                        controller: _emailController,
+                        decoration: const InputDecoration(
+                          hintText: 'Enter your Email',
+                          hintStyle: TextStyle(color: Colors.black38),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      CustomButton(
+                        text: "Send Reset Link",
+                        onPressed: () {
+                          auth
+                              .sendPasswordResetEmail(
+                                  email: _emailController.text.toString())
+                              .then((_) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Password reset email sent.'),
+                              ),
+                            );
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => LoginScreen()),
+                            );
+                          }).catchError((error) {
+                            debugPrint(error.toString());
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                    'Failed to send password reset email.'),
+                              ),
+                            );
+                          });
+                        },
+                      ),
+                      const SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           const Text(
                             'Haven’t got the email yet?',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              color: Colors.black26,
+                              color: Colors.black45,
                             ),
                           ),
                           TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              // Resend email logic here
+                            },
                             child: const Text(
                               'Resend email',
                               style: TextStyle(
@@ -123,8 +136,8 @@ class ForgotPassword extends StatelessWidget {
                           ),
                         ],
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
