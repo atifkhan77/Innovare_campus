@@ -84,54 +84,48 @@ class _AdminScreenState extends State<AdminScreen>
   }
 
   @override
-  void reassemble() {
-    super.reassemble();
-  }
-
-  @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      body: Stack(
-        fit: StackFit.expand,
-        children: <Widget>[
-          Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/Splash.png"),
-                fit: BoxFit.cover,
+      body: Row(
+        children: [
+          // Left Column: Image/Branding
+          Expanded(
+            child: Container(
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage("assets/Splash.png"),
+                  fit: BoxFit.cover,
+                ),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    'assets/logo.png',
+                    width: screenWidth * 0.2,
+                  ),
+                  const SizedBox(height: 20),
+                  const Text(
+                    "Admin Login",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 36,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
-          Positioned(
-            left: screenWidth * .41,
-            top: screenHeight * .10,
-            child: Column(
-              children: [
-                Image.asset('assets/logo.png'),
-                const SizedBox(height: 20),
-                const Text(
-                  "Admin Login",
-                  style: TextStyle(color: Colors.white, fontSize: 36),
-                ),
-              ],
-            ),
-          ),
-          SlideTransition(
-            position: _slideAnimation,
+          // Right Column: Form
+          Expanded(
             child: Padding(
-              padding: EdgeInsets.only(top: screenHeight * .40),
-              child: Container(
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    topRight: Radius.circular(20),
-                  ),
-                  color: Colors.white,
-                ),
-                padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(30.0),
+              child: SlideTransition(
+                position: _slideAnimation,
                 child: SingleChildScrollView(
                   child: Form(
                     key: _formKey,
@@ -177,23 +171,20 @@ class _AdminScreenState extends State<AdminScreen>
                             return null;
                           },
                         ),
-                        const SizedBox(height: 20),
-                        SizedBox(
-                          width: screenWidth * 0.5,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              padding: const EdgeInsets.symmetric(vertical: 8),
-                              backgroundColor:
-                                  const Color.fromRGBO(49, 42, 119, 1),
+                        const SizedBox(height: 40),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
                             ),
-                            onPressed: _loginAdmin,
-                            child: const Text(
-                              "Login",
-                              style: TextStyle(color: Colors.white),
-                            ),
+                            padding: const EdgeInsets.symmetric(vertical: 14),
+                            backgroundColor:
+                                const Color.fromRGBO(49, 42, 119, 1),
+                          ),
+                          onPressed: _loginAdmin,
+                          child: const Text(
+                            "Login",
+                            style: TextStyle(color: Colors.white, fontSize: 16),
                           ),
                         ),
                       ],
