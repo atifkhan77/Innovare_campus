@@ -25,5 +25,8 @@ plugins {
     // END: FlutterFire Configuration
     id "org.jetbrains.kotlin.android" version "2.0.20" apply false
 }
+include ':unityLibrary'
+project(':unityLibrary').projectDir = new File(rootProject.projectDir, 'unityLibrary')
+
 
 include ":app"

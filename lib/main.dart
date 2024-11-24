@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:innovare_campus/Views/print/printScreen.dart';
 import 'package:innovare_campus/provider/cafeOrder_provider.dart';
 import 'package:innovare_campus/provider/cart_provider.dart';
@@ -12,8 +13,7 @@ import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // Stripe.publishableKey =
-  //     'pk_test_51PmfD1EfHzJkiA2Ln4yXcJ5jq4AJW4FejpV86LLf0LbmnrzXt0g1l4JW99yrik5o24c8rsg0gl5cpcqvOrYH53Uc002TujdoIG';
+   Stripe.publishableKey = 'pk_test_51PmfD1EfHzJkiA2Ln4yXcJ5jq4AJW4FejpV86LLf0LbmnrzXt0g1l4JW99yrik5o24c8rsg0gl5cpcqvOrYH53Uc002TujdoIG';
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );

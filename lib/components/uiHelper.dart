@@ -1,8 +1,10 @@
+import 'package:external_app_launcher/external_app_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:innovare_campus/Views/chat/chatScreen.dart';
 import 'package:innovare_campus/Views/home.dart';
 import 'package:innovare_campus/Views/notifications/notificationsScreen.dart';
+
 
 class UiHelper {
   // ignore: non_constant_identifier_names
@@ -88,11 +90,21 @@ class NavBar extends StatelessWidget {
             },
           ),
           IconButton(
-            color: Colors.white70,
-            iconSize: 35,
-            icon: const Icon(Icons.assistant_navigation),
-            onPressed: () {},
-          ),
+  color: Colors.white70,
+  iconSize: 35,
+  icon: const Icon(Icons.assistant_navigation),
+  onPressed: () async {
+    try {
+      await LaunchApp.openApp(
+        androidPackageName: 'com.DefaultCompany.ARGO',
+        openStore: false, // Skip Play Store redirection since it’s a custom APK
+      );
+    } catch (e) {
+      debugPrint('Error opening ARGO app: $e');
+    }
+  },
+),
+
           IconButton(
             color: Colors.white70,
             iconSize: 35,

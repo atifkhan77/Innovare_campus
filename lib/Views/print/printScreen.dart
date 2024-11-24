@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:innovare_campus/model/document.dart';
 import 'package:innovare_campus/provider/document_provider.dart';
+import 'package:innovare_campus/stripe/stripe.dart';
 import 'package:provider/provider.dart';
 
 class PrintScreen extends StatefulWidget {
@@ -14,6 +15,7 @@ class _PrintScreenState extends State<PrintScreen> {
   PlatformFile? _selectedFile;
   String? userId;
   int _numOfPrints = 1;
+  double _selectedAmount = 0.0;
 
   @override
   void initState() {
@@ -43,6 +45,7 @@ class _PrintScreenState extends State<PrintScreen> {
       setState(() {
         _selectedFile = null;
         _numOfPrints = 1;
+        _selectedAmount = 0.0;
       });
 
       ScaffoldMessenger.of(context).showSnackBar(
@@ -51,6 +54,40 @@ class _PrintScreenState extends State<PrintScreen> {
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('User not logged in')),
+      );
+    }
+  }
+
+  Future<void> _handleOnlinePayment(BuildContext context) async {
+    final user = FirebaseAuth.instance.currentUser;
+
+    if (user == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('User not logged in.')),
+      );
+      return;
+    }
+
+    if (_selectedAmount <= 0) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please enter a valid amount.')),
+      );
+      return;
+    }
+
+    try {
+      await StripeService.instance.makePayment(
+        'Document Printing Payment',
+        (_selectedAmount * 100).toInt(),
+        user.email ?? 'Unknown User',
+      );
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Payment successful!')),
+      );
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Payment failed: $error')),
       );
     }
   }
@@ -107,18 +144,48 @@ class _PrintScreenState extends State<PrintScreen> {
                             keyboardType: TextInputType.number,
                             onChanged: (value) {
                               setState(() {
-                                _numOfPrints = int.parse(value);
+                                _numOfPrints = int.tryParse(value) ?? 1;
                               });
                             },
                           ),
                         ),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color.fromRGBO(0, 0, 70, 1),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: TextFormField(
+                            decoration: const InputDecoration(
+                                labelText: 'Enter payment amount'),
+                            keyboardType:
+                                const TextInputType.numberWithOptions(
+                                    decimal: true),
+                            onChanged: (value) {
+                              setState(() {
+                                _selectedAmount = double.tryParse(value) ?? 0.0;
+                              });
+                            },
                           ),
-                          onPressed: () => _submitFile(context),
-                          child: const Text('Submit',
-                              style: TextStyle(color: Colors.white)),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor:
+                                    const Color.fromRGBO(0, 0, 70, 1),
+                              ),
+                              onPressed: () => _handleOnlinePayment(context),
+                              child: const Text('Pay Online',
+                                  style: TextStyle(color: Colors.white)),
+                            ),
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor:
+                                    const Color.fromRGBO(0, 0, 70, 1),
+                              ),
+                              onPressed: () => _submitFile(context),
+                              child: const Text('Submit File',
+                                  style: TextStyle(color: Colors.white)),
+                            ),
+                          ],
                         ),
                       ],
                     ),
