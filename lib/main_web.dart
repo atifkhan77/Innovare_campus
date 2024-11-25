@@ -24,14 +24,14 @@ void main() async {
 
 Future<void> registerAdmins() async {
   try {
-    final FirebaseAuth _auth = FirebaseAuth.instance;
+    final FirebaseAuth auth = FirebaseAuth.instance;
 
-    await _auth.createUserWithEmailAndPassword(
+    await auth.createUserWithEmailAndPassword(
       email: 'admin@example.com',
       password: 'adminpassword',
     );
 
-    await _auth.createUserWithEmailAndPassword(
+    await auth.createUserWithEmailAndPassword(
       email: 'cafeadmin@example.com',
       password: 'cafepassword',
     );
@@ -43,6 +43,8 @@ Future<void> registerAdmins() async {
 }
 
 class MyWebApp extends StatelessWidget {
+  const MyWebApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(

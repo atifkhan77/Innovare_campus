@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:innovare_campus/controller/dialogflow_service.dart';
 
 class ChatbotScreen extends StatefulWidget {
-  const ChatbotScreen({Key? key}) : super(key: key);
+  const ChatbotScreen({super.key});
 
   @override
   State<ChatbotScreen> createState() => _ChatbotScreenState();
@@ -12,7 +12,7 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
   final DialogflowService _dialogflowService = DialogflowService();
   final TextEditingController _messageController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
-  List<Map<String, String>> _messages = [];
+  final List<Map<String, String>> _messages = [];
 
   void _sendMessage() async {
     final message = _messageController.text;

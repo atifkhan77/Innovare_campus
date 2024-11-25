@@ -7,6 +7,8 @@ import 'package:innovare_campus/components/uiHelper.dart';
 import 'package:innovare_campus/controller/firebase_services.dart';
 
 class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }

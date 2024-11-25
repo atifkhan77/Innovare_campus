@@ -3,6 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class PrintsScreen extends StatelessWidget {
+  const PrintsScreen({super.key});
+
   Future<Map<String, dynamic>> _fetchUserDetailsByUserID(String userId) async {
     try {
       final userSnapshot = await FirebaseFirestore.instance

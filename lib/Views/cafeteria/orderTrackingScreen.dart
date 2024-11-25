@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 class OrderTrackingScreen extends StatefulWidget {
   final String? initialOrderNumber;
 
-  OrderTrackingScreen({Key? key, this.initialOrderNumber}) : super(key: key);
+  const OrderTrackingScreen({super.key, this.initialOrderNumber});
 
   @override
   _OrderTrackingScreenState createState() => _OrderTrackingScreenState();

@@ -4,6 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:innovare_campus/Views/web/cafeadmin_dashbaord/cafeComponents/cafeDrawer.dart';
 
 class CafeAdminDashboardScreen extends StatefulWidget {
+  const CafeAdminDashboardScreen({super.key});
+
   @override
   _CafeAdminDashboardScreenState createState() =>
       _CafeAdminDashboardScreenState();

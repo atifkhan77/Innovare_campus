@@ -13,12 +13,12 @@ class TutorDetailScreen extends StatelessWidget {
   final String availability;
 
   const TutorDetailScreen({
-    Key? key,
+    super.key,
     required this.name,
     required this.subjectExpertise,
     required this.contactNumber,
     required this.availability,
-  }) : super(key: key);
+  });
 
   Future<String> _getStudentName() async {
     final User? user = FirebaseAuth.instance.currentUser;

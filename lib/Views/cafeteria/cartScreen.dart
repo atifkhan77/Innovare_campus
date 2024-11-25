@@ -8,6 +8,8 @@ import 'package:innovare_campus/stripe/stripe.dart';
 import 'package:provider/provider.dart';
 
 class CartScreen extends StatelessWidget {
+  const CartScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     final cart = Provider.of<CartProvider>(context);

@@ -6,6 +6,8 @@ import 'package:innovare_campus/Views/web/admin_dashboard/useraManage/usermanage
 import 'package:innovare_campus/Views/web/admin_screen.dart';
 
 class CustomDrawer extends StatelessWidget {
+  const CustomDrawer({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Drawer(

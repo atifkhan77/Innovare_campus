@@ -8,6 +8,8 @@ import 'package:innovare_campus/Views/userManagment/login1_screen.dart';
 import 'package:innovare_campus/components/uiHelper.dart';
 
 class ProfileScreen extends StatefulWidget {
+  const ProfileScreen({super.key});
+
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
 }

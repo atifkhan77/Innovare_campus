@@ -6,6 +6,8 @@ import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 
 class ManageMenuScreen extends StatefulWidget {
+  const ManageMenuScreen({super.key});
+
   @override
   _ManageMenuScreenState createState() => _ManageMenuScreenState();
 }

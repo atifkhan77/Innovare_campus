@@ -6,6 +6,8 @@ import 'package:innovare_campus/provider/cart_provider.dart';
 import 'package:provider/provider.dart';
 
 class CafeScreen extends StatefulWidget {
+  const CafeScreen({super.key});
+
   @override
   _CafeScreenState createState() => _CafeScreenState();
 }
@@ -46,7 +48,7 @@ class _CafeScreenState extends State<CafeScreen> {
                 child: TextField(
                   decoration: InputDecoration(
                     hintText: 'Search food',
-                    hintStyle: TextStyle(color: Colors.white54),
+                    hintStyle: const TextStyle(color: Colors.white54),
                     prefixIcon: const Icon(Icons.search),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20),

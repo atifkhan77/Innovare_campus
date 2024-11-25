@@ -13,7 +13,8 @@ import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-   Stripe.publishableKey = 'pk_test_51PmfD1EfHzJkiA2Ln4yXcJ5jq4AJW4FejpV86LLf0LbmnrzXt0g1l4JW99yrik5o24c8rsg0gl5cpcqvOrYH53Uc002TujdoIG';
+  Stripe.publishableKey =
+      'pk_test_51PmfD1EfHzJkiA2Ln4yXcJ5jq4AJW4FejpV86LLf0LbmnrzXt0g1l4JW99yrik5o24c8rsg0gl5cpcqvOrYH53Uc002TujdoIG';
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -21,6 +22,8 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(

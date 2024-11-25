@@ -8,7 +8,7 @@ import 'package:innovare_campus/Views/chat/chatPage.dart';
 import 'package:innovare_campus/components/uiHelper.dart';
 
 class ChatScreen extends StatefulWidget {
-  const ChatScreen({Key? key}) : super(key: key);
+  const ChatScreen({super.key});
 
   @override
   State<ChatScreen> createState() => _ChatScreenState();

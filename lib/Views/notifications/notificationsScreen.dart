@@ -14,8 +14,7 @@ class ChatBubble extends StatelessWidget {
   final String message;
   final VoidCallback? onTap;
 
-  const ChatBubble({Key? key, required this.message, this.onTap})
-      : super(key: key);
+  const ChatBubble({super.key, required this.message, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +44,7 @@ class ChatBubble extends StatelessWidget {
 }
 
 class NotificationsScreen extends StatelessWidget {
-  const NotificationsScreen({Key? key}) : super(key: key);
+  const NotificationsScreen({super.key});
 
   Future<String?> _fetchLatestOrderNumber() async {
     try {

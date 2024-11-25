@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:innovare_campus/Views/chat/GroupChatScreen.dart';
 
 class GroupListScreen extends StatelessWidget {
-  const GroupListScreen({Key? key}) : super(key: key);
+  const GroupListScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final FirebaseAuth _auth = FirebaseAuth.instance;
-    final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
     return Scaffold(
       appBar: AppBar(
@@ -27,7 +27,7 @@ class GroupListScreen extends StatelessWidget {
           ),
         ),
         child: StreamBuilder<QuerySnapshot>(
-          stream: _firestore.collection('groups').snapshots(),
+          stream: firestore.collection('groups').snapshots(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
               return const Center(child: CircularProgressIndicator());
@@ -35,7 +35,7 @@ class GroupListScreen extends StatelessWidget {
             final groups = snapshot.data!.docs.where((doc) {
               final data = doc.data()! as Map<String, dynamic>;
               final members = data['members'] as List<dynamic>;
-              return members.contains(_auth.currentUser!.email);
+              return members.contains(auth.currentUser!.email);
             }).toList();
 
             return ListView.builder(
@@ -53,7 +53,7 @@ class GroupListScreen extends StatelessWidget {
                   trailing: IconButton(
                     icon: const Icon(Icons.delete),
                     onPressed: () {
-                      _firestore.collection('groups').doc(groupId).delete();
+                      firestore.collection('groups').doc(groupId).delete();
                     },
                   ),
                   onTap: () {

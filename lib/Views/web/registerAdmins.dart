@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 
 Future<void> registerAdmins() async {
   try {
-    final FirebaseAuth _auth = FirebaseAuth.instance;
+    final FirebaseAuth auth = FirebaseAuth.instance;
 
-    await _auth.createUserWithEmailAndPassword(
+    await auth.createUserWithEmailAndPassword(
       email: 'admin@example.com',
       password: 'adminpassword',
     );
 
-    await _auth.createUserWithEmailAndPassword(
+    await auth.createUserWithEmailAndPassword(
       email: 'cafeadmin@example.com',
       password: 'cafepassword',
     );

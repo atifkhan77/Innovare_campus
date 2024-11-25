@@ -5,6 +5,8 @@ import 'package:innovare_campus/components/uiHelper.dart';
 import 'admin_dashboard/admin_dashboard.dart';
 
 class AdminScreen extends StatefulWidget {
+  const AdminScreen({super.key});
+
   @override
   _AdminScreenState createState() => _AdminScreenState();
 }

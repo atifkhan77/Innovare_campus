@@ -5,6 +5,8 @@ import 'package:innovare_campus/controller/firebase_services.dart';
 // Import the custom widget
 
 class SignupScreen extends StatefulWidget {
+  const SignupScreen({super.key});
+
   @override
   State<SignupScreen> createState() => _SignupScreenState();
 }

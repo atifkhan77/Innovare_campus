@@ -12,7 +12,7 @@ import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class RecieveTutor extends StatefulWidget {
-  const RecieveTutor({Key? key}) : super(key: key);
+  const RecieveTutor({super.key});
 
   @override
   State<RecieveTutor> createState() => _RecieveTutorState();
@@ -259,6 +259,8 @@ class _RecieveTutorState extends State<RecieveTutor> {
 }
 
 class TutorListScreen extends StatelessWidget {
+  const TutorListScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     final tutors = Provider.of<TutorProvider>(context).tutors;

@@ -5,6 +5,8 @@ import 'package:innovare_campus/provider/newsProvider.dart';
 import 'package:provider/provider.dart';
 
 class NewsManagementScreen extends StatelessWidget {
+  const NewsManagementScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     final newsProvider = Provider.of<NewsProvider>(context);

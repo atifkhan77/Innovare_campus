@@ -12,7 +12,7 @@ import 'package:innovare_campus/components/uiHelper.dart'; // Make sure this is 
 class HomeScreen extends StatefulWidget {
   final String userId;
 
-  HomeScreen({super.key, required this.userId});
+  const HomeScreen({super.key, required this.userId});
 
   @override
   _HomeScreenState createState() => _HomeScreenState();

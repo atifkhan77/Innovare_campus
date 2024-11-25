@@ -5,6 +5,8 @@ import 'package:innovare_campus/Views/web/Adminwidgets/drawers.dart';
 import 'package:innovare_campus/Views/web/Adminwidgets/piechart.dart';
 
 class AdminDashboardScreen extends StatefulWidget {
+  const AdminDashboardScreen({super.key});
+
   @override
   _AdminDashboardScreenState createState() => _AdminDashboardScreenState();
 }

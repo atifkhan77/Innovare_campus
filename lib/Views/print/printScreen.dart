@@ -7,6 +7,8 @@ import 'package:innovare_campus/stripe/stripe.dart';
 import 'package:provider/provider.dart';
 
 class PrintScreen extends StatefulWidget {
+  const PrintScreen({super.key});
+
   @override
   _PrintScreenState createState() => _PrintScreenState();
 }
@@ -154,9 +156,8 @@ class _PrintScreenState extends State<PrintScreen> {
                           child: TextFormField(
                             decoration: const InputDecoration(
                                 labelText: 'Enter payment amount'),
-                            keyboardType:
-                                const TextInputType.numberWithOptions(
-                                    decimal: true),
+                            keyboardType: const TextInputType.numberWithOptions(
+                                decimal: true),
                             onChanged: (value) {
                               setState(() {
                                 _selectedAmount = double.tryParse(value) ?? 0.0;

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class NewsScreen extends StatefulWidget {
+  const NewsScreen({super.key});
+
   @override
   _NewsScreenState createState() => _NewsScreenState();
 }
@@ -12,9 +14,7 @@ class _NewsScreenState extends State<NewsScreen> {
   Future<List<Map<String, dynamic>>> _fetchNews() async {
     try {
       final querySnapshot = await _firestore.collection('news').get();
-      return querySnapshot.docs
-          .map((doc) => doc.data() as Map<String, dynamic>)
-          .toList();
+      return querySnapshot.docs.map((doc) => doc.data()).toList();
     } catch (e) {
       debugPrint('Failed to load news: $e');
       return [];

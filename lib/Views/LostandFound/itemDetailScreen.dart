@@ -4,7 +4,7 @@ import 'package:innovare_campus/model/lostfind.dart';
 class ItemDetailScreen extends StatelessWidget {
   final LostFoundItem item;
 
-  ItemDetailScreen({required this.item});
+  const ItemDetailScreen({super.key, required this.item});
 
   @override
   Widget build(BuildContext context) {

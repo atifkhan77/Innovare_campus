@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CafeteriaOrdersScreen extends StatelessWidget {
+  const CafeteriaOrdersScreen({super.key});
+
   Future<Map<String, dynamic>> _fetchUserDetailsByEmail(String email) async {
     try {
       final userSnapshot = await FirebaseFirestore.instance
@@ -157,7 +159,7 @@ class CafeteriaOrdersScreen extends StatelessWidget {
               final itemName = item['name'] ?? 'Unnamed Item';
               final itemQuantity = item['quantity'] ?? 0;
               return Text('$itemName x $itemQuantity');
-            }).toList(),
+            }),
           ],
         ),
         trailing: PopupMenuButton<String>(

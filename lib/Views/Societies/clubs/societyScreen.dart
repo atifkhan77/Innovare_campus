@@ -4,6 +4,8 @@ import 'package:innovare_campus/model/society.dart';
 import 'package:innovare_campus/Views/Societies/clubs/societyDetailScreen.dart';
 
 class SocietiesScreen extends StatelessWidget {
+  const SocietiesScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

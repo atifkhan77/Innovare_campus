@@ -4,9 +4,9 @@ class SearchBox extends StatelessWidget {
   final ValueChanged<String> onChanged;
 
   const SearchBox({
-    Key? key,
+    super.key,
     required this.onChanged,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -6,7 +6,7 @@ import 'package:innovare_campus/components/chatBubble.dart';
 class GroupChatScreen extends StatefulWidget {
   final String groupId;
 
-  const GroupChatScreen({Key? key, required this.groupId}) : super(key: key);
+  const GroupChatScreen({super.key, required this.groupId});
 
   @override
   State<GroupChatScreen> createState() => _GroupChatScreenState();

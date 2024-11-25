@@ -6,6 +6,8 @@ import 'package:innovare_campus/provider/userProvider.dart';
 import 'package:provider/provider.dart';
 
 class UserManagementScreen extends StatelessWidget {
+  const UserManagementScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context);

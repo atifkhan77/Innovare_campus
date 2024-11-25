@@ -5,7 +5,6 @@ import 'package:innovare_campus/Views/chat/chatScreen.dart';
 import 'package:innovare_campus/Views/home.dart';
 import 'package:innovare_campus/Views/notifications/notificationsScreen.dart';
 
-
 class UiHelper {
   // ignore: non_constant_identifier_names
   static CustomTextField(TextEditingController controller, String text,
@@ -33,7 +32,8 @@ class CustomButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
 
-  CustomButton({
+  const CustomButton({
+    super.key,
     required this.text,
     required this.onPressed,
   });
@@ -90,21 +90,21 @@ class NavBar extends StatelessWidget {
             },
           ),
           IconButton(
-  color: Colors.white70,
-  iconSize: 35,
-  icon: const Icon(Icons.assistant_navigation),
-  onPressed: () async {
-    try {
-      await LaunchApp.openApp(
-        androidPackageName: 'com.DefaultCompany.ARGO',
-        openStore: false, // Skip Play Store redirection since it’s a custom APK
-      );
-    } catch (e) {
-      debugPrint('Error opening ARGO app: $e');
-    }
-  },
-),
-
+            color: Colors.white70,
+            iconSize: 35,
+            icon: const Icon(Icons.assistant_navigation),
+            onPressed: () async {
+              try {
+                await LaunchApp.openApp(
+                  androidPackageName: 'com.DefaultCompany.ARGO',
+                  openStore:
+                      false, // Skip Play Store redirection since it’s a custom APK
+                );
+              } catch (e) {
+                debugPrint('Error opening ARGO app: $e');
+              }
+            },
+          ),
           IconButton(
             color: Colors.white70,
             iconSize: 35,
@@ -126,6 +126,7 @@ class CardComponent extends StatelessWidget {
   final VoidCallback onTap;
 
   const CardComponent({
+    super.key,
     required this.title,
     required this.assetPath,
     required this.onTap,

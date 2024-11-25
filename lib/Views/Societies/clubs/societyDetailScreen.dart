@@ -6,7 +6,7 @@ import 'package:url_launcher/url_launcher.dart';
 class SocietyDetailsScreen extends StatelessWidget {
   final Society society;
 
-  SocietyDetailsScreen({required this.society});
+  const SocietyDetailsScreen({super.key, required this.society});
 
   Future<void> _launchURL(String url) async {
     if (await canLaunch(url)) {

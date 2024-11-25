@@ -4,7 +4,7 @@ import 'package:innovare_campus/provider/userProvider.dart';
 import 'package:provider/provider.dart';
 
 class RequestsScreen extends StatelessWidget {
-  const RequestsScreen({Key? key}) : super(key: key);
+  const RequestsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -27,7 +27,7 @@ class DocumentProvider extends ChangeNotifier {
   Future<void> uploadDocument(
       PlatformFile file, String userId, int numOfPrints) async {
     try {
-      String fileId = Uuid().v4();
+      String fileId = const Uuid().v4();
       String fileName = file.name;
 
       Reference ref = _storage.ref().child('documents/$fileId.pdf');

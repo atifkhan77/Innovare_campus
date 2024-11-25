@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class OfferTutorScreen extends StatefulWidget {
-  const OfferTutorScreen({Key? key}) : super(key: key);
+  const OfferTutorScreen({super.key});
 
   @override
   _OfferTutorScreenState createState() => _OfferTutorScreenState();

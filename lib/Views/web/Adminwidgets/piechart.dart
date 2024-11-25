@@ -4,12 +4,12 @@ import 'package:fl_chart/fl_chart.dart';
 class CustomDonutChart extends StatelessWidget {
   final Map<String, int> regNoCounts;
 
-  CustomDonutChart({required this.regNoCounts});
+  const CustomDonutChart({super.key, required this.regNoCounts});
 
   @override
   Widget build(BuildContext context) {
     if (regNoCounts.isEmpty) {
-      return Center(child: CircularProgressIndicator());
+      return const Center(child: CircularProgressIndicator());
     }
 
     return PieChart(
@@ -25,7 +25,7 @@ class CustomDonutChart extends StatelessWidget {
   List<PieChartSectionData> _showingSections() {
     if (regNoCounts.isEmpty) return [];
 
-    final List<Color> sectionColors = Colors.primaries;
+    const List<Color> sectionColors = Colors.primaries;
     final totalUsers = regNoCounts.values.reduce((a, b) => a + b);
 
     return regNoCounts.entries.map((entry) {

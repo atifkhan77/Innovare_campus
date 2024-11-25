@@ -4,7 +4,7 @@ import 'package:innovare_campus/Views/userManagment/login1_screen.dart';
 import 'package:innovare_campus/components/uiHelper.dart';
 
 class ForgotPassword extends StatelessWidget {
-  ForgotPassword({Key? key}) : super(key: key);
+  ForgotPassword({super.key});
 
   final TextEditingController _emailController = TextEditingController();
   final auth = FirebaseAuth.instance;

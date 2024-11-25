@@ -3,6 +3,8 @@ import 'package:innovare_campus/Views/web/cafeadmin_dashbaord/CafeteriaOrdersScr
 import 'package:innovare_campus/Views/web/cafeadmin_dashbaord/PrintsScreen.dart';
 
 class ManageOrderScreen extends StatelessWidget {
+  const ManageOrderScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(

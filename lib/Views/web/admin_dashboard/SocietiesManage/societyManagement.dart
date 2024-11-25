@@ -12,6 +12,8 @@ class SocietyManagementScreen extends StatelessWidget {
   final TextEditingController _recruitmentDriveController =
       TextEditingController();
 
+  SocietyManagementScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

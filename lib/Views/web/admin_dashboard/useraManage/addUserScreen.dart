@@ -4,6 +4,8 @@ import 'package:innovare_campus/provider/userProvider.dart';
 import 'package:provider/provider.dart';
 
 class AddUserScreen extends StatefulWidget {
+  const AddUserScreen({super.key});
+
   @override
   _AddUserScreenState createState() => _AddUserScreenState();
 }

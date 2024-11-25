@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class RegistrationNumberField extends StatelessWidget {
   final TextEditingController controller;
 
-  RegistrationNumberField({required this.controller});
+  const RegistrationNumberField({super.key, required this.controller});
 
   String? _validateRegNo(String? value) {
     if (value == null || value.isEmpty) {

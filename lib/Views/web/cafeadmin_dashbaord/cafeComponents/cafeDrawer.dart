@@ -6,6 +6,8 @@ import 'package:innovare_campus/Views/web/cafeadmin_dashbaord/manage_menuScreen.
 import 'package:innovare_campus/Views/web/cafeadmin_dashbaord/viewOrdersScreen.dart';
 
 class CafeAdminDrawer extends StatelessWidget {
+  const CafeAdminDrawer({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Drawer(

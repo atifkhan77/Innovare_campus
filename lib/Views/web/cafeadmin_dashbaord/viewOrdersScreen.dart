@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ViewOrdersScreen extends StatelessWidget {
+  const ViewOrdersScreen({super.key});
+
   Future<Map<String, dynamic>> _fetchUserDetails(String email) async {
     try {
       final querySnapshot = await FirebaseFirestore.instance
@@ -101,7 +103,7 @@ class ViewOrdersScreen extends StatelessWidget {
                             final itemName = item['name'] ?? 'Unnamed Item';
                             final itemQuantity = item['quantity'] ?? 0;
                             return Text('$itemName x $itemQuantity');
-                          }).toList(),
+                          }),
                         ],
                       ),
                       trailing: IconButton(
