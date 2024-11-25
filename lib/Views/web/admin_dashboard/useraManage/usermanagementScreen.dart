@@ -16,7 +16,7 @@ class UserManagementScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text(
           'User Management',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         backgroundColor: const Color.fromRGBO(49, 42, 119, 1),
         iconTheme: const IconThemeData(color: Colors.white),
@@ -31,11 +31,10 @@ class UserManagementScreen extends StatelessWidget {
       ),
       drawer: CustomDrawer(),
       body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Color(0xFFF1F1F1), Color(0xFFE0E0E0)],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/Splash.png"),
+            fit: BoxFit.cover,
           ),
         ),
         padding: const EdgeInsets.all(12.0),
@@ -47,8 +46,8 @@ class UserManagementScreen extends StatelessWidget {
           },
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: const Color(0xFF3F51B5),
+      floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: const Color.fromRGBO(49, 42, 119, 1),
         onPressed: () {
           Navigator.push(
             context,
@@ -57,7 +56,8 @@ class UserManagementScreen extends StatelessWidget {
             ),
           );
         },
-        child: const Icon(Icons.add, color: Colors.white),
+        icon: const Icon(Icons.add, color: Colors.white),
+        label: const Text("Add User"),
       ),
     );
   }
@@ -72,11 +72,7 @@ class UserManagementScreen extends StatelessWidget {
       ),
       child: Container(
         decoration: BoxDecoration(
-          gradient: const LinearGradient(
-            colors: [Color(0xFF8E2DE2), Color(0xFF4A00E0)],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
+          color: const Color.fromRGBO(49, 42, 119, 1),
           borderRadius: BorderRadius.circular(15.0),
         ),
         padding: const EdgeInsets.all(16.0),

@@ -20,62 +20,90 @@ class SocietyManagementScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text(
           'Manage Societies',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         iconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: const Color.fromRGBO(49, 42, 119, 1),
+        elevation: 5,
       ),
       drawer: CustomDrawer(),
-      body: Consumer<SocietyProvider>(
-        builder: (context, provider, child) {
-          return ListView.builder(
-            itemCount: provider.societies.length,
-            itemBuilder: (context, index) {
-              final society = provider.societies[index];
-              return Card(
-                margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                elevation: 5,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: ListTile(
-                  title: Text(
-                    society.name,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  subtitle: Text(society.description),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      IconButton(
-                        icon: const Icon(Icons.edit, color: Colors.blue),
-                        onPressed: () {
-                          _nameController.text = society.name;
-                          _descriptionController.text = society.description;
-                          _upcomingEventController.text = society.upcomingEvent;
-                          _recruitmentDriveController.text =
-                              society.recruitmentDrive;
-                          _showEditDialog(context, society);
-                        },
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/Splash.png"),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Consumer<SocietyProvider>(
+          builder: (context, provider, child) {
+            return Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: ListView.builder(
+                itemCount: provider.societies.length,
+                itemBuilder: (context, index) {
+                  final society = provider.societies[index];
+                  return Card(
+                    margin: const EdgeInsets.symmetric(vertical: 8),
+                    elevation: 10,
+                    shadowColor: Colors.grey[200],
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: ListTile(
+                      leading: CircleAvatar(
+                        backgroundColor: const Color.fromRGBO(49, 42, 119, 1),
+                        child: Text(
+                          society.name[0].toUpperCase(),
+                          style: const TextStyle(color: Colors.white),
+                        ),
                       ),
-                      IconButton(
-                        icon: const Icon(Icons.delete, color: Colors.red),
-                        onPressed: () {
-                          Provider.of<SocietyProvider>(context, listen: false)
-                              .deleteSociety(society.id);
-                          _showSnackBar(
-                              context, 'Society deleted successfully');
-                        },
+                      title: Text(
+                        society.name,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
                       ),
-                    ],
-                  ),
-                ),
-              );
-            },
-          );
-        },
+                      subtitle: Text(
+                        society.description,
+                        style: const TextStyle(fontSize: 14),
+                      ),
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(
+                            icon: const Icon(Icons.edit, color: Colors.blue),
+                            onPressed: () {
+                              _nameController.text = society.name;
+                              _descriptionController.text = society.description;
+                              _upcomingEventController.text =
+                                  society.upcomingEvent;
+                              _recruitmentDriveController.text =
+                                  society.recruitmentDrive;
+                              _showEditDialog(context, society);
+                            },
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.delete, color: Colors.red),
+                            onPressed: () {
+                              Provider.of<SocietyProvider>(context,
+                                      listen: false)
+                                  .deleteSociety(society.id);
+                              _showSnackBar(
+                                  context, 'Society deleted successfully');
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            );
+          },
+        ),
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           _nameController.clear();
           _descriptionController.clear();
@@ -84,7 +112,14 @@ class SocietyManagementScreen extends StatelessWidget {
           _showAddDialog(context);
         },
         backgroundColor: const Color.fromRGBO(49, 42, 119, 1),
-        child: const Icon(Icons.add),
+        icon: const Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
+        label: const Text(
+          'Add Society',
+          style: TextStyle(color: Colors.white),
+        ),
       ),
     );
   }
@@ -96,12 +131,18 @@ class SocietyManagementScreen extends StatelessWidget {
         return AlertDialog(
           title: const Text('Edit Society'),
           content: _buildDialogContent(),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
               child: const Text('Cancel'),
             ),
-            TextButton(
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color.fromRGBO(49, 42, 119, 1),
+              ),
               onPressed: () {
                 final updatedSociety = Society(
                   id: society.id,
@@ -130,12 +171,18 @@ class SocietyManagementScreen extends StatelessWidget {
         return AlertDialog(
           title: const Text('Add Society'),
           content: _buildDialogContent(),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
               child: const Text('Cancel'),
             ),
-            TextButton(
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color.fromRGBO(49, 42, 119, 1),
+              ),
               onPressed: () {
                 final newSociety = Society(
                   id: '',
@@ -164,21 +211,34 @@ class SocietyManagementScreen extends StatelessWidget {
         children: [
           TextField(
             controller: _nameController,
-            decoration: const InputDecoration(labelText: 'Name'),
+            decoration: const InputDecoration(
+              labelText: 'Name',
+              border: OutlineInputBorder(),
+            ),
           ),
+          const SizedBox(height: 10),
           TextField(
             controller: _descriptionController,
-            decoration: const InputDecoration(labelText: 'Description'),
+            decoration: const InputDecoration(
+              labelText: 'Description',
+              border: OutlineInputBorder(),
+            ),
           ),
+          const SizedBox(height: 10),
           TextField(
             controller: _upcomingEventController,
-            decoration:
-                const InputDecoration(labelText: 'Upcoming Event (optional)'),
+            decoration: const InputDecoration(
+              labelText: 'Upcoming Event (optional)',
+              border: OutlineInputBorder(),
+            ),
           ),
+          const SizedBox(height: 10),
           TextField(
             controller: _recruitmentDriveController,
             decoration: const InputDecoration(
-                labelText: 'Recruitment Drive (optional)'),
+              labelText: 'Recruitment Drive (optional)',
+              border: OutlineInputBorder(),
+            ),
           ),
         ],
       ),

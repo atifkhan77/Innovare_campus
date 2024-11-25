@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 
-class CustomDonutChart extends StatelessWidget {
+class CustomHistogram extends StatelessWidget {
   final Map<String, int> regNoCounts;
 
-  const CustomDonutChart({super.key, required this.regNoCounts});
+  const CustomHistogram({super.key, required this.regNoCounts});
 
   @override
   Widget build(BuildContext context) {
@@ -12,39 +12,74 @@ class CustomDonutChart extends StatelessWidget {
       return const Center(child: CircularProgressIndicator());
     }
 
-    return PieChart(
-      PieChartData(
-        sections: _showingSections(),
-        centerSpaceRadius: 30,
-        borderData: FlBorderData(show: false),
-        sectionsSpace: 2,
+    return BarChart(
+      BarChartData(
+        barGroups: _buildBarGroups(),
+        titlesData: _buildTitlesData(),
+        borderData: FlBorderData(
+          border: const Border(
+            bottom: BorderSide(color: Colors.black),
+            left: BorderSide(color: Colors.black),
+          ),
+        ),
+        gridData: FlGridData(show: false),
       ),
     );
   }
 
-  List<PieChartSectionData> _showingSections() {
-    if (regNoCounts.isEmpty) return [];
-
-    const List<Color> sectionColors = Colors.primaries;
-    final totalUsers = regNoCounts.values.reduce((a, b) => a + b);
+  List<BarChartGroupData> _buildBarGroups() {
+    const List<Color> barColors = Colors.primaries;
+    int index = 0;
 
     return regNoCounts.entries.map((entry) {
-      final percentage = (entry.value / totalUsers) * 100;
-      final colorIndex =
-          regNoCounts.keys.toList().indexOf(entry.key) % sectionColors.length;
-
-      return PieChartSectionData(
-        color: sectionColors[colorIndex],
-        value: entry.value.toDouble(),
-        title: '${entry.key}: ${percentage.toStringAsFixed(1)}%',
-        radius: 70,
-        titleStyle: const TextStyle(
-          fontSize: 14,
-          fontWeight: FontWeight.bold,
-          color: Colors.white,
-        ),
-        titlePositionPercentageOffset: 1.6,
+      final color = barColors[index % barColors.length];
+      index++;
+      return BarChartGroupData(
+        x: index,
+        barRods: [
+          BarChartRodData(
+            toY: entry.value.toDouble(),
+            color: color,
+            width: 16,
+            borderRadius: BorderRadius.circular(4),
+          ),
+        ],
       );
     }).toList();
+  }
+
+  FlTitlesData _buildTitlesData() {
+    return FlTitlesData(
+      bottomTitles: AxisTitles(
+        sideTitles: SideTitles(
+          showTitles: true,
+          getTitlesWidget: (double value, TitleMeta meta) {
+            final index = value.toInt() - 1;
+            if (index < 0 || index >= regNoCounts.keys.length) {
+              return const SizedBox.shrink();
+            }
+            final label = regNoCounts.keys.elementAt(index);
+            return SideTitleWidget(
+              axisSide: meta.axisSide,
+              child: Text(label, style: const TextStyle(fontSize: 12)),
+            );
+          },
+        ),
+      ),
+      leftTitles: AxisTitles(
+        sideTitles: SideTitles(
+          showTitles: true,
+          reservedSize: 40,
+          getTitlesWidget: (double value, TitleMeta meta) {
+            return Text(
+              value.toInt().toString(),
+              style: const TextStyle(fontSize: 12),
+            );
+          },
+        ),
+      ),
+      topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+      rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+    );
   }
 }

@@ -188,7 +188,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                                   ? const Center(
                                       child: CircularProgressIndicator(),
                                     )
-                                  : CustomDonutChart(regNoCounts: regNoCounts),
+                                  : CustomHistogram(regNoCounts: regNoCounts),
                             ),
                           ),
                           const SizedBox(width: 10),
@@ -208,7 +208,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen>
                               child: tutorCounts.isEmpty
                                   ? const Center(
                                       child: CircularProgressIndicator())
-                                  : CustomDonutChart(regNoCounts: tutorCounts),
+                                  : CustomHistogram(regNoCounts: tutorCounts),
                             ),
                           ),
                         ],

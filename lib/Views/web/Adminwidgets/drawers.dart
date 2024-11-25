@@ -36,7 +36,7 @@ class CustomDrawer extends StatelessWidget {
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => UserManagementScreen(),
+                  builder: (context) => const UserManagementScreen(),
                 ),
               );
             },
@@ -57,7 +57,7 @@ class CustomDrawer extends StatelessWidget {
             label: 'News',
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => NewsManagementScreen(),
+                builder: (context) => const NewsManagementScreen(),
               ));
             },
           ),
@@ -73,22 +73,20 @@ class CustomDrawer extends StatelessWidget {
             label: 'Dash Board',
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => AdminDashboardScreen(),
+                builder: (context) => const AdminDashboardScreen(),
               ));
             },
           ),
-          const Divider(), // Optional: adds a divider above the logout button
+          const Divider(),
           _buildDrawerItem(
             context: context,
             icon: Icons.logout,
             label: 'Logout',
             onTap: () {
-              // Implement your logout logic here
-              // e.g., clear user session, navigate to login screen, etc.
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (BuildContext context) => AdminScreen(),
+                  builder: (BuildContext context) => const AdminScreen(),
                 ),
               );
             },
@@ -98,7 +96,7 @@ class CustomDrawer extends StatelessWidget {
     );
   }
 
-  ListTile _buildDrawerItem({
+  Widget _buildDrawerItem({
     required BuildContext context,
     required IconData icon,
     required String label,
