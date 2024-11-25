@@ -20,8 +20,14 @@ class NewsManagementScreen extends StatelessWidget {
         iconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: const Color.fromRGBO(49, 42, 119, 1),
       ),
-      drawer: CustomDrawer(),
-      body: Padding(
+      drawer: const CustomDrawer(),
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/Splash.png"), // Background image
+            fit: BoxFit.cover,
+          ),
+        ),
         padding: const EdgeInsets.all(16.0),
         child: ListView.builder(
           itemCount: newsProvider.newsList.length,
@@ -32,10 +38,11 @@ class NewsManagementScreen extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: const Color.fromRGBO(49, 42, 119, 1),
         onPressed: () {
           _showAddNewsDialog(context, newsProvider);
         },
-        child: const Icon(Icons.add),
+        child: const Icon(Icons.add, color: Colors.white),
       ),
     );
   }
@@ -43,8 +50,12 @@ class NewsManagementScreen extends StatelessWidget {
   Widget _buildNewsCard(
       BuildContext context, NewsProvider newsProvider, NewsModel news) {
     return Card(
+      color: const Color.fromRGBO(49, 42, 119, 1),
       elevation: 4,
       margin: const EdgeInsets.symmetric(vertical: 8.0),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -54,13 +65,17 @@ class NewsManagementScreen extends StatelessWidget {
               news.title,
               style: const TextStyle(
                 fontSize: 20,
+                color: Colors.white,
                 fontWeight: FontWeight.bold,
               ),
             ),
             const SizedBox(height: 8.0),
             Text(
               news.content,
-              style: const TextStyle(fontSize: 16),
+              style: const TextStyle(
+                fontSize: 16,
+                color: Colors.white,
+              ),
             ),
             const SizedBox(height: 12.0),
             Row(
@@ -119,7 +134,9 @@ class NewsManagementScreen extends StatelessWidget {
                 newsProvider.addNews(newNews);
                 Navigator.of(context).pop();
               },
-              child: const Text('Add'),
+              child: const Text(
+                'Add',
+              ),
             ),
           ],
         );
