@@ -57,7 +57,10 @@ class UserManagementScreen extends StatelessWidget {
           );
         },
         icon: const Icon(Icons.add, color: Colors.white),
-        label: const Text("Add User"),
+        label: const Text(
+          "Add User",
+          style: TextStyle(color: Colors.white),
+        ),
       ),
     );
   }

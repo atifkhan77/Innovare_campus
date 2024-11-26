@@ -101,13 +101,17 @@ class CafeteriaOrdersScreen extends StatelessWidget {
 
   Widget _buildLoadingCard(Map<String, dynamic> orderData) {
     return Card(
+      color: const Color.fromRGBO(49, 42, 119, 1),
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       elevation: 4,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
       ),
       child: ListTile(
-        title: Text('Order Number: ${orderData['orderNumber']}'),
+        title: Text(
+          'Order Number: ${orderData['orderNumber']}',
+          style: TextStyle(color: Colors.white),
+        ),
         subtitle: const Text('Fetching user details...'),
         tileColor: Colors.grey[200],
       ),
@@ -116,13 +120,17 @@ class CafeteriaOrdersScreen extends StatelessWidget {
 
   Widget _buildErrorCard(Map<String, dynamic> orderData) {
     return Card(
+      color: const Color.fromRGBO(49, 42, 119, 1),
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       elevation: 4,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
       ),
       child: ListTile(
-        title: Text('Order Number: ${orderData['orderNumber']}'),
+        title: Text(
+          'Order Number: ${orderData['orderNumber']}',
+          style: TextStyle(color: Colors.white),
+        ),
         subtitle: const Text('Error fetching user details'),
         tileColor: Colors.red[100],
       ),
@@ -138,6 +146,7 @@ class CafeteriaOrdersScreen extends StatelessWidget {
       String status,
       BuildContext context) {
     return Card(
+      color: const Color.fromRGBO(49, 42, 119, 1),
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       elevation: 4,
       shape: RoundedRectangleBorder(
@@ -146,19 +155,25 @@ class CafeteriaOrdersScreen extends StatelessWidget {
       child: ListTile(
         title: Text(
           'Order Number: ${orderData['orderNumber']}',
-          style: const TextStyle(fontWeight: FontWeight.bold),
+          style:
+              const TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
         ),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Total: \$${orderData['totalPayment']}'),
-            Text('User: $name (RegNo: $regNo)'),
+            Text(
+              'Total: \$${orderData['totalPayment']}',
+              style: TextStyle(color: Colors.white),
+            ),
+            Text('User: $name (RegNo: $regNo)',
+                style: TextStyle(color: Colors.white70)),
             Text('Status: $status',
                 style: TextStyle(color: _getStatusColor(status))),
             ...items.map((item) {
               final itemName = item['name'] ?? 'Unnamed Item';
               final itemQuantity = item['quantity'] ?? 0;
-              return Text('$itemName x $itemQuantity');
+              return Text('$itemName x $itemQuantity',
+                  style: TextStyle(color: Colors.white70));
             }),
           ],
         ),

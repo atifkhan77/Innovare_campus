@@ -84,30 +84,48 @@ class PrintsScreen extends StatelessWidget {
 
   Widget _buildLoadingCard() {
     return const Card(
+      color: const Color.fromRGBO(49, 42, 119, 1),
       margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       child: ListTile(
-        title: Text('Fetching user details...'),
+        title: Text(
+          'Fetching user details...',
+          style: TextStyle(color: Colors.white),
+        ),
       ),
     );
   }
 
   Widget _buildErrorCard() {
     return const Card(
+      color: const Color.fromRGBO(49, 42, 119, 1),
       margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       child: ListTile(
-        title: Text('Error fetching user details'),
+        title: Text(
+          'Error fetching user details',
+          style: TextStyle(color: Colors.white),
+        ),
       ),
     );
   }
 
   Widget _buildDocumentCard(String url, String name, String regNo) {
     return Card(
+      color: const Color.fromRGBO(49, 42, 119, 1),
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       child: ListTile(
-        title: Text('Document uploaded by $name (RegNo: $regNo)'),
-        subtitle: Text('File URL: $url'),
+        title: Text(
+          'Document uploaded by $name \n (RegNo: $regNo)',
+          style: TextStyle(color: Colors.white),
+        ),
+        subtitle: Text(
+          'File URL: $url',
+          style: TextStyle(color: Colors.white70),
+        ),
         trailing: IconButton(
-          icon: const Icon(Icons.download),
+          color: Colors.white,
+          icon: const Icon(
+            Icons.download,
+          ),
           onPressed: () {
             if (url.isNotEmpty) {
               _downloadDocument(url);
