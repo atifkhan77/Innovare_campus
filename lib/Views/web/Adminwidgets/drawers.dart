@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:innovare_campus/Views/web/admin_dashboard/LostandFoundManage/LostAndFoundScreen.dart';
 import 'package:innovare_campus/Views/web/admin_dashboard/SocietiesManage/societyManagement.dart';
 import 'package:innovare_campus/Views/web/admin_dashboard/admin_dashboard.dart';
 import 'package:innovare_campus/Views/web/admin_dashboard/newsAnoouncement/newsManagementScreen.dart';
@@ -65,7 +66,11 @@ class CustomDrawer extends StatelessWidget {
             context: context,
             icon: Icons.perm_device_information_sharp,
             label: 'Lost and Found',
-            onTap: () {},
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => const LostAndFoundScreen(),
+                ));
+            },
           ),
           _buildDrawerItem(
             context: context,
