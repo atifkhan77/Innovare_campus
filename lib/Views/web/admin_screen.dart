@@ -71,6 +71,11 @@ class _AdminScreenState extends State<AdminScreen>
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => CafeAdminDashboardScreen()),
+          );}
+          else if (email == 'societyadmin@example.com') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) =>  AdminDashboardScreen()),
           );
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
