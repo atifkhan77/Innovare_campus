@@ -61,28 +61,50 @@ class SocietyDetailsScreen extends StatelessWidget {
         title: Text(society.name),
         backgroundColor: const Color.fromRGBO(49, 42, 119, 1),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text('Description:',
-                style: TextStyle(fontWeight: FontWeight.bold)),
-            Text(society.description),
-            const SizedBox(height: 8.0),
-            const Text('Recruitment Drive:',
-                style: TextStyle(fontWeight: FontWeight.bold)),
-            RichText(
-              text: _createTextSpan(society.recruitmentDrive),
+      body: Stack(
+        children: [
+          // Fullscreen Background Image
+          Positioned.fill(
+            child: Image.asset(
+              'assets/Splash.png', // Path to your splash image
+              fit: BoxFit.cover, // Ensures the image covers the full screen
             ),
-            const SizedBox(height: 8.0),
-            const Text('Upcoming Event:',
-                style: TextStyle(fontWeight: FontWeight.bold)),
-            RichText(
-              text: _createTextSpan(society.upcomingEvent),
+          ),
+          // Main Content
+          SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Description:',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  RichText(
+                    text: _createTextSpan(society.description),
+                  ),
+                  const SizedBox(height: 8.0),
+                  const Text(
+                    'Recruitment Drive:',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  RichText(
+                    text: _createTextSpan(society.recruitmentDrive),
+                  ),
+                  const SizedBox(height: 8.0),
+                  const Text(
+                    'Upcoming Event:',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  RichText(
+                    text: _createTextSpan(society.upcomingEvent),
+                  ),
+                ],
+              ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
