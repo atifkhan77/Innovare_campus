@@ -73,7 +73,7 @@ class _CafeScreenState extends State<CafeScreen> {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => CartScreen()),
+              MaterialPageRoute(builder: (context) => const CartScreen()),
             );
           },
         ),
