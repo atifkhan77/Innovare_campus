@@ -87,6 +87,7 @@ class _OfferTutorScreenState extends State<OfferTutorScreen> {
             ),
           ],
         ),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: SafeArea(
         child: SingleChildScrollView(

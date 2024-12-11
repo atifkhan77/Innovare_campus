@@ -12,6 +12,7 @@ class RequestsScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(49, 42, 119, 1),
         title: const Text('View Requests'),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: Container(
         decoration: const BoxDecoration(

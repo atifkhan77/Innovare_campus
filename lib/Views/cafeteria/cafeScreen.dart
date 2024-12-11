@@ -24,6 +24,7 @@ class _CafeScreenState extends State<CafeScreen> {
             'Cafeteria',
             style: TextStyle(color: Colors.white),
           ),
+          iconTheme: IconThemeData(color: Colors.white),
           bottom: const TabBar(
             indicatorColor: Colors.white,
             unselectedLabelColor: Colors.white,

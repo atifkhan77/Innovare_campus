@@ -99,7 +99,11 @@ class _PrintScreenState extends State<PrintScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(49, 42, 119, 1),
-        title: const Text('Print Documents'),
+        title: const Text(
+          'Print Documents',
+          style: TextStyle(color: Colors.white),
+        ),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: Stack(
         children: [
@@ -135,14 +139,19 @@ class _PrintScreenState extends State<PrintScreen> {
                       children: [
                         Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Text('Selected file: ${_selectedFile!.name}'),
+                          child: Text(
+                            'Selected file: ${_selectedFile!.name}',
+                            style: const TextStyle(color: Colors.white),
+                          ),
                         ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: TextFormField(
                             decoration: const InputDecoration(
-                                labelText: 'Number of prints'),
+                                labelText: 'Number of prints',
+                                hintStyle: TextStyle(color: Colors.white70)),
                             initialValue: '1',
+                            style: const TextStyle(color: Colors.white70),
                             keyboardType: TextInputType.number,
                             onChanged: (value) {
                               setState(() {
@@ -196,9 +205,14 @@ class _PrintScreenState extends State<PrintScreen> {
                       itemBuilder: (context, index) {
                         Document document = documentProvider.documents[index];
                         return ListTile(
-                          title: Text(document.name),
-                          subtitle:
-                              Text('Number of prints: ${document.numOfPrints}'),
+                          title: Text(
+                            document.name,
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                          subtitle: Text(
+                            'Number of prints: ${document.numOfPrints}',
+                            style: const TextStyle(color: Colors.white70),
+                          ),
                           trailing: IconButton(
                             icon: const Icon(Icons.delete, color: Colors.red),
                             onPressed: () {

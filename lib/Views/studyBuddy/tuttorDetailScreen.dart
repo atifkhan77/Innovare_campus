@@ -65,6 +65,7 @@ class TutorDetailScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(49, 42, 119, 1),
         title: const Text('Tutor Profile'),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: Stack(
         children: [

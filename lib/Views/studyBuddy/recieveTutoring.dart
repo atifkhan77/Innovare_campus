@@ -270,7 +270,11 @@ class TutorListScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(49, 42, 119, 1),
-        title: const Text('Available Tutors'),
+        title: const Text(
+          'Available Tutors',
+          style: TextStyle(color: Colors.white),
+        ),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: Stack(
         children: [

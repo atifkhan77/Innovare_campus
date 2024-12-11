@@ -20,9 +20,12 @@ class SocietiesScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Societies'),
-        backgroundColor: const Color.fromRGBO(49, 42, 119, 1),
-      ),
+          title: const Text(
+            'Societies',
+            style: TextStyle(color: Colors.white),
+          ),
+          backgroundColor: const Color.fromRGBO(49, 42, 119, 1),
+          iconTheme: const IconThemeData(color: Colors.white)),
       body: Stack(
         children: [
           // Background Image
@@ -34,7 +37,8 @@ class SocietiesScreen extends StatelessWidget {
           ),
           // Main Content
           StreamBuilder<QuerySnapshot>(
-            stream: FirebaseFirestore.instance.collection('societies').snapshots(),
+            stream:
+                FirebaseFirestore.instance.collection('societies').snapshots(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(child: CircularProgressIndicator());
@@ -58,7 +62,8 @@ class SocietiesScreen extends StatelessWidget {
                   return Card(
                     color: cardColor, // Set the background color of the card
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12), // Rounded corners
+                      borderRadius:
+                          BorderRadius.circular(12), // Rounded corners
                     ),
                     elevation: 4,
                     child: InkWell(
