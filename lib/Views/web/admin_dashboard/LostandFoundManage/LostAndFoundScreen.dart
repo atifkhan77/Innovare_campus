@@ -43,7 +43,7 @@ class LostAndFoundScreen extends StatelessWidget {
         title: const Text('Manage Lost and Found',
             style: TextStyle(color: Colors.white)),
         backgroundColor: const Color.fromRGBO(49, 42, 119, 1),
-        iconTheme: IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: Container(
         decoration: const BoxDecoration(

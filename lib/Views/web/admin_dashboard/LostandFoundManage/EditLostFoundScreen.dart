@@ -149,11 +149,6 @@ class _EditLostFoundScreenState extends State<EditLostFoundScreen> {
                       // Update button
                       ElevatedButton(
                         onPressed: updateItem,
-                        child: const Text(
-                          'Update Item',
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold),
-                        ),
                         style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(
                             horizontal: 40,
@@ -164,6 +159,11 @@ class _EditLostFoundScreenState extends State<EditLostFoundScreen> {
                           ),
                           backgroundColor: Colors.deepPurple,
                           foregroundColor: Colors.white,
+                        ),
+                        child: const Text(
+                          'Update Item',
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
                         ),
                       ),
                     ],

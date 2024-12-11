@@ -141,15 +141,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       const SizedBox(height: 10),
                       Row(
                         children: [
-                          Checkbox(
-                            value: _staySignedIn,
-                            onChanged: (bool? value) {
-                              setState(() {
-                                _staySignedIn = value!;
-                              });
-                            },
-                          ),
-                          const Text('Stay signed in'),
                           const Spacer(),
                           TextButton(
                             onPressed: () {
@@ -173,7 +164,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           onPressed: () {
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                  builder: (context) => SignupScreen()),
+                                  builder: (context) => const SignupScreen()),
                             );
                           },
                           child: const Text("Not Registered?"),

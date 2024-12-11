@@ -26,9 +26,9 @@ class SocietyManagementScreen extends StatelessWidget {
         backgroundColor: const Color.fromRGBO(49, 42, 119, 1),
         elevation: 5,
       ),
-      drawer: CustomDrawer(),
+      drawer: const CustomDrawer(),
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage("assets/Splash.png"),
             fit: BoxFit.cover,
