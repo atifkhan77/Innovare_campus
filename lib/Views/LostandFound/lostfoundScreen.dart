@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+// import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:innovare_campus/Views/LostandFound/itemDetailScreen.dart';
 import 'package:innovare_campus/Views/LostandFound/uploadItemScreen.dart';
@@ -56,7 +56,7 @@ class _LostFoundScreenState extends State<LostFoundScreen> {
         });
       }
     } catch (e) {
-      print('Failed to load profile image: $e');
+      debugPrint('Failed to load profile image: $e');
     }
   }
 
@@ -85,6 +85,7 @@ class _LostFoundScreenState extends State<LostFoundScreen> {
             ),
           ],
         ),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: Stack(
         children: [

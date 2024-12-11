@@ -12,6 +12,7 @@ class ItemDetailScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Item Details'),
         backgroundColor: const Color.fromRGBO(49, 42, 119, 1),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: Stack(
         children: [

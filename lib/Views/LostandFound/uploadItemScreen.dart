@@ -104,6 +104,7 @@ class _UploadItemScreenState extends State<UploadItemScreen> {
           'Lost & Found',
           style: TextStyle(color: Colors.white),
         ),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: Stack(
         children: [
